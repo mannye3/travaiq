@@ -1,0 +1,53 @@
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\TravelController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "Cache cleared successfully!";
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/create-plan', function () {
+    return view('createPlan');
+})->name('createPlan');
+
+// Admin Section
+Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('google.redirect');
+
+// Authentication Routes
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
+
+Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login-post', [AuthController::class, 'loginPost'])->name('loginPost');
+Route::post('/forget-password', [AuthController::class, 'userForgetpassword'])->name('userForgetpassword');
+Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forgetPassword');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetpassword']);
+Route::post('/reset-password-submit', [AuthController::class, 'resetpasswordsubmit'])->name('resetpasswordsubmit');
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+// Travel Routes
+Route::get('/travel/form', [TravelController::class, 'showForm'])->name('travel.form');
+Route::post('/travel/generate', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
+Route::get('/my-trips', [TravelController::class, 'myTrips'])->name('my.trips')->middleware('auth');
+
+//Route::get('/trips/{trip}', [TravelController::class, 'show'])->name('trips.show');
+
+// Route for generating travel plan (assuming you already have this)
+Route::post('/generate-travel-plan', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
+
+// Route for showing trip details
+Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.show');
+
+// Optional: Route for looking up trips by reference code
+Route::get('/trips/reference/{referenceCode}', [TravelController::class, 'showByReference'])->name('trips.show.reference');
