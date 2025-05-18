@@ -332,9 +332,4 @@
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initAutocomplete"
         async defer></script>
 
-        {{-- https://maps.googleapis.com/maps/api/js?
-        key=AIzaSyA0Oy90FUKjIHNwASRdh1Nv-1v8Sqr1Bf4&libraries=places&
-        callback=initAutocomplete
-
-        https://maps.googleapis.com/maps/api/js?key=AIzaSyDNQQItpPeJl6xu2BeKPk_-YVMTS0Daoqs&v=weekly&loading=async&callback=initMap --}}
-        
+       
