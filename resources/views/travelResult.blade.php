@@ -2,6 +2,7 @@
 
 @section('content')
 
+
     <!-- Main Content -->
     <main class="flex-1 min-w-0 overflow-x-hidden">
         <div class="max-w-screen-xl mx-auto px-4">
@@ -99,7 +100,7 @@
                                                 target="_blank">
                                                 <div class="w-full md:w-1/3 flex-shrink-0 px-3">
                                                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                                        <img src="https://img.freepik.com/free-photo/modern-studio-apartment-design-with-bedroom-living-space_1262-12375.jpg?t=st=1745181117~exp=1745184717~hmac=f3dd10034fa8932a20ea6eb54c22a7a31f5123f74c675bfe6fc4d622a6b83c65&w=996"
+                                                        <img src="{{ $hotel->image_url }}"
                                                             alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
                                                         <div class="p-4">
                                                             <div class="mb-2">
@@ -657,15 +658,16 @@
         </div>
     </main>
 
+   
 
-    <!-- Simple JavaScript for interactivity -->
+  
+      <!-- Simple JavaScript for interactivity -->
     <script>
         // Mobile menu toggle
-        document.querySelector('[data-toggle="mobile-menu"]').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
         });
-
         // FAQ toggles
         const faqToggles = document.querySelectorAll('.faq-toggle');
         faqToggles.forEach(toggle => {
@@ -866,4 +868,6 @@
         window.addEventListener('resize', updateSliderDimensions);
     </script>
 
-@endsection
+     @endsection
+</body>
+</html>

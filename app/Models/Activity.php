@@ -15,6 +15,7 @@ class Activity extends Model
         'duration',
         'best_time',
         'itinerary_id',
+        'image_url'
     ];
 
     public function itinerary()

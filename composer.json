@@ -6,10 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "google/apiclient": "^2.18",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/socialite": "^5.19",
+        "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.8",
         "nmred/kafka-php": "^0.1.6",
         "predis/predis": "^2.3",

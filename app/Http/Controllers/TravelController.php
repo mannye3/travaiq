@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Helpers\GooglePlacesHelper;
@@ -22,7 +21,8 @@ class TravelController extends Controller
 {
     public function generateTravelPlan(Request $request)
     {
-
+        set_time_limit(300);
+        
 
         // Step 2: Prepare the prompt for the Gemini AI API
         $location   = $request->input('location');
@@ -32,9 +32,7 @@ class TravelController extends Controller
         $activities = json_decode($request->input('activities'), true); // Decode JSON array
         $activities = implode(', ', $activities);
 
-        // Get the Google Place photo URL
-
-        // Replace session block with this:
+      
         $referenceCode = strtoupper(Str::random(8));
         $tripDetail    = TripDetail::create([
             'reference_code' => $referenceCode,
@@ -46,6 +44,7 @@ class TravelController extends Controller
             'user_id'        => Auth::id(), // Add the authenticated user's ID
         ]);
 
+         
         $google_place_image = GooglePlacesHelper::getPlacePhotoUrl($location);
 
         if (! str_starts_with($google_place_image, 'Error:')) {
@@ -65,7 +64,7 @@ class TravelController extends Controller
 
         Please ensure:
         - Generate a complete itinerary for ALL {$totalDays} days of the trip
-        - At least **4 hotels** are suggested with detailed information and a relevant **image URL** that visually represents each hotel.
+        - At least **4 hotels** are suggested with detailed information.
         - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses, and a **representative image URL**.
         - Include **image URLs** for landmarks and cultural highlights under `location_overview`.
         - Prices are in the local currency.
@@ -104,7 +103,7 @@ Return a JSON object with these exact keys:
             \"rating\": \"string\",
             \"description\": \"string\",
             \"coordinates\": \"string\",
-            \"image_url\": \"string\"
+           
         }
     ],
     \"itinerary\": [
@@ -156,34 +155,21 @@ Return a JSON object with these exact keys:
 
         $apiKey = env('GOOGLE_GEN_AI_API_KEY');
 
-        //    $response = Http::timeout(60) // ⏳ increase timeout
-        //     ->retry(3, 5000) // 🔁 optional retry: 3 attempts, 5s delay
-        //     ->withHeaders([
-        //         'Content-Type' => 'application/json',
-        //     ])
-        //     ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey", [
-        //         'contents' => [
-        //             [
-        //                 'parts' => [
-        //                     ['text' => $prompt],
-        //                 ],
-        //             ],
-        //         ],
-        //     ])
+     
 
         $response = Http::timeout(60) // ⏳ increase timeout
             ->retry(3, 5000)              // 🔁 optional retry: 3 attempts, 5s delay
             ->withHeaders([
                 'Content-Type' => 'application/json',
             ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey", [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt],
-                        ],
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => $prompt],
                     ],
                 ],
-            ]);
+            ],
+        ]);
 
         // Step 3: Decode the API response
         $responseBody = $response->json();
@@ -260,25 +246,46 @@ Return a JSON object with these exact keys:
             $locationOverview->culturalHighlights()->create($highlight);
         }
 
-        // Save Hotels
-        foreach ($travelPlan['hotels'] as $hotelData) {
-            $hotelData['location_overview_id'] = $locationOverview->id;
-            Hotel::create($hotelData);
-        }
-
-        // Save Itinerary and Activities
-        foreach ($travelPlan['itinerary'] as $dayPlan) {
-            $itinerary = Itinerary::create([
-                'day'                  => $dayPlan['day'],
-                'location_overview_id' => $locationOverview->id,
-            ]);
-
-            foreach ($dayPlan['activities'] as $activityData) {
-                $activityData['itinerary_id']         = $itinerary->id;
-                $activityData['location_overview_id'] = $locationOverview->id;
-                Activity::create($activityData);
+       // Save Hotels
+       foreach ($travelPlan['hotels'] as $hotelData) {
+        $hotelData['location_overview_id'] = $locationOverview->id;
+        $hotel = Hotel::create($hotelData);
+    
+        if (!empty($hotelData['name'])) {
+            $imageUrl = GooglePlacesHelper::getPlacePhotoUrl($hotelData['name']); // or pass photo_reference
+    
+            if (!str_starts_with($imageUrl, 'Error:')) {
+                $hotel->update([
+                    'image_url' => $imageUrl,
+                ]);
             }
         }
+    }
+    
+
+    foreach ($travelPlan['itinerary'] as $dayPlan) {
+        $itinerary = Itinerary::create([
+            'day'                  => $dayPlan['day'],
+            'location_overview_id' => $locationOverview->id,
+        ]);
+    
+        foreach ($dayPlan['activities'] as $activityData) {
+            $activityData['itinerary_id']         = $itinerary->id;
+            $activityData['location_overview_id'] = $locationOverview->id;
+    
+            // If place_id is available, fetch photo
+            if (!empty($activityData['name'])) {
+                $activityImage = GooglePlacesHelper::getPlacePhotoUrl($activityData['name']);
+    
+                if (!str_starts_with($activityImage, 'Error:')) {
+                    $activityData['image_url'] = $activityImage;
+                }
+            }
+    
+            Activity::create($activityData);
+        }
+    }
+    
 
         // Save Costs
         foreach ($travelPlan['costs'] as $costData) {

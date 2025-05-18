@@ -26,6 +26,7 @@ Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('google.
 // Authentication Routes
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::post('/google-onetap-login', [App\Http\Controllers\Auth\GoogleOneTapController::class, 'login']);
 Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
 
 Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -40,6 +41,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/travel/form', [TravelController::class, 'showForm'])->name('travel.form');
 Route::post('/travel/generate', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
 Route::get('/my-trips', [TravelController::class, 'myTrips'])->name('my.trips')->middleware('auth');
+
 
 //Route::get('/trips/{trip}', [TravelController::class, 'show'])->name('trips.show');
 
