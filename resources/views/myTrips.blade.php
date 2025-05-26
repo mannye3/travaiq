@@ -53,7 +53,7 @@
                                             <img src="{{ $trip->google_place_image }}" alt="{{ $trip->location }}"
                                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                                         @else
-                                            <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060" alt="{{ $tripDetails['location'] }}"
+                                            <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060" alt="{{ $tripDetails->location }}"
                                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                                         @endif
 
@@ -113,52 +113,23 @@
         <!-- Pagination -->
         <div class="mt-12 flex justify-center">
             <nav class="flex items-center space-x-2">
-                {{-- Previous Page Link --}}
-                @if ($trips->onFirstPage())
-                    <span class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 cursor-not-allowed">
-                        <span class="sr-only">Previous</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </span>
-                @else
-                    <a href="{{ $trips->previousPageUrl() }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-primary transition-colors duration-300">
-                        <span class="sr-only">Previous</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </a>
-                @endif
-
-                {{-- Page Number Links --}}
-                @for ($page = 1; $page <= $trips->lastPage(); $page++)
-                    @if ($page == $trips->currentPage())
-                        <span class="px-3 py-2 rounded-md text-sm font-medium bg-primary text-white">{{ $page }}</span>
-                    @elseif ($page == 1 || $page == $trips->lastPage() || ($page >= $trips->currentPage() - 1 && $page <= $trips->currentPage() + 1))
-                        <a href="{{ $trips->url($page) }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-primary/10 transition-colors duration-300">{{ $page }}</a>
-                    @elseif ($page == 2 && $trips->currentPage() > 4)
-                        <span class="px-3 py-2 text-gray-600">...</span>
-                    @elseif ($page == $trips->lastPage() - 1 && $trips->currentPage() < $trips->lastPage() - 3)
-                        <span class="px-3 py-2 text-gray-600">...</span>
-                    @endif
-                @endfor
-
-                {{-- Next Page Link --}}
-                @if ($trips->hasMorePages())
-                    <a href="{{ $trips->nextPageUrl() }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-primary transition-colors duration-300">
-                        <span class="sr-only">Next</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
-                @else
-                    <span class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 cursor-not-allowed">
-                        <span class="sr-only">Next</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </span>
-                @endif
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-primary transition-colors duration-300">
+                    <span class="sr-only">Previous</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium bg-primary text-white">1</a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-primary/10 transition-colors duration-300">2</a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-primary/10 transition-colors duration-300">3</a>
+                <span class="px-3 py-2 text-gray-600">...</span>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-primary/10 transition-colors duration-300">8</a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-primary transition-colors duration-300">
+                    <span class="sr-only">Next</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
             </nav>
         </div>
     </main>

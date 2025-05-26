@@ -5,22 +5,29 @@
 
     <!-- Main Content -->
     <main class="flex-1 min-w-0 overflow-x-hidden">
+        
         <div class="max-w-screen-xl mx-auto px-4">
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+        <p class="font-bold">Temporary Travel Plan</p>
+        <p>This is a temporary travel plan. To save your plan permanently, please
+            <a href="" class="text-yellow-700 underline">register</a> or
+            <a href="" class="text-yellow-700 underline">login</a>.
+        </p>
+    </div>
             <!-- Hero Section -->
             <section class="mb-8 lg:mb-16 pb-6 pt-6" id="hero">
                 <!-- result  Section -->
                 <div class="relative h-[300px] md:h-[400px] w-full rounded-xl overflow-hidden mb-6">
-                    @if ($tripDetails->google_place_image)
-                        <img src="{{ $tripDetails->google_place_image }}" alt="{{ $tripDetails['location'] }}"
+                @if ($tripDetails->google_place_image)
+                        <img src="{{ $tripDetails->google_place_image }}" alt="{{ $tripDetails->location }}"
                             class="w-full h-full object-cover">
                     @else
                         <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060"
-                            alt="{{ $tripDetails['location'] }}" class="w-full h-full object-cover">
+                            alt="{{ $tripDetails->location }}" class="w-full h-full object-cover">
                     @endif
-                    <div
-                        class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/70 to-transparent text-white">
-                        <h1 class="text-2xl md:text-4xl font-bold mb-2">{{ $tripDetails['duration'] }} days trip in
-                            {{ $tripDetails['location'] }}</h1>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/70 to-transparent text-white">
+                        <h1 class="text-2xl md:text-4xl font-bold mb-2">{{ $tripDetails->duration }} days trip in
+                            {{ $tripDetails->location }}</h1>
                         <div class="flex flex-col md:flex-row md:items-center gap-2 text-sm md:text-base">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -29,9 +36,9 @@
                             </svg>
                             <strong class="flex flex-wrap gap-2">
                                 Trip Overview:
-                                <span>Budget: {{ $budget }}</span>
-                                <span>Travelers: {{ $traveler }}</span>
-                                <span>Selected Activities: {{ $activities }}</span>
+                                <span>Budget: {{ $tripDetails->budget }}</span>
+                                <span>Travelers: {{ $tripDetails->traveler }}</span>
+                                <span>Selected Activities: {{ $tripDetails->activities }}</span>
                             </strong>
                         </div>
                     </div>
@@ -100,13 +107,17 @@
                                                 target="_blank">
                                                 <div class="w-full md:w-1/3 flex-shrink-0 px-3">
                                                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                                        @if ($hotel->image_url)
-                                                            <img src="{{ $hotel->image_url }}"
-                                                                alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
-                                                            
+                                                        @if (isset($hotel->image_url) && !empty($hotel->image_url))
+                                                            <img src="{{ $hotel->image_url }}" 
+                                                                class="card-img-top" 
+                                                                style="height: 180px; object-fit: cover;" 
+                                                                alt="{{ $hotel->name }}"
+                                                                onerror="this.onerror=null; this.src='https://img.freepik.com/premium-photo/hotel-room_1048944-29197645.jpg?w=900';">
                                                         @else
-                                                         <img src="https://img.freepik.com/free-photo/modern-studio-apartment-design-with-bedroom-living-space_1262-12375.jpg?t=st=1745181117~exp=1745184717~hmac=f3dd10034fa8932a20ea6eb54c22a7a31f5123f74c675bfe6fc4d622a6b83c65&w=996"
-                                                            alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
+                                                            <img src="https://img.freepik.com/premium-photo/hotel-room_1048944-29197645.jpg?w=900" 
+                                                                class="card-img-top" 
+                                                                style="height: 180px; object-fit: cover;" 
+                                                                alt="{{ $hotel->name }}">
                                                         @endif
                                                        
                                                         <div class="p-4">
@@ -171,97 +182,205 @@
                                                 Best Tour
                                             </button>
                                         </div> --}}
+                                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+                                <p class="font-bold">Temporary Travel Plan</p>
+                                <p>This is a temporary travel plan. To save your plan permanently, please
+                                    <a href="" class="text-yellow-700 underline">register</a> or
+                                    <a href="" class="text-yellow-700 underline">login</a>.
+                                </p>
+                            </div>
 
                         <!-- Day 1 -->
-                        @foreach ($itineraries as $itinerary)
-                            <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
-                                <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
-                                    onclick="toggleDay('day{{ $itinerary->day }}')">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
-                                            <p class="text-sm text-gray-500">
-                                                {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
-                                        id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
-
-                                <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
-                                    @foreach ($itinerary->activities as $activity)
-                                        <div class="mb-6 last:mb-0">
-                                            <div class="flex items-start gap-4">
-                                                <div class="flex-shrink-0">
-                                                    <div
-                                                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
-                                                        {{ $loop->iteration }}
+                        @guest
+                            <div class="relative">
+                                <div class="" id="blurred-content">
+                                    <div>
+                                        @foreach ($itineraries as $itinerary)
+                                            <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                                                <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
+                                                    onclick="toggleDay('day{{ $itinerary->day }}')">
+                                                    <div class="flex items-center gap-4">
+                                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                            <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
+                                                        </div>
+                                                        <div>
+                                                            <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
+                                                            <p class="text-sm text-gray-500">
+                                                            @if(isset($locationOverview->start_date))
+                                                        {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
+                                                         @endif
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
+                                                        id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M19 9l-7 7-7-7" />
+                                                    </svg>
                                                 </div>
-                                                <div class="flex-1">
-                                                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
-                                                        target="_blank" class="block">
-                                                        <div class="bg-gray-50 rounded-lg p-4">
-                                                            <div class="flex flex-col md:flex-row gap-4">
-                                                                <div class="flex-1">
-                                                                    <h3 class="font-semibold text-gray-900 mb-2">
-                                                                        {{ $activity->name }}</h3>
-                                                                    <p class="text-gray-600 text-sm mb-3">
-                                                                        {{ $activity->description }}</p>
+
+                                                <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
+                                                    @foreach ($itinerary->activities as $activity)
+                                                        <div class="mb-6 last:mb-0">
+                                                            <div class="flex items-start gap-4">
+                                                                <div class="flex-shrink-0">
                                                                     <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                        </svg>
-                                                                        <span>{{ $activity->best_time }}</span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                                        </svg>
-                                                                        <span>📍 {{ $activity->address }}</span>
+                                                                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+                                                                        {{ $loop->iteration }}
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
-                                                                    @if ($activity->image_url)
-                                                                        <img src="{{ $activity->image_url }}"
-                                                                            alt="{{ $activity->name }}"
+                                                                <div class="flex-1">
+                                                                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
+                                                                        target="_blank" class="block">
+                                                                        <div class="bg-gray-50 rounded-lg p-4">
+                                                                            <div class="flex flex-col md:flex-row gap-4">
+                                                                                <div class="flex-1">
+                                                                                    <h3 class="font-semibold text-gray-900 mb-2">
+                                                                                        {{ $activity->name }}</h3>
+                                                                                    <p class="text-gray-600 text-sm mb-3">
+                                                                                        {{ $activity->description }}</p>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                        </svg>
+                                                                                        <span>{{ $activity->best_time }}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                                                        </svg>
+                                                                                        <span>📍 {{ $activity->address }}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
+                                                                                    @if (isset($activity->image_url) && $activity->image_url)
+                                                                <img src="{{ $activity->image_url }}"   alt="{{ $activity->name }}"
                                                                             class="w-full h-full object-cover">
-                                                                    @else
-                                                                        <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
-                                                                        alt="{{ $activity->name }}"
-                                                                            class="w-full h-full object-cover">
-                                                                    @endif
+                                                            @else
+                                                                <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
+                                                                    class="img-fluid rounded-start" style="height: 100%;  width=100%;  object-fit: cover;" alt="{{ $activity->name }}">
+                                                            @endif
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </a>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
                                 </div>
+                                
                             </div>
-                        @endforeach
+                        @else
+                            <div>
+                                @foreach ($itineraries as $itinerary)
+                                    <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                                        <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
+                                            onclick="toggleDay('day{{ $itinerary->day }}')">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                    <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
+                                                </div>
+                                                <div>
+                                                    <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
+                                                id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+
+                                        <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
+                                            @foreach ($itinerary->activities as $activity)
+                                                <div class="mb-6 last:mb-0">
+                                                    <div class="flex items-start gap-4">
+                                                        <div class="flex-shrink-0">
+                                                            <div
+                                                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+                                                                {{ $loop->iteration }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
+                                                                target="_blank" class="block">
+                                                                <div class="bg-gray-50 rounded-lg p-4">
+                                                                    <div class="flex flex-col md:flex-row gap-4">
+                                                                        <div class="flex-1">
+                                                                            <h3 class="font-semibold text-gray-900 mb-2">
+                                                                                {{ $activity->name }}</h3>
+                                                                            <p class="text-gray-600 text-sm mb-3">
+                                                                                {{ $activity->description }}</p>
+                                                                            <div
+                                                                                class="flex items-center gap-2 text-sm text-gray-500">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    class="h-4 w-4" fill="none"
+                                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                </svg>
+                                                                                <span>{{ $activity->best_time }}</span>
+                                                                            </div>
+                                                                            <div
+                                                                                class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    class="h-4 w-4" fill="none"
+                                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                                                </svg>
+                                                                                <span>📍 {{ $activity->address }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
+                                                                            @if ($activity->image_url)
+                                                                                <img src="{{ $activity->image_url }}"
+                                                                                    alt="{{ $activity->name }}"
+                                                                                    class="w-full h-full object-cover">
+                                                                            @else
+                                                                                <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
+                                                                                alt="{{ $activity->name }}"
+                                                                                    class="w-full h-full object-cover">
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endguest
                     </div>
 
                     <script>
@@ -291,124 +410,67 @@
 
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
-                    {{-- <div class="bg-gray-50 rounded-lg p-6">
-                                        <h3 class="text-xl font-bold mb-4">Trip Details</h3>
-                                        <div class="space-y-4">
-                                            <div class="flex items-center gap-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                <span class="text-gray-700">Brandenberg, Tyrol, Austria</span>
-                                            </div>
-                                            <div class="flex items-center gap-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span class="text-gray-700">1 Day Trip</span>
-                                            </div>
-                                            <div class="flex items-center gap-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                </svg>
-                                                <span class="text-gray-700">25 Hotels found</span>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
-                    <!-- Estimated Cost Section -->
+                
                     <div class="bg-gray-50 rounded-lg p-6 mt-6">
                         <h3 class="text-xl font-bold mb-4">Estimated Cost</h3>
 
-                        <!-- Accommodation Section -->
-                        {{-- <div class="mb-6">
-                                            <div class="flex items-center gap-3 mb-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
-                                                <h4 class="font-semibold text-gray-800">Accommodation</h4>
-                                            </div>
-                                            <div class="space-y-3 ml-8">
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Hostel</span>
-                                                    <span class="font-medium">$30</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Budget Hotel</span>
-                                                    <span class="font-medium">$60</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Mid-Range Hotel</span>
-                                                    <span class="font-medium">$100</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Airbnb (Private Room)</span>
-                                                    <span class="font-medium">$70</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Boutique Hotel</span>
-                                                    <span class="font-medium">$150</span>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                        <!-- Transportation Section -->
-                        <div>
+                        <div class="mt-6">
                             <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <h4 class="font-semibold text-gray-800">Local Cuisine & Food</h4>
+                            </div>
+                            <div class="space-y-3 ml-8">
+                            @if (isset($additionalInfo->dining_costs))
+                                  
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Dining Costs</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                            @foreach($additionalInfo->dining_costs ?? [] as $cost)
+                                                <li>{{ $cost->category ?? '' }}: {{ $cost->cost_range ?? '' }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-gray-500">No food information available</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Transportation Section -->
+                        <div class="mt-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                                 </svg>
                                 <h4 class="font-semibold text-gray-800">Transportation</h4>
                             </div>
                             <div class="space-y-3 ml-8">
-                                @if ($cost && $cost->transportationCosts)
-                                    @foreach ($cost->transportationCosts as $transport)
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">{{ $transport->type }}</span>
-                                            <span class="font-medium">{{ $transport->cost }}</span>
-
-
-                                        </div>
-                                    @endforeach
+                                @if(isset($additionalInfo->transportation_options))
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Available Options</h5>
+                                        <p class="text-gray-600">{{ $additionalInfo->transportation_options }}</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Transportation Costs</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                            @foreach($additionalInfo->transportation_costs ?? [] as $transport)
+                                                <li>{{ $transport->type ?? '' }}: {{ $transport->cost ?? '' }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-gray-500">No transportation information available</p>
                                 @endif
-
-
                             </div>
                         </div>
 
-                        <!-- Food Section -->
-                        <div class="mt-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h18v18H3V3zm4 10h10M7 7h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7z" />
-                                </svg>
-                                <h4 class="font-semibold text-gray-800">Food</h4>
-                            </div>
-                            <div class="space-y-3 ml-8">
-                                @if ($cost && $cost->diningCosts)
-                                    @foreach ($cost->diningCosts as $dining)
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">{{ $dining->category }}</span>
-                                            <span class="font-medium">{{ $dining->cost_range }}</span>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                            </div>
-                        </div>
+                    
 
                         <!-- Activities Section -->
                         <div class="mt-6">
@@ -457,7 +519,7 @@
                             </div>
                             <div class="space-y-3 ml-8">
                                 <ul>
-                                    @foreach ($securityAdvice->safety_tips as $tip)
+                                @foreach ($securityAdvice->safety_tips as $tip)
                                         <li><span class="text-gray-600">{{ $tip }}</span></li>
                                     @endforeach
                                 </ul>
@@ -466,34 +528,75 @@
                             </div>
                         </div>
 
+                        <!-- Emergency Facilities Section -->
+                        <div class="mt-6">
+                           
+                            <div class="space-y-3 ml-8">
+                                @if(isset($securityAdvice->emergency_facilities) && count($securityAdvice->emergency_facilities) > 0)
+                                    <div class="space-y-4">
+                                        @foreach($securityAdvice->emergency_facilities as $facility)
+                                            
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                        <div class="flex">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm text-yellow-700">
+                                                    No emergency facilities information available for this location.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
 
+                        <!-- Food Section -->
                         <div class="mt-6">
                             <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                 </svg>
-                                <h4 class="font-semibold text-gray-800">Emergency Facilities:</h4>
+                                <h4 class="font-semibold text-gray-800">Emergency Facilities</h4>
                             </div>
-                            @foreach ($securityAdvice->emergencyFacilities as $facility)
-                                <div class="space-y-3 ml-8">
-
-                                    <h6>{{ $facility->name }}</h6>
-
-
-
-                                    <span class="text-gray-600">{{ $facility->address }}</span>
-                                    <span class="text-gray-600">{{ $facility->phone }}</span>
-
-
-
-                                    </ul>
-
-
-                                </div>
-                            @endforeach
+                            <div class="space-y-3 ml-8">
+                            @if(isset($securityAdvice->emergency_facilities) && count($securityAdvice->emergency_facilities) > 0)
+                                  
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">{{ $facility->name ?? 'Emergency Facility' }}</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                        @if(isset($facility->address))
+                                                            <p class="text-sm text-gray-600 mb-1">
+                                                                <span class="font-medium">Address:</span> {{ $facility->address }}
+                                                            </p>
+                                                        @endif
+                                                        @if(isset($facility->phone))
+                                                            <p class="text-sm text-gray-600">
+                                                                <span class="font-medium">Phone:</span> 
+                                                                <a href="tel:{{ $facility->phone }}" class="text-blue-600 hover:text-blue-800">
+                                                                    {{ $facility->phone }}
+                                                                </a>
+                                                            </p>
+                                                        @endif
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-gray-500"> No emergency facilities information available for this location.</p>
+                                @endif
+                            </div>
                         </div>
+
+
+
+                      
                     </div>
                 </div>
         </div>

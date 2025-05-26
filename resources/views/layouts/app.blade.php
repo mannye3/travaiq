@@ -79,7 +79,7 @@
         <div class="container mx-auto px-4 py-4">
             <nav class="flex flex-wrap items-center justify-between">
                 <a href="{{url('/')}}" class="flex items-center text-primary font-bold text-xl">
-                    <span class="mr-2 inline-block"><img height="16" width="16" src="travaiqlogo.png"></span>
+                    {{-- <span class="mr-2 inline-block animate-float">✈</span> --}}
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">Travaiq</span>
                 </a>
                 
@@ -179,7 +179,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <div>
                     <div class="flex items-center text-xl font-bold mb-6">
-                        <span class="mr-2"><img height="16" width="16" src="travaiqlogo.png"></span>
+                        <span class="mr-2 animate-float">✈</span>
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-white">Travaiq</span>
                     </div>
                     <p class="mb-6 text-gray-400 leading-relaxed">Making travel planning smarter and easier with AI-powered recommendations. We help you discover the perfect destinations and experiences tailored to your preferences.</p>
@@ -246,25 +246,25 @@
                         <div class="absolute bottom-0 left-0 w-1/2 h-0.5 bg-primary"></div>
                     </h3>
                     <ul class="space-y-4">
-                        <li><a href="{{ route('travel.guide') }}" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
                             <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                             Travel Guide
                         </a></li>
-                        <li><a href="{{ route('faqs') }}" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
                             <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                             FAQs
                         </a></li>
-                        <li><a href="{{ route('support') }}" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
                             <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                             Support
                         </a></li>
-                        <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 flex items-center hover:translate-x-1">
                             <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
@@ -304,285 +304,19 @@
             </div>
             
             <div class="border-t border-gray-800 pt-8 flex flex-wrap items-center justify-between">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; @php echo date('Y') @endphp Travaiq. All rights reserved.</p>
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; 2024 Travaiq. All rights reserved.</p>
                 
-                {{-- <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4">
                     <a href="#" class="text-gray-500 hover:text-white transition duration-300 text-sm">Sitemap</a>
                     <a href="#" class="text-gray-500 hover:text-white transition duration-300 text-sm">Accessibility</a>
                     <a href="#" class="text-gray-500 hover:text-white transition duration-300 text-sm">Affiliates</a>
-                </div> --}}
+                </div>
             </div>
         </div>
     </footer>
 
     </body>
 </html>
-
-@guest
-    <!-- Google One Tap Script -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log('Google One Tap: DOMContentLoaded fired');
-
-            const clientId = "{{ config('services.google.client_id') }}";
-
-            if (!clientId) {
-                console.error("Google One Tap: client ID is missing. Check your .env and config.");
-                return;
-            }
-
-            try {
-                google.accounts.id.initialize({
-                    client_id: clientId,
-                    callback: handleCredentialResponse
-                });
-
-                console.log('Google One Tap: initialize called');
-
-                google.accounts.id.prompt((notification) => {
-                    console.log('Google One Tap: prompt notification', notification);
-
-                    if (notification.isNotDisplayed()) {
-                        console.log('One Tap was not displayed:', notification.getNotDisplayedReason());
-                    }
-
-                    if (notification.isSkippedMoment()) {
-                        console.log('One Tap was skipped:', notification.getSkippedReason());
-                    }
-
-                    if (notification.isDismissedMoment()) {
-                        console.log('One Tap was dismissed:', notification.getDismissedReason());
-                    }
-                });
-
-                console.log('Google One Tap: prompt called');
-            } catch (e) {
-                console.error('Google One Tap error:', e);
-            }
-        });
-
-        function handleCredentialResponse(response) {
-            console.log('Google One Tap: credential response', response);
-
-            fetch('/google-onetap-login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ credential: response.credential })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Google login successful, reloading...');
-                    window.location.reload();
-                } else {
-                    alert('Google login failed');
-                    console.error('Login error:', data);
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
-        }
-    </script>
-@endguest
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userDropdown = document.getElementById('user-dropdown');
-
-        if (userMenuButton && userDropdown) {
-            // Toggle dropdown on button click
-            userMenuButton.addEventListener('click', function (e) {
-                e.stopPropagation();
-                userDropdown.classList.toggle('hidden');
-            });
-
-            // Hide dropdown when clicking outside
-            document.addEventListener('click', function (e) {
-                // Only hide if the dropdown is open and the click is outside both the button and the dropdown
-                if (!userDropdown.classList.contains('hidden') &&
-                    !userDropdown.contains(e.target) &&
-                    !userMenuButton.contains(e.target)) {
-                    userDropdown.classList.add('hidden');
-                }
-            });
-        }
-    });
-</script>
-
- <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Form functionality
-        let selectedBudget = null;
-        let selectedCompanion = null;
-        let selectedActivities = [];
-
-        function decrementDays() {
-            const input = document.getElementById('daysInput');
-            if (input.value > input.min) {
-                input.value = parseInt(input.value) - 1;
-            }
-        }
-
-        function incrementDays() {
-            const input = document.getElementById('daysInput');
-            if (input.value < input.max) {
-                input.value = parseInt(input.value) + 1;
-            }
-        }
-
-        function setBudget(budget) {
-            selectedBudget = budget;
-            document.getElementById('budgetInput').value = budget;
-            
-            // Highlight selected option
-            document.querySelectorAll('.budget-option').forEach(option => {
-                option.classList.remove('border-primary', 'bg-purple-50');
-                option.querySelector('svg').classList.remove('text-primary');
-                option.querySelector('svg').classList.add('text-gray-500');
-            });
-            
-            const element = event.currentTarget;
-            element.classList.add('border-primary', 'bg-purple-50');
-            element.querySelector('svg').classList.remove('text-gray-500');
-            element.querySelector('svg').classList.add('text-primary');
-        }
-
-        function setCompanion(companion) {
-            selectedCompanion = companion;
-            document.getElementById('companionInput').value = companion;
-            
-            // Highlight selected option
-            document.querySelectorAll('.companion-option').forEach(option => {
-                option.classList.remove('border-primary', 'bg-purple-50');
-                option.querySelector('svg').classList.remove('text-primary');
-                option.querySelector('svg').classList.add('text-gray-500');
-            });
-            
-            const element = event.currentTarget;
-            element.classList.add('border-primary', 'bg-purple-50');
-            element.querySelector('svg').classList.remove('text-gray-500');
-            element.querySelector('svg').classList.add('text-primary');
-        }
-
-         function toggleActivity(activity) {
-            const option = document.querySelector(`.activity-option[onclick*="'${activity}'"]`);
-            if (!option) return;
-
-            const isSelected = option.classList.contains('border-indigo-500');
-
-            if (isSelected) {
-                option.classList.remove('border-indigo-500', 'bg-gray-50');
-                option.classList.add('border-gray-300');
-                selectedActivities = selectedActivities.filter(a => a !== activity);
-            } else {
-                option.classList.remove('border-gray-300');
-                option.classList.add('border-indigo-500', 'bg-gray-50');
-                selectedActivities.push(activity);
-            }
-
-            document.getElementById('activitiesInput').value = JSON.stringify(selectedActivities);
-        }
-
-        
-        function updateSelectedCounter() {
-            const count = selectedActivities.length;
-            const counterElement = document.getElementById('selectedActivitiesCount');
-            if (counterElement) {
-                counterElement.textContent = count;
-                if (count > 0) {
-                    counterElement.classList.remove('bg-gray-200');
-                    counterElement.classList.add('bg-primary', 'text-white');
-                } else {
-                    counterElement.classList.remove('bg-primary', 'text-white');
-                    counterElement.classList.add('bg-gray-200');
-                }
-            }
-        }
-
-        function validateForm() {
-            // Check if budget is selected
-            if (!selectedBudget) {
-                showAlert('Please select your budget');
-                return false;
-            }
-            
-            // Check if companion is selected
-            if (!selectedCompanion) {
-                showAlert('Please select who you are traveling with');
-                return false;
-            }
-            
-            // Check if at least one activity is selected
-            if (selectedActivities.length === 0) {
-                showAlert('Please select at least one activity');
-                return false;
-            }
-            
-            // Show loading overlay
-            document.getElementById('overlay').classList.remove('hidden');
-            document.getElementById('spinner').classList.remove('hidden');
-            document.getElementById('submitText').textContent = 'Generating...';
-            
-            return true;
-        }
-        
-        function showAlert(message) {
-            const alertBox = document.createElement('div');
-            alertBox.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg shadow-lg border-l-4 border-primary z-50 animate__animated animate__fadeInDown';
-            alertBox.innerHTML = `
-                <div class="flex items-center">
-                    <div class="text-primary mr-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <p>${message}</p>
-                </div>
-            `;
-            document.body.appendChild(alertBox);
-            
-            setTimeout(() => {
-                alertBox.classList.remove('animate__fadeInDown');
-                alertBox.classList.add('animate__fadeOutUp');
-                setTimeout(() => {
-                    document.body.removeChild(alertBox);
-                }, 500);
-            }, 3000);
-        }
-        
-        // Add some nice animations on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const options = {
-                threshold: 0.1
-            };
-            
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, options);
-            
-            document.querySelectorAll('.feature-card, .budget-option, .companion-option, .activity-option').forEach(card => {
-                observer.observe(card);
-            });
-        });
-    </script>
-
     
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBCRTSETD9"></script>
@@ -598,5 +332,4 @@
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initAutocomplete"
         async defer></script>
 
-     
-        
+       
