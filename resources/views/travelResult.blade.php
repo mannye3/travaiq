@@ -100,8 +100,15 @@
                                                 target="_blank">
                                                 <div class="w-full md:w-1/3 flex-shrink-0 px-3">
                                                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                                        <img src="{{ $hotel->image_url }}"
+                                                        @if ($hotel->image_url)
+                                                            <img src="{{ $hotel->image_url }}"
+                                                                alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
+                                                            
+                                                        @else
+                                                         <img src="https://img.freepik.com/free-photo/modern-studio-apartment-design-with-bedroom-living-space_1262-12375.jpg?t=st=1745181117~exp=1745184717~hmac=f3dd10034fa8932a20ea6eb54c22a7a31f5123f74c675bfe6fc4d622a6b83c65&w=996"
                                                             alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
+                                                        @endif
+                                                       
                                                         <div class="p-4">
                                                             <div class="mb-2">
                                                                 <p class="font-semibold text-lg">
@@ -166,95 +173,204 @@
                                         </div> --}}
 
                         <!-- Day 1 -->
-                        @foreach ($itineraries as $itinerary)
-                            <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
-                                <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
-                                    onclick="toggleDay('day{{ $itinerary->day }}')">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
-                                            <p class="text-sm text-gray-500">
-                                                {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
-                                        id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
-
-                                <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
-                                    @foreach ($itinerary->activities as $activity)
-                                        <div class="mb-6 last:mb-0">
-                                            <div class="flex items-start gap-4">
-                                                <div class="flex-shrink-0">
-                                                    <div
-                                                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
-                                                        {{ $loop->iteration }}
+                        @guest
+                            <div class="relative">
+                                <div class="blur-sm pointer-events-none select-none" id="blurred-content">
+                                    <div>
+                                        @foreach ($itineraries as $itinerary)
+                                            <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                                                <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
+                                                    onclick="toggleDay('day{{ $itinerary->day }}')">
+                                                    <div class="flex items-center gap-4">
+                                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                            <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
+                                                        </div>
+                                                        <div>
+                                                            <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
+                                                            <p class="text-sm text-gray-500">
+                                                                {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
+                                                        id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M19 9l-7 7-7-7" />
+                                                    </svg>
                                                 </div>
-                                                <div class="flex-1">
-                                                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
-                                                        target="_blank" class="block">
-                                                        <div class="bg-gray-50 rounded-lg p-4">
-                                                            <div class="flex flex-col md:flex-row gap-4">
-                                                                <div class="flex-1">
-                                                                    <h3 class="font-semibold text-gray-900 mb-2">
-                                                                        {{ $activity->name }}</h3>
-                                                                    <p class="text-gray-600 text-sm mb-3">
-                                                                        {{ $activity->description }}</p>
+
+                                                <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
+                                                    @foreach ($itinerary->activities as $activity)
+                                                        <div class="mb-6 last:mb-0">
+                                                            <div class="flex items-start gap-4">
+                                                                <div class="flex-shrink-0">
                                                                     <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                        </svg>
-                                                                        <span>{{ $activity->best_time }}</span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                                        </svg>
-                                                                        <span>📍 {{ $activity->address }}</span>
+                                                                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+                                                                        {{ $loop->iteration }}
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
-                                                                    @if ($activity->image_url)
-                                                                        <img src="{{ $activity->image_url }}"
-                                                                            alt="{{ $activity->name }}"
-                                                                            class="w-full h-full object-cover">
-                                                                    @else
-                                                                        <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
-                                                                            alt="{{ $activity->name }}"
-                                                                            class="w-full h-full object-cover">
-                                                                    @endif
+                                                                <div class="flex-1">
+                                                                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
+                                                                        target="_blank" class="block">
+                                                                        <div class="bg-gray-50 rounded-lg p-4">
+                                                                            <div class="flex flex-col md:flex-row gap-4">
+                                                                                <div class="flex-1">
+                                                                                    <h3 class="font-semibold text-gray-900 mb-2">
+                                                                                        {{ $activity->name }}</h3>
+                                                                                    <p class="text-gray-600 text-sm mb-3">
+                                                                                        {{ $activity->description }}</p>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                        </svg>
+                                                                                        <span>{{ $activity->best_time }}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                                                        </svg>
+                                                                                        <span>📍 {{ $activity->address }}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
+                                                                                    @if ($activity->image_url)
+                                                                                        <img src="{{ $activity->image_url }}"
+                                                                                            alt="{{ $activity->name }}"
+                                                                                            class="w-full h-full object-cover">
+                                                                                    @else
+                                                                                        <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
+                                                                                        alt="{{ $activity->name }}"
+                                                                                            class="w-full h-full object-cover">
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </a>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
+                                    <div class="text-center">
+                                        <button onclick="window.location.href='{{ route('login') }}'"
+                                            class="bg-white text-black font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-200 transition">
+                                            Continue Reading
+                                        </button>
+                                        <p class="mt-2 text-white">Login or register to see the full details!</p>
+                                    </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @else
+                            <div>
+                                @foreach ($itineraries as $itinerary)
+                                    <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                                        <div class="flex items-center justify-between p-4 bg-white border-b cursor-pointer"
+                                            onclick="toggleDay('day{{ $itinerary->day }}')">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                    <span class="text-blue-600 font-semibold">{{ $itinerary->day }}</span>
+                                                </div>
+                                                <div>
+                                                    <h3 class="font-semibold text-gray-900">Day {{ $itinerary->day }}</h3>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ \Carbon\Carbon::parse($locationOverview->start_date)->addDays($itinerary->day - 1)->format('D, d M') }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="h-5 w-5 text-gray-400 transform transition-transform duration-200"
+                                                id="arrow-day{{ $itinerary->day }}" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+
+                                        <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
+                                            @foreach ($itinerary->activities as $activity)
+                                                <div class="mb-6 last:mb-0">
+                                                    <div class="flex items-start gap-4">
+                                                        <div class="flex-shrink-0">
+                                                            <div
+                                                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+                                                                {{ $loop->iteration }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
+                                                                target="_blank" class="block">
+                                                                <div class="bg-gray-50 rounded-lg p-4">
+                                                                    <div class="flex flex-col md:flex-row gap-4">
+                                                                        <div class="flex-1">
+                                                                            <h3 class="font-semibold text-gray-900 mb-2">
+                                                                                {{ $activity->name }}</h3>
+                                                                            <p class="text-gray-600 text-sm mb-3">
+                                                                                {{ $activity->description }}</p>
+                                                                            <div
+                                                                                class="flex items-center gap-2 text-sm text-gray-500">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    class="h-4 w-4" fill="none"
+                                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                </svg>
+                                                                                <span>{{ $activity->best_time }}</span>
+                                                                            </div>
+                                                                            <div
+                                                                                class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    class="h-4 w-4" fill="none"
+                                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                                                </svg>
+                                                                                <span>📍 {{ $activity->address }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
+                                                                            @if ($activity->image_url)
+                                                                                <img src="{{ $activity->image_url }}"
+                                                                                    alt="{{ $activity->name }}"
+                                                                                    class="w-full h-full object-cover">
+                                                                            @else
+                                                                                <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
+                                                                                alt="{{ $activity->name }}"
+                                                                                    class="w-full h-full object-cover">
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endguest
                     </div>
 
                     <script>

@@ -19,7 +19,7 @@
                     <p class="text-lg text-gray-600 mb-8">Create personalized travel itineraries in minutes, tailored to your preferences and style. No more hours of research.</p>
                     
                     <div class="flex flex-wrap items-center gap-4 mb-8">
-                        <a href="#" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex items-center">
+                        <a href="{{route('createPlan')}}" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex items-center">
                             <span>Start Planning Now</span>
                             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -52,7 +52,7 @@
                         <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary-light/20 blob"></div>
 
                         <!-- Main image -->
-                        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AeeoHcIUs7xQQkZCvCJwtZMONMo8wXgdDHeyCzRrKyyuo4cf0EESh8jn-wi6AGz8Ib8trHtkhOyNPibr3ARygq-omm4NWgV2i4XNk3Na2oc8cWPvVNsIA8f_QI1AHod23pa1YM5pLhxeED_Yrx2R1A-WFJSpuRx0UVJt5iVYhdZmeezKciTEmc7sn9Ru-QIjviXxlspCViigQFmAfvDetbEYa_Hfs6bv77Uwmy-8wOr_FX9J1NbTOUSWX_1nBq61i0u8VKlPJF38YpE3mEuIuTYhMtpLVVYcK3-i2av95EDah0s5PCHb9bagPimTig2lhFm14T1BxTFh1BuVc_BpHHkXQAZNNLC5dvnAjNhPhE3i097BLsVuatNoDYO1lfOSx0Maskb2WW8LmKzycqywt3x3hMC6ZjPFJs9KaiFPJd32excl1hhSs5oIjAVEJjEGvzro5ZPcx2sSOp4-wMKRvDTtTSRbYihVbg-O_g0S67obrvWnEjy9WwXA4xz1yi7Kpmgkq_ZbxE9lVQDqUoskjR5FHBrMJene4eHlv_Tm9ufbXJ7tx4NNgDveR29yZeoDJpFf-Z0WlnwZacMGwuWrVzJ62fgEERe-EALhtYCfl50sV8a2-2m-p9XI7VK08eJ6p9FgWTDhmKBb&key=AIzaSyA0Oy90FUKjIHNwASRdh1Nv-1v8Sqr1Bf4" alt="Tropical beach destination" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
+                        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AXQCQNSFHVDFM7gd_e6-EWM8NcUd11kt48G2eoGct0sthwKdG9pTMOnYRKGwpLl9izQ4DlMnAA45ngy5mXwi1S0rOz7doXlAeGMALY6qamhqK8aJ1e525xZjZgNOvNIAMJTDdyOvUyQjzwffA63P88fCCbYZWSdiRGS8rfQxeJwkGU5DQj-4VD03hec8dXn7M20vjLZp-x48ssFrdUWKVfYq5nQABewNrRZpOVXAcIZfhbk0tglBJa7bxAvKBOfau9eEAvplflOtQOAB2lC88kbXoBflxGLzfVg2mf4qznM-znedVvIFRFHH6zVIpZFQ6x16xIowN0LFmoaL53x-_5-1NGjXmeniT_KYMxZhDBXR8grIyxkfKSsjIIlyZawfX2vetyL5JtqZ6Q_D8txtqeH0xtRbJY1cyBkMJUxA_bUUsO8J187laFn3fIa0tA_dk9DVlkxWGUlIVMSd03jGK4IIuoJvMMQsrTaoJwvktDM77jKCigZnkQz63RpEYyTIbiY1ja_fnpXTWo1muZ4lK3hg8RTAQgfCN3rQTT-oHLrlqlnd7PBEsYeieCAOPxWCb1lVDJQxgtF1PHTGGbgtvSOQhXeeOHKwTSm9lquIU_X6124NhBrBk5W-EyBGtDJFl-z2&key=AIzaSyA0Oy90FUKjIHNwASRdh1Nv-1v8Sqr1Bf4" alt="Tropical beach destination" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
                         
                         <!-- Floating elements -->
                         <div class="absolute top-1/4 -left-8 z-20 bg-white p-3 rounded-lg shadow-lg animate-float">
@@ -61,7 +61,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span class="font-medium">FLorida, USA</span>
+                                <span class="font-medium">Paris, France</span>
                             </div>
                         </div>
                         <div class="absolute bottom-10 -right-6 z-20 bg-white p-3 rounded-lg shadow-lg animate-float-slow">
@@ -525,7 +525,7 @@
 
 @endsection
 
-    <script>
+    {{-- <script>
         // Mobile menu toggle
         document.getElementById('menu-toggle').addEventListener('click', function() {
             const menu = document.getElementById('menu');
@@ -552,61 +552,12 @@
                 observer.observe(element);
             });
         });
-    </script>
+    </script> --}}
 
-@guest
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
-      window.onload = function () {
-        console.log('Google One Tap: onload fired');
-        try {
-          google.accounts.id.initialize({
-            client_id: "{{ config('services.google.client_id') }}",
-            callback: handleCredentialResponse
-          });
-          console.log('Google One Tap: initialize called');
-          google.accounts.id.prompt((notification) => {
-            console.log('Google One Tap: prompt notification', notification);
-            if (notification.isNotDisplayed()) {
-              console.log('One Tap was not displayed:', notification.getNotDisplayedReason());
-            }
-            if (notification.isSkippedMoment()) {
-              console.log('One Tap was skipped:', notification.getSkippedReason());
-            }
-            if (notification.isDismissedMoment()) {
-              console.log('One Tap was dismissed:', notification.getDismissedReason());
-            }
-          });
-          console.log('Google One Tap: prompt called');
-        } catch (e) {
-          console.error('Google One Tap error:', e);
-        }
-      };
 
-      function handleCredentialResponse(response) {
-        console.log('Google One Tap: credential response', response);
-        // Send the response.credential (JWT) to your backend for verification and login
-        fetch('/google-onetap-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-          },
-          body: JSON.stringify({ credential: response.credential })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            window.location.reload();
-          } else {
-            alert('Google login failed');
-          }
-        });
-      }
-    </script>
-@endguest
 
-<script>
+
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const userMenuButton = document.getElementById('user-menu-button');
         const userDropdown = document.getElementById('user-dropdown');
@@ -629,4 +580,4 @@
             });
         }
     });
-</script>
+</script> --}}

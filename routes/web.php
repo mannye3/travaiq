@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TravelController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\TravelController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\GoogleOneTapController;
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -25,8 +26,20 @@ Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('google.
 
 // Authentication Routes
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+
+
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
-Route::post('/google-onetap-login', [App\Http\Controllers\Auth\GoogleOneTapController::class, 'login']);
+
+
+
+Route::post('/google-onetap-login', [GoogleOneTapController::class, 'login']);
+
+// Route::post('/google-onetap-login', [App\Http\Controllers\Auth\GoogleOneTapController::class, 'login']);
+
+
+
+
 Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
 
 Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -53,3 +66,13 @@ Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.sh
 
 // Optional: Route for looking up trips by reference code
 Route::get('/trips/reference/{referenceCode}', [TravelController::class, 'showByReference'])->name('trips.show.reference');
+
+
+
+Route::view('/travel-guide', 'travel-guide')->name('travel.guide');
+Route::view('/faqs', 'faqs')->name('faqs');
+Route::view('/support', 'support')->name('support');
+Route::view('/contact', 'contact')->name('contact');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+Route::view('/terms-of-service', 'terms-of-service')->name('terms.service');
+Route::view('/cookie-policy', 'cookie-policy')->name('cookie.policy');

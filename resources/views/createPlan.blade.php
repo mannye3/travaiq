@@ -104,13 +104,13 @@
                                         class="px-4 py-2 border border-gray-300 rounded-r bg-white hover:bg-gray-50 hover:border-primary transition-colors">+</button>
                                 </div>
                             </div>
-
+    
                             <!-- Budget -->
                             <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
                                 <input type="hidden" name="budget" id="budgetInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">What is Your Budget?*</label>
                                 <p class="text-xs text-gray-500 mb-3">The budget is exclusively allocated for activities and dining purposes.</p>
-                                <div class="grid grid-cols-3 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="budget-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setBudget('low')">
                                         <div class="mb-2">
@@ -151,7 +151,7 @@
                             <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
                                 <input type="hidden" name="traveler" id="companionInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Who do you plan on traveling with on your next adventure?</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="companion-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setCompanion('Solo')">
                                         <div class="mb-2">
@@ -203,7 +203,7 @@
                             <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
                                 <input type="hidden" name="activities" id="activitiesInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Which activities are you interested in?</label>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="toggleActivity('Beaches')" data-activity="Beaches">
                                         <div class="mb-2">
@@ -389,172 +389,7 @@
             </div>
         </div>
     </section> --}}
- <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('hidden');
-        });
 
-        // Form functionality
-        let selectedBudget = null;
-        let selectedCompanion = null;
-        let selectedActivities = [];
-
-        function decrementDays() {
-            const input = document.getElementById('daysInput');
-            if (input.value > input.min) {
-                input.value = parseInt(input.value) - 1;
-            }
-        }
-
-        function incrementDays() {
-            const input = document.getElementById('daysInput');
-            if (input.value < input.max) {
-                input.value = parseInt(input.value) + 1;
-            }
-        }
-
-        function setBudget(budget) {
-            selectedBudget = budget;
-            document.getElementById('budgetInput').value = budget;
-            
-            // Highlight selected option
-            document.querySelectorAll('.budget-option').forEach(option => {
-                option.classList.remove('border-primary', 'bg-purple-50');
-                option.querySelector('svg').classList.remove('text-primary');
-                option.querySelector('svg').classList.add('text-gray-500');
-            });
-            
-            const element = event.currentTarget;
-            element.classList.add('border-primary', 'bg-purple-50');
-            element.querySelector('svg').classList.remove('text-gray-500');
-            element.querySelector('svg').classList.add('text-primary');
-        }
-
-        function setCompanion(companion) {
-            selectedCompanion = companion;
-            document.getElementById('companionInput').value = companion;
-            
-            // Highlight selected option
-            document.querySelectorAll('.companion-option').forEach(option => {
-                option.classList.remove('border-primary', 'bg-purple-50');
-                option.querySelector('svg').classList.remove('text-primary');
-                option.querySelector('svg').classList.add('text-gray-500');
-            });
-            
-            const element = event.currentTarget;
-            element.classList.add('border-primary', 'bg-purple-50');
-            element.querySelector('svg').classList.remove('text-gray-500');
-            element.querySelector('svg').classList.add('text-primary');
-        }
-
-         function toggleActivity(activity) {
-            const option = document.querySelector(`.activity-option[onclick*="'${activity}'"]`);
-            if (!option) return;
-
-            const isSelected = option.classList.contains('border-indigo-500');
-
-            if (isSelected) {
-                option.classList.remove('border-indigo-500', 'bg-gray-50');
-                option.classList.add('border-gray-300');
-                selectedActivities = selectedActivities.filter(a => a !== activity);
-            } else {
-                option.classList.remove('border-gray-300');
-                option.classList.add('border-indigo-500', 'bg-gray-50');
-                selectedActivities.push(activity);
-            }
-
-            document.getElementById('activitiesInput').value = JSON.stringify(selectedActivities);
-        }
-
-        
-        function updateSelectedCounter() {
-            const count = selectedActivities.length;
-            const counterElement = document.getElementById('selectedActivitiesCount');
-            if (counterElement) {
-                counterElement.textContent = count;
-                if (count > 0) {
-                    counterElement.classList.remove('bg-gray-200');
-                    counterElement.classList.add('bg-primary', 'text-white');
-                } else {
-                    counterElement.classList.remove('bg-primary', 'text-white');
-                    counterElement.classList.add('bg-gray-200');
-                }
-            }
-        }
-
-        function validateForm() {
-            // Check if budget is selected
-            if (!selectedBudget) {
-                showAlert('Please select your budget');
-                return false;
-            }
-            
-            // Check if companion is selected
-            if (!selectedCompanion) {
-                showAlert('Please select who you are traveling with');
-                return false;
-            }
-            
-            // Check if at least one activity is selected
-            if (selectedActivities.length === 0) {
-                showAlert('Please select at least one activity');
-                return false;
-            }
-            
-            // Show loading overlay
-            document.getElementById('overlay').classList.remove('hidden');
-            document.getElementById('spinner').classList.remove('hidden');
-            document.getElementById('submitText').textContent = 'Generating...';
-            
-            return true;
-        }
-        
-        function showAlert(message) {
-            const alertBox = document.createElement('div');
-            alertBox.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg shadow-lg border-l-4 border-primary z-50 animate__animated animate__fadeInDown';
-            alertBox.innerHTML = `
-                <div class="flex items-center">
-                    <div class="text-primary mr-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <p>${message}</p>
-                </div>
-            `;
-            document.body.appendChild(alertBox);
-            
-            setTimeout(() => {
-                alertBox.classList.remove('animate__fadeInDown');
-                alertBox.classList.add('animate__fadeOutUp');
-                setTimeout(() => {
-                    document.body.removeChild(alertBox);
-                }, 500);
-            }, 3000);
-        }
-        
-        // Add some nice animations on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const options = {
-                threshold: 0.1
-            };
-            
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, options);
-            
-            document.querySelectorAll('.feature-card, .budget-option, .companion-option, .activity-option').forEach(card => {
-                observer.observe(card);
-            });
-        });
-    </script>
 
     <script>
         // Initialize Google Autocomplete
@@ -572,6 +407,8 @@
             });
         }
     </script>
+
+    
     <!-- Footer -->
    @endsection
 

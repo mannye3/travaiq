@@ -16,15 +16,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use App\Prompts\TravelPlanPrompt;
-use App\Models\RequestLog;
 
 class TravelController extends Controller
 {
     public function generateTravelPlan(Request $request)
     {
         set_time_limit(300);
-        
+
 
         // Step 2: Prepare the prompt for the Gemini AI API
         $location   = $request->input('location');
@@ -34,15 +32,7 @@ class TravelController extends Controller
         $activities = json_decode($request->input('activities'), true); // Decode JSON array
         $activities = implode(', ', $activities);
 
-        RequestLog::create([
-            'location'   => $location,
-            'duration'   => $totalDays,
-            'traveler'   => $traveler,
-            'budget'     => $budget,
-            'activities' => $request->input('activities'),
-        ]);
-
-    
+      
         $referenceCode = strtoupper(Str::random(8));
         $tripDetail    = TripDetail::create([
             'reference_code' => $referenceCode,
@@ -63,8 +53,104 @@ class TravelController extends Controller
             ]);
         }
 
-        // Use the new TravelPlanPrompt class
-        $prompt = TravelPlanPrompt::generate($location, $totalDays, $traveler, $budget, $activities);
+        $prompt = "
+        You are a travel planning assistant. Generate a travel plan based on the following specifications and return it ONLY as a valid JSON object. Do not include any other text or explanations.
+
+        Location: {$location}
+        Duration: {$totalDays} days
+        Travelers: {$traveler}
+        Budget Level: {$budget}
+        Preferred Activities: {$activities}
+
+        Please ensure:
+        - Generate a complete itinerary for ALL {$totalDays} days of the trip
+        - At least **4 hotels** are suggested with detailed information.
+        - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses.
+        - Include **image URLs** for landmarks and cultural highlights under `location_overview`.
+        - Prices are in the local currency.
+        - Include comprehensive security advice specific to the location.
+        - Include recommended flight options with airlines and typical price ranges.
+
+Return a JSON object with these exact keys:
+{
+    \"location_overview\": {
+        \"history_and_culture\": \"string\",
+        \"local_customs_and_traditions\": \"string\",
+        \"geographic_features_and_climate\": \"string\",
+        \"historical_events_and_landmarks\": [
+            {\"name\": \"string\", \"description\": \"string\", \"image_url\": \"string\"}
+        ],
+        \"cultural_highlights\": [
+            {\"name\": \"string\", \"description\": \"string\", \"image_url\": \"string\"}
+        ],
+        \"security_advice\": {
+            \"overall_safety_rating\": \"string\",
+            \"emergency_numbers\": \"string\",
+            \"areas_to_avoid\": \"string\",
+            \"common_scams\": \"string\",
+            \"safety_tips\": [\"string\"],
+            \"health_precautions\": \"string\",
+            \"local_emergency_facilities\": [
+                {\"name\": \"string\", \"address\": \"string\", \"phone\": \"string\"}
+            ]
+        }
+    },
+    \"hotels\": [
+        {
+            \"name\": \"string\",
+            \"address\": \"string\",
+            \"price_per_night\": \"string\",
+            \"rating\": \"string\",
+            \"description\": \"string\",
+            \"coordinates\": \"string\",
+           
+        }
+    ],
+    \"itinerary\": [
+        {
+            \"day\": \"integer\",
+            \"activities\": [
+                {
+                    \"name\": \"string\",
+                    \"description\": \"string\",
+                    \"coordinates\": \"string\",
+                    \"address\": \"string\",
+                    \"cost\": \"string\",
+                    \"duration\": \"string\",
+                    \"best_time\": \"string\"
+                }
+            ]
+        }
+    ],
+    \"costs\": [
+        {
+            \"transportation\": [
+                {\"type\": \"string\", \"cost\": \"string\"}
+            ],
+            \"dining\": [
+                {\"category\": \"string\", \"cost_range\": \"string\"}
+            ]
+        }
+    ],
+    \"additional_information\": {
+        \"local_currency\": \"string\",
+        \"exchange_rate\": \"string\",
+        \"timezone\": \"string\",
+        \"weather_forecast\": \"string\",
+        \"transportation_options\": \"string\"
+    },
+    \"flight_recommendations\": {
+        \"recommended_airports\": [
+            {\"name\": \"string\", \"code\": \"string\", \"distance_to_city\": \"string\"}
+        ],
+        \"airlines\": [
+            {\"name\": \"string\", \"typical_price_range\": \"string\", \"flight_duration\": \"string\", \"notes\": \"string\"}
+        ],
+        \"best_booking_time\": \"string\",
+        \"travel_tips\": [\"string\"]
+    }
+}
+";
 
         $apiKey = env('GOOGLE_GEN_AI_API_KEY');
 
@@ -74,7 +160,7 @@ class TravelController extends Controller
             ->retry(3, 5000)              // 🔁 optional retry: 3 attempts, 5s delay
             ->withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey", [
+            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey", [
             'contents' => [
                 [
                     'parts' => [
@@ -297,12 +383,10 @@ class TravelController extends Controller
     {
         $trips = TripDetail::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(6); // Show 6 trips per page
 
         return view('myTrips', [
             'trips' => $trips,
         ]);
     }
-
-    
 }
