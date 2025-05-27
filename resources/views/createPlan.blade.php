@@ -309,9 +309,53 @@
                                 best possible plan for you.</p>
                                 <br>
                         <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary rounded-full animate-pulse-slow" style="width: 70%"></div>
+                            <div class="h-full bg-primary rounded-full" id="progressBar" style="width: 0%"></div>
                         </div>
-                        <p class="text-sm text-gray-500 mt-6">This will take just a few moments...</p>
+                        <div class="text-sm text-gray-600 mt-2">
+                            <span class="font-medium" id="progressStatus">Initializing...</span>
+                            <span class="ml-2" id="progressCounter">0%</span>
+                        </div>
+                        <script>
+                            function startProgress() {
+                                let progress = 0;
+                                const progressCounter = document.getElementById('progressCounter');
+                                const progressBar = document.getElementById('progressBar');
+                                const progressStatus = document.getElementById('progressStatus');
+                                
+                                const stages = [
+                                    { percent: 10, status: 'Analyzing preferences...' },
+                                    { percent: 25, status: 'Researching destinations...' },
+                                    { percent: 40, status: 'Finding activities...' },
+                                    { percent: 55, status: 'Calculating costs...' },
+                                    { percent: 70, status: 'Optimizing itinerary...' },
+                                    { percent: 85, status: 'Finalizing details...' },
+                                    { percent: 95, status: 'Almost done...' }
+                                ];
+
+                                let currentStage = 0;
+                                
+                                const interval = setInterval(() => {
+                                    if (currentStage < stages.length) {
+                                        const targetPercent = stages[currentStage].percent;
+                                        if (progress < targetPercent) {
+                                            progress += 1;
+                                            progressCounter.textContent = `${progress}%`;
+                                            progressBar.style.width = `${progress}%`;
+                                        } else {
+                                            progressStatus.textContent = stages[currentStage].status;
+                                            currentStage++;
+                                        }
+                                    } else {
+                                        clearInterval(interval);
+                                    }
+                                }, 100);
+                            }
+
+                            // Start progress when form is submitted
+                            document.getElementById('travelForm').addEventListener('submit', function() {
+                                startProgress();
+                            });
+                        </script>
                     </div>
                 </div>
             </section>

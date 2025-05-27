@@ -692,7 +692,7 @@ class TravelController extends Controller
     {
         $tempPlan = session('temp_travel_plan');
         if (!$tempPlan) {
-            return redirect()->route('home')->with('error', 'Temporary travel plan not found.');
+            return redirect()->to('/')->with('error', 'Temporary travel plan not found.');
         }
 
         // Create trip details object
