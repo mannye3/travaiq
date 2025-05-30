@@ -10,17 +10,17 @@
             <section class="mb-8 lg:mb-16 pb-6 pt-6" id="hero">
                 <!-- result  Section -->
                 <div class="relative h-[300px] md:h-[400px] w-full rounded-xl overflow-hidden mb-6">
-                    @if ($tripDetails->google_place_image)
-                        <img src="{{ $tripDetails->google_place_image }}" alt="{{ $tripDetails['location'] }}"
+                    @if ($tripDetails && $tripDetails->google_place_image)
+                        <img src="{{ $tripDetails->google_place_image }}" alt="{{ $tripDetails->location }}"
                             class="w-full h-full object-cover">
                     @else
                         <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060"
-                            alt="{{ $tripDetails['location'] }}" class="w-full h-full object-cover">
+                            alt="{{ $tripDetails->location ?? 'Travel destination' }}" class="w-full h-full object-cover">
                     @endif
                     <div
                         class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/70 to-transparent text-white">
-                        <h1 class="text-2xl md:text-4xl font-bold mb-2">{{ $tripDetails['duration'] }} days trip in
-                            {{ $tripDetails['location'] }}</h1>
+                        <h1 class="text-2xl md:text-4xl font-bold mb-2">{{ $tripDetails->duration ?? '' }} days trip in
+                            {{ $tripDetails->location ?? '' }}</h1>
                         <div class="flex flex-col md:flex-row md:items-center gap-2 text-sm md:text-base">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">

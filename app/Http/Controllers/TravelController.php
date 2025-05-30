@@ -215,18 +215,32 @@ class TravelController extends Controller
                 try {
                     $travelPlan = $this->generateAndProcessTravelPlan($location, $totalDays, $traveler, $budget, $activities);
                     
+                    // Log session state before storing temp plan
+                    Log::info('Session state before storing temp plan', [
+                        'session_id' => session()->getId(),
+                        'all_session_keys' => array_keys(session()->all())
+                    ]);
+
                     // Store in session instead of database
-                    session([
-                        'temp_travel_plan' => [
-                            'plan' => $travelPlan,
-                            'reference_code' => $referenceCode,
-                            'location' => $location,
-                            'duration' => $totalDays,
-                            'traveler' => $traveler,
-                            'budget' => $budget,
-                            'activities' => $activities,
-                            'created_at' => now()
-                        ]
+                    $tempPlanData = [
+                        'plan' => $travelPlan,
+                        'reference_code' => $referenceCode,
+                        'location' => $location,
+                        'duration' => $totalDays,
+                        'traveler' => $traveler,
+                        'budget' => $budget,
+                        'activities' => $activities,
+                        'created_at' => now()
+                    ];
+
+                    session(['temp_travel_plan' => $tempPlanData]);
+
+                    // Log session state after storing temp plan
+                    Log::info('Session state after storing temp plan', [
+                        'session_id' => session()->getId(),
+                        'has_temp_plan' => session()->has('temp_travel_plan'),
+                        'temp_plan_keys' => array_keys(session('temp_travel_plan')),
+                        'all_session_keys' => array_keys(session()->all())
                     ]);
                     
                     return redirect()->route('trips.show.temp')
@@ -240,7 +254,11 @@ class TravelController extends Controller
                         'totalDays' => $totalDays,
                         'traveler' => $traveler,
                         'budget' => $budget,
-                        'activities' => $activities
+                        'activities' => $activities,
+                        'session_state' => [
+                            'session_id' => session()->getId(),
+                            'all_session_keys' => array_keys(session()->all())
+                        ]
                     ]);
                     throw new TravelPlanException('Error during travel plan generation', [
                         'error' => $e->getMessage(),
@@ -252,7 +270,11 @@ class TravelController extends Controller
             Log::error('Error in generateTravelPlan', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
-                'request_data' => $request->all()
+                'request_data' => $request->all(),
+                'session_state' => [
+                    'session_id' => session()->getId(),
+                    'all_session_keys' => array_keys(session()->all())
+                ]
             ]);
             return $this->handleError($e, $request);
         }
@@ -581,7 +603,6 @@ class TravelController extends Controller
 
     public function show($tripId)
     {
-
         $locationOverview = LocationOverview::with([
             'securityAdvice.emergencyFacilities',
             'historicalEventsAndLandmarks',
@@ -589,6 +610,14 @@ class TravelController extends Controller
         ])->findOrFail($tripId);
 
         $tripDetails = TripDetail::where('location_overview_id', $tripId)->firstOrFail();
+
+        // Get Google Places image for the location if not already set
+        if (!$tripDetails->google_place_image) {
+            $google_place_image = GooglePlacesHelper::getPlacePhotoUrl($tripDetails->location);
+            if (!str_starts_with($google_place_image, 'Error:')) {
+                $tripDetails->update(['google_place_image' => $google_place_image]);
+            }
+        }
 
         return view('pages.travelResult', [
             'tripId'                => $tripId,
@@ -728,6 +757,7 @@ class TravelController extends Controller
     // Add this new method to show temporary travel plan
     public function showTemp()
     {
+        
         $tempPlan = session('temp_travel_plan');
         if (!$tempPlan) {
             return redirect()->to('/')->with('error', 'Temporary travel plan not found.');
@@ -821,7 +851,7 @@ class TravelController extends Controller
 
           
 
-        return view('tempTravelResult', compact(
+        return view('pages.tempTravelResult', compact(
             'tripDetails',
             'locationOverview',
             'additionalInfo',
