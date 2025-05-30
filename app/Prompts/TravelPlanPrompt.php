@@ -16,7 +16,7 @@ class TravelPlanPrompt
      */
     public static function generate(string $location, int $totalDays, string $traveler, string $budget, string $activities): string
     {
-        return <<<PROMPT
+        $prompt = <<<PROMPT
         You are a travel planning assistant. Generate a travel plan based on the following specifications and return it ONLY as a valid JSON object. Do not include any other text or explanations.
 
         Location: {$location}
@@ -28,8 +28,8 @@ class TravelPlanPrompt
         Please ensure:
         - Generate a complete itinerary for ALL {$totalDays} days of the trip
         - At least **4 hotels** are suggested with detailed information.
-        - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses, and a **representative image URL**.
-        - Include **image URLs** for landmarks and cultural highlights under `location_overview`.
+        - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses.
+        - Include  landmarks and cultural highlights under `location_overview`.
         - Prices are in the local currency.
         - Include comprehensive security advice specific to the location.
         - Include recommended flight options with airlines and typical price ranges.
@@ -79,8 +79,7 @@ Return a JSON object with these exact keys:
                     "address": "string",
                     "cost": "string",
                     "duration": "string",
-                    "best_time": "string",
-                    "image_url": "string"
+                    "best_time": "string"
                 }
             ]
         }
@@ -114,5 +113,7 @@ Return a JSON object with these exact keys:
     }
 }
 PROMPT;
+
+        return $prompt;
     }
 } 

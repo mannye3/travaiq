@@ -43,14 +43,14 @@ Route::post('/travel/generate', [TravelController::class, 'generateTravelPlan'])
 Route::get('/my-trips', [TravelController::class, 'myTrips'])->name('my.trips')->middleware('auth');
 Route::get('/download-itinerary/{tripId}', [TravelController::class, 'downloadTrip'])->name('download.itinerary');
 
+// Specific routes first
+Route::get('/trips/temp', [TravelController::class, 'showTemp'])->name('trips.show.temp');
+Route::get('/trips/reference/{referenceCode}', [TravelController::class, 'showByReference'])->name('trips.show.reference');
+Route::get('/update-missing-images', [TravelController::class, 'updateMissingImages'])->name('update.missing.images');
 
-//Route::get('/trips/{trip}', [TravelController::class, 'show'])->name('trips.show');
+// Parameterized routes last
+Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.show');
 
 // Route for generating travel plan (assuming you already have this)
 Route::post('/generate-travel-plan', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
 
-// Route for showing trip details
-Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.show');
-
-// Optional: Route for looking up trips by reference code
-Route::get('/trips/reference/{referenceCode}', [TravelController::class, 'showByReference'])->name('trips.show.reference');

@@ -94,12 +94,12 @@
 
     <!-- Header -->
     <div class="position-relative">
-        <img src="{{ $locationOverview->image_url }}" class="w-100" style="height: 400px; object-fit: cover;"
-            alt="{{ $tripDetails['location'] }}">
+        <img src="{{ $tripDetails->google_place_image }}" class="w-100" style="height: 400px; object-fit: cover;"
+            alt="{{ $tripDetails->location }}">
         <div class="position-absolute bottom-0 start-0 w-100 p-4"
             style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
             <div class="container">
-                <h1 class="text-white">{{ $tripDetails['totalDays'] }} days trip in {{ $tripDetails['location'] }}
+                <h1 class="text-white">{{ $tripDetails->duration }} days trip in {{ $tripDetails->location }}
                 </h1>
                 <p class="text-white mb-0">
                     <i class="bi bi-calendar-event"></i>

@@ -100,8 +100,15 @@
                                                 target="_blank">
                                                 <div class="w-full md:w-1/3 flex-shrink-0 px-3">
                                                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                                        <img src="{{ $hotel->image_url }}"
+                                                        @if ($hotel->image_url)
+                                                            <img src="{{ $hotel->image_url }}"
+                                                                alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
+                                                            
+                                                        @else
+                                                         <img src="https://img.freepik.com/free-photo/modern-studio-apartment-design-with-bedroom-living-space_1262-12375.jpg?t=st=1745181117~exp=1745184717~hmac=f3dd10034fa8932a20ea6eb54c22a7a31f5123f74c675bfe6fc4d622a6b83c65&w=996"
                                                             alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
+                                                        @endif
+                                                       
                                                         <div class="p-4">
                                                             <div class="mb-2">
                                                                 <p class="font-semibold text-lg">
@@ -244,7 +251,7 @@
                                                                             class="w-full h-full object-cover">
                                                                     @else
                                                                         <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
-                                                                            alt="{{ $activity->name }}"
+                                                                        alt="{{ $activity->name }}"
                                                                             class="w-full h-full object-cover">
                                                                     @endif
                                                                 </div>

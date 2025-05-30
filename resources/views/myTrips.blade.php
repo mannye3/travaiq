@@ -53,7 +53,7 @@
                                             <img src="{{ $trip->google_place_image }}" alt="{{ $trip->location }}"
                                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                                         @else
-                                            <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060" alt="{{ $tripDetails['location'] }}"
+                                            <img src="https://img.freepik.com/premium-photo/road-amidst-field-against-sky-sunset_1048944-19856354.jpg?w=1060" alt="{{ $tripDetails->location }}"
                                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                                         @endif
 
