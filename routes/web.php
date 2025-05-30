@@ -13,11 +13,11 @@ Route::get('/clear-cache', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.welcome');
 });
 
 Route::get('/create-plan', function () {
-    return view('createPlan');
+    return view('pages.createPlan');
 })->name('createPlan');
 
 // Admin Section

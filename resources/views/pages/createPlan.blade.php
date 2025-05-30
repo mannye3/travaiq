@@ -98,7 +98,7 @@
                                     <button type="button" onclick="decrementDays()"
                                         class="px-4 py-2 border border-gray-300 rounded-l bg-white hover:bg-gray-50 hover:border-primary transition-colors">-</button>
                                     <input type="number" value="3" id="daysInput" name="duration" min="1"
-                                        max="5" required
+                                        max="10" required
                                         class="w-16 text-center border-y border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
                                     <button type="button" onclick="incrementDays()"
                                         class="px-4 py-2 border border-gray-300 rounded-r bg-white hover:bg-gray-50 hover:border-primary transition-colors">+</button>
@@ -362,77 +362,9 @@
         </div>
     </main>
 
-    <!-- Features Preview -->
-    {{-- <section class="py-16 bg-gradient-to-b from-purple-50 to-white relative overflow-hidden">
-        <!-- Decorative elements -->
-        <div class="absolute top-0 left-1/4 w-32 h-32 bg-yellow-400 opacity-5 rounded-full"></div>
-        <div class="absolute bottom-20 right-1/3 w-40 h-40 bg-primary opacity-5 rounded-full"></div>
-        
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <span class="inline-block px-4 py-1 rounded-full bg-primary bg-opacity-10 text-primary text-sm font-medium mb-4">Wanderwise Benefits</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">What's Included In Your Plan</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Your personalized travel itinerary comes with everything you need for a memorable trip, handcrafted by our AI to match your unique preferences</p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center -mx-4">
-                <div class="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 h-full hover:-translate-y-2 transition-all duration-500 group">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-2xl text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">📅</div>
-                        <h3 class="text-xl font-bold mb-4 text-center">Day-by-Day Itinerary</h3>
-                        <p class="text-gray-600 text-center">Detailed daily plan with activities and attractions tailored to your preferences, including optimal timing and routes</p>
-                        <div class="mt-6 text-center">
-                            <span class="inline-block text-primary font-medium">Perfect for planning</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 h-full hover:-translate-y-2 transition-all duration-500 group">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-2xl text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">🍽️</div>
-                        <h3 class="text-xl font-bold mb-4 text-center">Restaurant Suggestions</h3>
-                        <p class="text-gray-600 text-center">Local dining recommendations based on your budget and preferences, with suggestions for must-try dishes in each locale</p>
-                        <div class="mt-6 text-center">
-                            <span class="inline-block text-primary font-medium">Taste authentic cuisines</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 h-full hover:-translate-y-2 transition-all duration-500 group">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-2xl text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">📍</div>
-                        <h3 class="text-xl font-bold mb-4 text-center">Interactive Map</h3>
-                        <p class="text-gray-600 text-center">Easy-to-follow map with all your destinations and points of interest, including travel times and transportation options</p>
-                        <div class="mt-6 text-center">
-                            <span class="inline-block text-primary font-medium">Navigate with ease</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    
 
-            <div class="flex flex-wrap justify-center mt-6 -mx-4">
-                <div class="w-full sm:w-1/2 lg:w-1/2 px-4 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 h-full hover:-translate-y-2 transition-all duration-500 group flex flex-col md:flex-row items-center">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-2xl text-primary mb-6 md:mb-0 md:mr-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">💰</div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2 text-center md:text-left">Budget Management</h3>
-                            <p class="text-gray-600 text-center md:text-left">Complete cost breakdown and budget tracking to help you manage expenses throughout your trip, with alternatives for every price point</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="w-full sm:w-1/2 lg:w-1/2 px-4 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 h-full hover:-translate-y-2 transition-all duration-500 group flex flex-col md:flex-row items-center">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-2xl text-primary mb-6 md:mb-0 md:mr-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">🎯</div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2 text-center md:text-left">Personalized Recommendations</h3>
-                            <p class="text-gray-600 text-center md:text-left">AI-powered suggestions tailored to your interests, including hidden gems and local favorites not found in typical tourist guides</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
+   
  <script>
         // Mobile menu toggle
         document.getElementById('menu-toggle').addEventListener('click', function() {

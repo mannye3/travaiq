@@ -590,7 +590,7 @@ class TravelController extends Controller
 
         $tripDetails = TripDetail::where('location_overview_id', $tripId)->firstOrFail();
 
-        return view('travelResult', [
+        return view('pages.travelResult', [
             'tripId'                => $tripId,
             'locationOverview'      => $locationOverview,
             'securityAdvice'        => $locationOverview->securityAdvice,
@@ -631,7 +631,7 @@ class TravelController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('myTrips', [
+        return view('pages.myTrips', [
             'trips' => $trips,
         ]);
     }
