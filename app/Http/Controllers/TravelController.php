@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Prompts\TravelPlanPrompt;
 use App\Models\RequestLog;
+ use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 
 class TravelPlanException extends Exception
@@ -590,6 +591,7 @@ class TravelController extends Controller
         $tripDetails = TripDetail::where('location_overview_id', $tripId)->firstOrFail();
 
         return view('travelResult', [
+            'tripId'                => $tripId,
             'locationOverview'      => $locationOverview,
             'securityAdvice'        => $locationOverview->securityAdvice,
             'hotels'                => Hotel::where('location_overview_id', $tripId)->get(),
@@ -634,6 +636,42 @@ class TravelController extends Controller
         ]);
     }
 
+    public function downloadTrip($tripId)
+    {
+        $locationOverview = LocationOverview::with([
+            'securityAdvice.emergencyFacilities',
+            'historicalEventsAndLandmarks',
+            'culturalHighlights',
+        ])->findOrFail($tripId);
+
+        $tripDetails = TripDetail::where('location_overview_id', $tripId)->firstOrFail();
+
+        $pdf = PDF::loadView('pdf.itinerary', [
+            'locationOverview'      => $locationOverview,
+            'securityAdvice'        => $locationOverview->securityAdvice,
+            'hotels'                => Hotel::where('location_overview_id', $tripId)->get(),
+            'itineraries'           => Itinerary::with('activities')
+                ->where('location_overview_id', $tripId)
+                ->orderBy('day')
+                ->get(),
+            'cost'                  => Cost::with(['transportationCosts', 'diningCosts'])
+                ->where('location_overview_id', $tripId)
+                ->firstOrFail(),
+            'additionalInfo'        => AdditionalInformation::where('location_overview_id', $tripId)->first(),
+            'tripDetails'           => $tripDetails,
+            'referenceCode'         => $tripDetails->reference_code,
+            'location'              => $tripDetails->location,
+            'duration'              => $tripDetails->duration,
+            'traveler'              => $tripDetails->traveler,
+            'budget'                => $tripDetails->budget,
+            'activities'            => $tripDetails->activities,
+            'flightRecommendations' => $locationOverview->flightRecommendations()->with(['airports', 'airlines'])->first(),
+        ]);
+        
+        // return $pdf->download('itinerary.pdf');
+        return $pdf->stream('itinerary.pdf');
+    }
+    
     // Add this new method to handle image updates
     private function updateImagesForExistingRecords()
     {

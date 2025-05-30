@@ -41,6 +41,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/travel/form', [TravelController::class, 'showForm'])->name('travel.form');
 Route::post('/travel/generate', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
 Route::get('/my-trips', [TravelController::class, 'myTrips'])->name('my.trips')->middleware('auth');
+Route::get('/download-itinerary/{tripId}', [TravelController::class, 'downloadTrip'])->name('download.itinerary');
 
 // Specific routes first
 Route::get('/trips/temp', [TravelController::class, 'showTemp'])->name('trips.show.temp');
