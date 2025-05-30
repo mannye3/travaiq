@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Prompts\TravelPlanPrompt;
 use App\Models\RequestLog;
-<<<<<<< HEAD
  use Barryvdh\DomPDF\Facade\Pdf;
-=======
 use Exception;
 
 class TravelPlanException extends Exception
@@ -39,7 +37,6 @@ class TravelPlanException extends Exception
         return $this->context;
     }
 }
->>>>>>> main
 
 class TravelController extends Controller
 {
