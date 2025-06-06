@@ -19,7 +19,7 @@
                     <p class="text-lg text-gray-600 mb-8">Create personalized travel itineraries in minutes, tailored to your preferences and style. No more hours of research.</p>
                     
                     <div class="flex flex-wrap items-center gap-4 mb-8">
-                        <a href="#" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex items-center">
+                        <a href="{{route('createPlan')}}" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex items-center">
                             <span>Start Planning Now</span>
                             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -52,7 +52,7 @@
                         <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary-light/20 blob"></div>
 
                         <!-- Main image -->
-                        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AeeoHcIUs7xQQkZCvCJwtZMONMo8wXgdDHeyCzRrKyyuo4cf0EESh8jn-wi6AGz8Ib8trHtkhOyNPibr3ARygq-omm4NWgV2i4XNk3Na2oc8cWPvVNsIA8f_QI1AHod23pa1YM5pLhxeED_Yrx2R1A-WFJSpuRx0UVJt5iVYhdZmeezKciTEmc7sn9Ru-QIjviXxlspCViigQFmAfvDetbEYa_Hfs6bv77Uwmy-8wOr_FX9J1NbTOUSWX_1nBq61i0u8VKlPJF38YpE3mEuIuTYhMtpLVVYcK3-i2av95EDah0s5PCHb9bagPimTig2lhFm14T1BxTFh1BuVc_BpHHkXQAZNNLC5dvnAjNhPhE3i097BLsVuatNoDYO1lfOSx0Maskb2WW8LmKzycqywt3x3hMC6ZjPFJs9KaiFPJd32excl1hhSs5oIjAVEJjEGvzro5ZPcx2sSOp4-wMKRvDTtTSRbYihVbg-O_g0S67obrvWnEjy9WwXA4xz1yi7Kpmgkq_ZbxE9lVQDqUoskjR5FHBrMJene4eHlv_Tm9ufbXJ7tx4NNgDveR29yZeoDJpFf-Z0WlnwZacMGwuWrVzJ62fgEERe-EALhtYCfl50sV8a2-2m-p9XI7VK08eJ6p9FgWTDhmKBb&key=AIzaSyA0Oy90FUKjIHNwASRdh1Nv-1v8Sqr1Bf4" alt="Tropical beach destination" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
+                        <img src="https://lh3.googleusercontent.com/place-photos/AJnk2cwN-6EU02ds0vk0fu4hUjSo5zIoJd_7pzBytaCJ29cvtEjJ8fNTEoZpmdoWAIf2aN2aV_grfPA3hHADCqeEEouWuiWEBHubu9QU0k_AhjD9m9kh3nThmKdI4ETg6N5awlPUQ6C34nQKhyUj=s1600-w800" alt="Tropical beach destination" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
                         
                         <!-- Floating elements -->
                         <div class="absolute top-1/4 -left-8 z-20 bg-white p-3 rounded-lg shadow-lg animate-float">
@@ -61,7 +61,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span class="font-medium">FLorida, USA</span>
+                                <span class="font-medium">Paris, France</span>
                             </div>
                         </div>
                         <div class="absolute bottom-10 -right-6 z-20 bg-white p-3 rounded-lg shadow-lg animate-float-slow">
@@ -95,12 +95,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">🗺️</div>
                     <h3 class="text-xl font-bold mb-4 relative">AI-Powered Planning</h3>
                     <p class="text-gray-600 mb-6 relative">Our advanced AI analyzes thousands of data points to create personalized itineraries based on your unique preferences and travel style.</p>
-                    <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
                         <span>Learn more</span>
                         <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
-                    </a>
+                    </a> -->
                 </div>
                 
                 <!-- Feature 2 -->
@@ -109,12 +109,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">🎯</div>
                     <h3 class="text-xl font-bold mb-4 relative">Smart Recommendations</h3>
                     <p class="text-gray-600 mb-6 relative">Get intelligent suggestions for attractions, restaurants, and activities that match your interests, not just the typical tourist spots.</p>
-                    <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
                         <span>Learn more</span>
                         <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
-                    </a>
+                    </a> -->
                 </div>
                 
                 <!-- Feature 3 -->
@@ -123,12 +123,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">⏱️</div>
                     <h3 class="text-xl font-bold mb-4 relative">Time-Saving Solutions</h3>
                     <p class="text-gray-600 mb-6 relative">Plan your perfect trip in minutes, not hours. Our AI handles the research while you enjoy the anticipation of your upcoming adventure.</p>
-                    <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
                         <span>Learn more</span>
                         <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
-                    </a>
+                    </a> -->
                 </div>
             </div>
             
@@ -373,7 +373,7 @@
             </div>
             
             <!-- Review Stats -->
-            <div class="mt-16 bg-white rounded-xl shadow-lg p-8 flex flex-wrap justify-between items-center">
+            <!-- <div class="mt-16 bg-white rounded-xl shadow-lg p-8 flex flex-wrap justify-between items-center">
                 <div class="w-full md:w-auto text-center md:text-left mb-6 md:mb-0">
                     <h3 class="text-2xl font-bold mb-2">Join thousands of happy travelers</h3>
                     <p class="text-gray-600">Start planning your dream vacation today</p>
@@ -393,7 +393,7 @@
                         <div class="text-sm text-gray-600">Average rating</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 

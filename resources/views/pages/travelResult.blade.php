@@ -163,6 +163,7 @@
                     </div>
 
                     <!-- Itinerary Section -->
+                     
                     <div class="mt-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold">Itinerary</h2>
@@ -174,7 +175,7 @@
                                 Download PDF
                             </a>
                         </div>
-
+                       
                         <!-- Day 1 -->
                         @foreach ($itineraries as $itinerary)
                             <div class="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
@@ -330,88 +331,64 @@
                     <div class="bg-gray-50 rounded-lg p-6 mt-6">
                         <h3 class="text-xl font-bold mb-4">Estimated Cost</h3>
 
-                        <!-- Accommodation Section -->
-                        {{-- <div class="mb-6">
-                                            <div class="flex items-center gap-3 mb-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
-                                                <h4 class="font-semibold text-gray-800">Accommodation</h4>
-                                            </div>
-                                            <div class="space-y-3 ml-8">
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Hostel</span>
-                                                    <span class="font-medium">$30</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Budget Hotel</span>
-                                                    <span class="font-medium">$60</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Mid-Range Hotel</span>
-                                                    <span class="font-medium">$100</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Airbnb (Private Room)</span>
-                                                    <span class="font-medium">$70</span>
-                                                </div>
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-gray-600">Boutique Hotel</span>
-                                                    <span class="font-medium">$150</span>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                        <!-- Transportation Section -->
-                        <div>
+                        <div class="mt-6">
                             <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <h4 class="font-semibold text-gray-800">Local Cuisine & Food</h4>
+                            </div>
+                            <div class="space-y-3 ml-8">
+                            @if ($cost && $cost->diningCosts)
+                           
+                                  
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Dining Costs</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                        @foreach ($cost->diningCosts as $dining)
+                                                <li>{{ $dining->category ?? '' }}: {{ $dining->cost_range ?? '' }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-gray-500">No food information available</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Transportation Section -->
+                        <div class="mt-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                                 </svg>
                                 <h4 class="font-semibold text-gray-800">Transportation</h4>
                             </div>
                             <div class="space-y-3 ml-8">
-                                @if ($cost && $cost->transportationCosts)
-                                    @foreach ($cost->transportationCosts as $transport)
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">{{ $transport->type }}</span>
-                                            <span class="font-medium">{{ $transport->cost }}</span>
-
-
-                                        </div>
-                                    @endforeach
+                                @if(isset($additionalInfo->transportation_options))
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Available Options</h5>
+                                        <p class="text-gray-600">{{ $additionalInfo->transportation_options }}</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">Transportation Costs</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                            @foreach($additionalInfo->transportation_costs ?? [] as $transport)
+                                                <li>{{ $transport->type ?? '' }}: {{ $transport->cost ?? '' }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-gray-500">No transportation information available</p>
                                 @endif
-
-
                             </div>
                         </div>
 
-                        <!-- Food Section -->
-                        <div class="mt-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h18v18H3V3zm4 10h10M7 7h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7z" />
-                                </svg>
-                                <h4 class="font-semibold text-gray-800">Food</h4>
-                            </div>
-                            <div class="space-y-3 ml-8">
-                                @if ($cost && $cost->diningCosts)
-                                    @foreach ($cost->diningCosts as $dining)
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">{{ $dining->category }}</span>
-                                            <span class="font-medium">{{ $dining->cost_range }}</span>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                            </div>
-                        </div>
+                    
 
                         <!-- Activities Section -->
                         <div class="mt-6">
@@ -460,7 +437,7 @@
                             </div>
                             <div class="space-y-3 ml-8">
                                 <ul>
-                                    @foreach ($securityAdvice->safety_tips as $tip)
+                                @foreach ($securityAdvice->safety_tips as $tip)
                                         <li><span class="text-gray-600">{{ $tip }}</span></li>
                                     @endforeach
                                 </ul>
@@ -469,34 +446,47 @@
                             </div>
                         </div>
 
+                        
 
+                        <!-- Food Section -->
                         <div class="mt-6">
                             <div class="flex items-center gap-3 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                 </svg>
-                                <h4 class="font-semibold text-gray-800">Emergency Facilities:</h4>
+                                <h4 class="font-semibold text-gray-800">Emergency Facilities</h4>
                             </div>
+                            <div class="space-y-3 ml-8">
                             @foreach ($securityAdvice->emergencyFacilities as $facility)
-                                <div class="space-y-3 ml-8">
-
-                                    <h6>{{ $facility->name }}</h6>
-
-
-
-                                    <span class="text-gray-600">{{ $facility->address }}</span>
-                                    <span class="text-gray-600">{{ $facility->phone }}</span>
-
-
-
-                                    </ul>
-
-
-                                </div>
-                            @endforeach
+                                  
+                                    <div class="mb-4">
+                                        <h5 class="font-medium text-gray-700 mb-2">{{ $facility->name ?? 'Emergency Facility' }}</h5>
+                                        <ul class="list-disc list-inside text-gray-600">
+                                        @if(isset($facility->address))
+                                                            <p class="text-sm text-gray-600 mb-1">
+                                                                <span class="font-medium">Address:</span> {{ $facility->address }}
+                                                            </p>
+                                                        @endif
+                                                        @if(isset($facility->phone))
+                                                            <p class="text-sm text-gray-600">
+                                                                <span class="font-medium">Phone:</span> 
+                                                                <a href="tel:{{ $facility->phone }}" class="text-blue-600 hover:text-blue-800">
+                                                                    {{ $facility->phone }}
+                                                                </a>
+                                                            </p>
+                                                        @endif
+                                        </ul>
+                                    </div>
+                                @endforeach
+                                   
+                            </div>
                         </div>
+
+
+
+                      
                     </div>
                 </div>
         </div>

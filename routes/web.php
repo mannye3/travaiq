@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -54,3 +56,12 @@ Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.sh
 // Route for generating travel plan (assuming you already have this)
 Route::post('/generate-travel-plan', [TravelController::class, 'generateTravelPlan'])->name('travel.generate');
 
+Route::get('/travel-guide', [PublicController::class, 'travelGuide'])->name('travel.guide');
+Route::get('/terms-of-service', [PublicController::class, 'termsOfService'])->name('terms.of.service');
+Route::get('/privacy-policy', [PublicController::class, 'privacyPolicy'])->name('privacy.policy');
+Route::get('/cookie-policy', [PublicController::class, 'cookiePolicy'])->name('cookie.policy');
+Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+Route::get('/faqs', [PublicController::class, 'faqs'])->name('faqs');
+Route::get('/sitemap', [PublicController::class, 'sitemap'])->name('sitemap');
+Route::get('/about', [PublicController::class, 'about'])->name('about');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

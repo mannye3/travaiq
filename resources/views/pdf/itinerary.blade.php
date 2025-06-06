@@ -31,8 +31,21 @@
         .header {
             background: linear-gradient(135deg, #ff7f50, #ff6347);
             padding: 30px;
-           
             position: relative;
+        }
+        
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: auto;
+        }
+        
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
         }
         
         .header h1 {
@@ -216,9 +229,11 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="logo-container">
+            <!-- <img src="{{ asset('tavaiqPNG.png') }}" alt="Travaiq Logo"> -->
+            </div>
             <h1>{{ $tripDetails['name'] ?? 'Trip' }}</h1>
             <div class="subtitle">Itinerary for {{ $tripDetails['location'] }}</div>
-         
         </div>
         
         <div class="trip-details">
