@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Frequently Asked Questions - Travaiq')
+
 @section('content')
 <div class="max-w-5xl mx-auto py-16 px-6">
     <h1 class="text-4xl font-extrabold mb-12 text-center text-gray-800">🙋‍♂️ Frequently Asked Questions</h1>

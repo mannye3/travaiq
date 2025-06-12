@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Travel Guide - Travaiq')
+
 @section('content')
 <div class="bg-gradient-to-br from-blue-50 to-white min-h-screen">
     
@@ -41,7 +43,7 @@
         <div class="mb-12 text-center">
             <h2 class="text-3xl font-semibold mb-4">Welcome to the Travaiq Travel Guide!</h2>
             <p class="text-lg mb-2">Discover top destinations, travel tips, and must-see attractions tailored to your interests.</p>
-            <p>From solo adventures to romantic getaways, we’ve got the advice and insights to help you explore with confidence.</p>
+            <p>From solo adventures to romantic getaways, we've got the advice and insights to help you explore with confidence.</p>
         </div>
 
         <!-- Popular Destinations -->

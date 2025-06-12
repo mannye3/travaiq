@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'About Travaiq - Travaiq')
+
 @section('content')
 <div class="min-h-screen bg-gradient-to-b from-white to-indigo-50">
     <!-- Hero Section -->
@@ -130,7 +132,7 @@
     </div>
 
     <!-- Team Section -->
-    <div class="py-16 bg-white">
+    <!-- <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center mb-12">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Our Team</h2>
@@ -142,7 +144,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- CTA Section -->
     <div class="bg-primary">

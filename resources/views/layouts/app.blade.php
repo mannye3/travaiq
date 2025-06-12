@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Title Tag (max ~60 characters) -->
-  <title>Travaiq - AI-Powered Travel Planning</title>
+   
+  <title>@yield('title', 'Travaiq - AI-Powered Travel Planning')</title>
 
 <!-- Meta Description (max ~160 characters) -->
 <meta name="description" content="Get in touch with Travaiq for travel inquiries, partnership opportunities, and support. We're here to help plan your next adventure.">
@@ -348,6 +349,39 @@
 </html>
     
     <!-- Google tag (gtag.js) -->
+{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBCRTSETD9"></script> --}}
+<script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        });
+
+              // User dropdown toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userDropdown = document.getElementById('user-dropdown');
+        
+
+        userMenuButton.addEventListener('click', function() {
+            userDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+     
+
+//   window.dataLayer = window.dataLayer || [];
+//   function gtag(){dataLayer.push(arguments);}
+//   gtag('js', new Date());
+
+//   gtag('config', 'G-KBCRTSETD9');
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBCRTSETD9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

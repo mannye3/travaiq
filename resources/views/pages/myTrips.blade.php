@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'My Trips - Travaiq')
+
 @section('content')
 
     <!-- Main Content -->

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Travel Plan Results Guest - Travaiq')
+
 @section('content')
 
 
@@ -10,8 +12,8 @@
         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
         <p class="font-bold">Temporary Travel Plan</p>
         <p>This is a temporary travel plan. To save your plan permanently, please
-            <a href="" class="text-yellow-700 underline">register</a> or
-            <a href="" class="text-yellow-700 underline">login</a>.
+            <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">register</a> or
+            <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">login</a>.
         </p>
     </div>
             <!-- Hero Section -->
@@ -185,8 +187,8 @@
                                         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
                                 <p class="font-bold">Temporary Travel Plan</p>
                                 <p>This is a temporary travel plan. To save your plan permanently, please
-                                    <a href="" class="text-yellow-700 underline">register</a> or
-                                    <a href="" class="text-yellow-700 underline">login</a>.
+                                    <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">register</a> or
+                                    <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">login</a>.
                                 </p>
                             </div>
 

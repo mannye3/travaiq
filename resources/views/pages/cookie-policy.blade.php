@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Cookie Policy - Travaiq')
+
 @section('content')
     <div class="max-w-2xl mx-auto py-12">
         <h1 class="text-3xl font-bold mb-4">Cookie Policy</h1>

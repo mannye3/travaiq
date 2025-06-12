@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Create Travel Plan - Travaiq')
+
 @section('content')
 
     <!-- Page Title Section -->
@@ -53,14 +55,14 @@
                             <h2 class="text-2xl font-bold text-gray-800 mb-3">Tell us your travel preferences</h2>
                             <p class="text-gray-600 max-w-3xl mx-auto">Just provide some basic information, and our AI trip planner will generate a customized itinerary based on your preferences, including activities, restaurants, and hidden gems.</p>
                         </div>
-
+                    
                      <form action="{{ route('travel.generate') }}" id="travelForm" method="POST"  class="space-y-8" 
                     onsubmit="return validateForm()">
                     @csrf
                             <!-- Two column layout for first row -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                                 <!-- Destination -->
-                                <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg group">
+                                <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg group">
                                     <label class="block text-sm font-medium text-gray-700 mb-2 group-hover:text-primary transition-colors">What is destination of choice?*</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -70,13 +72,13 @@
                                             </svg>
                                         </div>
                                         <input type="text" required id="location" name="location"
-                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
                                             placeholder="Enter City, Airport, or Address">
                                     </div>
                                 </div>
 
                                 <!-- Travel Date -->
-                                <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg group">
+                                <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg group">
                                     <label class="block text-sm font-medium text-gray-700 mb-2 group-hover:text-primary transition-colors">When are you planning to travel?*</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -84,75 +86,76 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
+                                        
                                         <input type="date" name="travel" required placeholder="dd/mm/yyyy"
-                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base" />
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Duration -->
-                            <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
+                            <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">How many days are you planning to travel?*</label>
                                 <div class="flex items-center">
                                     <span class="text-sm font-medium mr-2">Day</span>
                                     <button type="button" onclick="decrementDays()"
-                                        class="px-4 py-2 border border-gray-300 rounded-l bg-white hover:bg-gray-50 hover:border-primary transition-colors">-</button>
+                                        class="px-4 py-3 border border-gray-300 rounded-l bg-white hover:bg-gray-50 hover:border-primary transition-colors text-lg">-</button>
                                     <input type="number" value="3" id="daysInput" name="duration" min="1"
-                                        max="10" required
-                                        class="w-16 text-center border-y border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+                                        max="5" required
+                                        class="w-16 text-center border-y border-gray-300 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base" />
                                     <button type="button" onclick="incrementDays()"
-                                        class="px-4 py-2 border border-gray-300 rounded-r bg-white hover:bg-gray-50 hover:border-primary transition-colors">+</button>
+                                        class="px-4 py-3 border border-gray-300 rounded-r bg-white hover:bg-gray-50 hover:border-primary transition-colors text-lg">+</button>
                                 </div>
                             </div>
 
                             <!-- Budget -->
-                            <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
+                            <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
                                 <input type="hidden" name="budget" id="budgetInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">What is Your Budget?*</label>
                                 <p class="text-xs text-gray-500 mb-3">The budget is exclusively allocated for activities and dining purposes.</p>
-                                <div class="grid grid-cols-3 gap-6">
-                                    <div class="budget-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                                    <div class="budget-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="setBudget('low')">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2" />
                                                 <path d="M7 12h10" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Low</div>
-                                        <p class="text-xs text-gray-500">0 - 1000 USD</p>
+                                        <div class="font-medium text-base">Low</div>
+                                        <p class="text-sm text-gray-500 mt-1">0 - 1000 USD</p>
                                     </div>
-                                    <div class="budget-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="budget-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="setBudget('medium')">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2" />
                                                 <path d="M12 8v8M8 12h8" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Medium</div>
-                                        <p class="text-xs text-gray-500">1000 - 2500 USD</p>
+                                        <div class="font-medium text-base">Medium</div>
+                                        <p class="text-sm text-gray-500 mt-1">1000 - 2500 USD</p>
                                     </div>
-                                    <div class="budget-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="budget-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="setBudget('high')">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2" />
                                                 <path d="M12 8v8M8 12h8M16 10l-8 4" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">High</div>
-                                        <p class="text-xs text-gray-500">2500+ USD</p>
+                                        <div class="font-medium text-base">High</div>
+                                        <p class="text-sm text-gray-500 mt-1">2500+ USD</p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Companions -->
-                            <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
+                            <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
                                 <input type="hidden" name="traveler" id="companionInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Who do you plan on traveling with on your next adventure?</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                    <div class="companion-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                                    <div class="companion-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setCompanion('Solo')">
                                         <div class="mb-2">
                                             <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -162,7 +165,7 @@
                                         </div>
                                         <div class="font-medium">Solo</div>
                                     </div>
-                                    <div class="companion-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="companion-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setCompanion('Couple')">
                                         <div class="mb-2">
                                             <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -173,7 +176,7 @@
                                         </div>
                                         <div class="font-medium">Couple</div>
                                     </div>
-                                    <div class="companion-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="companion-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setCompanion('Family')">
                                         <div class="mb-2">
                                             <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -185,7 +188,7 @@
                                         </div>
                                         <div class="font-medium">Family</div>
                                     </div>
-                                    <div class="companion-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="companion-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
                                         onclick="setCompanion('Friends')">
                                         <div class="mb-2">
                                             <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -200,89 +203,89 @@
                             </div>
 
                             <!-- Activities -->
-                            <div class="transition-all duration-300 hover:shadow-md p-4 rounded-lg">
+                            <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
                                 <input type="hidden" name="activities" id="activitiesInput" required>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Which activities are you interested in?</label>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Beaches')" data-activity="Beaches">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M13 21H3m18-4H3m18-4H3m18-4H3M21 5H3" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Beaches</div>
+                                        <div class="font-medium text-base">Beaches</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('City sightseeing')" data-activity="City sightseeing">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M3 21h18M3 7v14m18-14v14M6 21V11m4 10V11m4 10V7m4 14V11" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">City sightseeing</div>
+                                        <div class="font-medium text-base">City sightseeing</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Outdoor adventures')" data-activity="Outdoor adventures">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M8 3h8l4 8-10 3L4 11l4-8z" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Outdoor adventures</div>
+                                        <div class="font-medium text-base">Outdoor adventures</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Festivals/events')" data-activity="Festivals/events">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Festivals/events</div>
+                                        <div class="font-medium text-base">Festivals/events</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Food exploration')" data-activity="Food exploration">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Food exploration</div>
+                                        <div class="font-medium text-base">Food exploration</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Nightlife')" data-activity="Nightlife">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M12 3a6 6 0 016 6c0 7-6 11-6 11s-6-4-6-11a6 6 0 016-6z" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Nightlife</div>
+                                        <div class="font-medium text-base">Nightlife</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Shopping')" data-activity="Shopping">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Shopping</div>
+                                        <div class="font-medium text-base">Shopping</div>
                                     </div>
-                                    <div class="activity-option border border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1"
+                                    <div class="activity-option border border-gray-300 rounded-lg p-4 md:p-5 text-center cursor-pointer hover:border-primary hover:bg-purple-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                                         onclick="toggleActivity('Spa wellness')" data-activity="Spa wellness">
                                         <div class="mb-2">
-                                            <svg class="w-8 h-8 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg class="w-10 h-10 mx-auto text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z" stroke-width="2" />
                                             </svg>
                                         </div>
-                                        <div class="font-medium">Spa wellness</div>
+                                        <div class="font-medium text-base">Spa wellness</div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Submit -->
-                            <div class="flex justify-center mt-10">
+                            <div class="flex justify-center mt-8">
                                 <button type="submit" id="submitBtn"
-                                    class="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-full flex items-center font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                                    class="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white px-6 sm:px-10 py-4 rounded-full flex items-center justify-center font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                                     <span id="submitText" class="mr-2">Generate My Itinerary</span>
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -366,6 +369,7 @@
 
    
  <script>
+    
         // Mobile menu toggle
         document.getElementById('menu-toggle').addEventListener('click', function() {
             const menu = document.getElementById('menu');
@@ -386,7 +390,7 @@
 
         function incrementDays() {
             const input = document.getElementById('daysInput');
-            if (input.value < input.max) {
+            if (input.value < 5) {
                 input.value = parseInt(input.value) + 1;
             }
         }

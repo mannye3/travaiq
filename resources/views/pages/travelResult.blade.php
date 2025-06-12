@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Travel Plan Results - Travaiq')
+
 @section('content')
 
 
@@ -167,7 +169,7 @@
                     <div class="mt-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold">Itinerary</h2>
-                            <a href="{{ route('download.itinerary', ['tripId' => $tripId]) }}" 
+                            <a target="_blank" href="{{ route('download.itinerary', ['tripId' => $tripId]) }}" 
                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -662,43 +664,15 @@
 
   
       <!-- Simple JavaScript for interactivity -->
-    <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('hidden');
-        });
-        // FAQ toggles
-        const faqToggles = document.querySelectorAll('.faq-toggle');
-        faqToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const content = this.nextElementSibling;
-                content.classList.toggle('hidden');
+   
 
-                // Toggle icon
-                const icon = this.querySelector('.faq-icon');
-                if (content.classList.contains('hidden')) {
-                    icon.innerHTML = '<path d="m6 9 6 6 6-6"></path>';
-                } else {
-                    icon.innerHTML = '<path d="m18 15-6-6-6 6"></path>';
-                }
-            });
-        });
+     @endsection
 
-        // User dropdown toggle
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userDropdown = document.getElementById('user-dropdown');
-
-        userMenuButton.addEventListener('click', function() {
-            userDropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
-            }
-        });
+      <script>
+        
+      
+        
+     
     </script>
 
 
@@ -867,7 +841,5 @@
         // Update slider on window resize
         window.addEventListener('resize', updateSliderDimensions);
     </script>
-
-     @endsection
 </body>
 </html>

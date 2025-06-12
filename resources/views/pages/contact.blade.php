@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Contact Us - Travaiq')
+
 @section('content')
     <div class="max-w-4xl mx-auto py-12 px-4">
         @if(session('success'))

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Privacy Policy - Travaiq')
+
 @section('content')
     <div class="max-w-4xl mx-auto py-12 px-4">
         <h1 class="text-4xl font-bold mb-8 text-center">Privacy Policy</h1>

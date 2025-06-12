@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Home - Travaiq')
+
 @section('content')
 
     <!-- Hero Section -->
@@ -136,7 +138,7 @@
             <div class="mt-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-accent-light/20 blob"></div>
-                    <img src="tripland2.png" alt="Travaiq app interface showing a personalized itinerary" class="rounded-xl shadow-xl relative z-10">
+                    <img src="{{ asset('tripland2.png') }}" alt="Travaiq app interface showing a personalized itinerary" class="rounded-xl shadow-xl relative z-10">
                     
                     <!-- Floating elements -->
                     <div class="absolute top-8 -right-8 z-20 bg-white p-3 rounded-lg shadow-lg animate-float">
