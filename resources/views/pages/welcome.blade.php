@@ -54,7 +54,7 @@
                         <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary-light/20 blob"></div>
 
                         <!-- Main image -->
-                        <img src="https://lh3.googleusercontent.com/place-photos/AJnk2cwN-6EU02ds0vk0fu4hUjSo5zIoJd_7pzBytaCJ29cvtEjJ8fNTEoZpmdoWAIf2aN2aV_grfPA3hHADCqeEEouWuiWEBHubu9QU0k_AhjD9m9kh3nThmKdI4ETg6N5awlPUQ6C34nQKhyUj=s1600-w800" alt="Tropical beach destination" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
+                        <img src="https://lh3.googleusercontent.com/place-photos/AJnk2cwpbtRV4QA9YWPdyAt71Hs8ozP3HVkMUhUviTLHqGTzFVJrFjfSLm8WLIY0WYL6dAY7A0l82Y74PVRMH6FDXsuh-k34N18SwWuarIGBGJ9g7v9y3QO7JgI-Ft2WPeTYCooCRzQZ8sE22d6nYEQ=s1600-w800" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
                         
                         <!-- Floating elements -->
                         <div class="absolute top-1/4 -left-8 z-20 bg-white p-3 rounded-lg shadow-lg animate-float">
@@ -63,7 +63,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span class="font-medium">Paris, France</span>
+                                <span class="font-medium">Olbia, Italy</span>
                             </div>
                         </div>
                         <div class="absolute bottom-10 -right-6 z-20 bg-white p-3 rounded-lg shadow-lg animate-float-slow">
@@ -528,12 +528,8 @@
 @endsection
 
     <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('hidden');
-        });
         
+       
         // Intersection Observer for scroll animations
         document.addEventListener('DOMContentLoaded', function() {
             const observerOptions = {
@@ -557,7 +553,47 @@
     </script>
 
 @guest
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- Load Google One Tap script -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- Google One Tap Init -->
+<div id="g_id_onload"
+     data-client_id="1018615050526-33qnaj3me1t4ervirg3jnhmf7n5n0aat.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="true"
+     data-context="signin"
+     data-itp_support="true">
+</div>
+
+<script>
+    function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+
+        fetch('/google-onetap', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ credential: response.credential })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Successfully logged in, reload or redirect
+                window.location.reload(); // or window.location.href = '/dashboard';
+            } else {
+                console.error('Login failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error during Google One Tap login:', error);
+        });
+    }
+</script>
+
+
+    {{-- <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
       window.onload = function () {
         console.log('Google One Tap: onload fired');
@@ -605,30 +641,7 @@
           }
         });
       }
-    </script>
+    </script> --}}
 @endguest
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userDropdown = document.getElementById('user-dropdown');
 
-        if (userMenuButton && userDropdown) {
-            // Toggle dropdown on button click
-            userMenuButton.addEventListener('click', function (e) {
-                e.stopPropagation();
-                userDropdown.classList.toggle('hidden');
-            });
-
-            // Hide dropdown when clicking outside
-            document.addEventListener('click', function (e) {
-                // Only hide if the dropdown is open and the click is outside both the button and the dropdown
-                if (!userDropdown.classList.contains('hidden') &&
-                    !userDropdown.contains(e.target) &&
-                    !userMenuButton.contains(e.target)) {
-                    userDropdown.classList.add('hidden');
-                }
-            });
-        }
-    });
-</script>

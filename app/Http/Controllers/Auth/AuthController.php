@@ -18,10 +18,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
+ 
 
     public function showForgetPasswordForm()
     {
@@ -33,11 +30,20 @@ class AuthController extends Controller
         //  return "here";
         $loginResponse = $this->authService->login($request->only('email', 'password'));
 
-        if ($loginResponse['status']) {
-            return redirect()->route('dashboard');
+        if (!$loginResponse['status']) {
+            return redirect()->back()->with('error', $loginResponse['error']);
         }
 
-        return redirect()->back()->with('error', $loginResponse['error']);
+        // Check if there's a trip detail from saved temporary plan
+        $tripDetail = $loginResponse['tripDetail'] ?? null;
+        
+        if ($tripDetail) {
+            return redirect()->route('trips.show', $tripDetail->location_overview_id)
+                ->with('success', 'Your travel plan has been saved to your account!')
+                ->with('tripDetails', $tripDetail);
+        }
+
+        return redirect('/')->with('success', 'Login successful!');
     }
 
     /**
@@ -46,7 +52,7 @@ class AuthController extends Controller
     public function userForgetpassword(ForgetPasswordRequest $request)
     {
 
-        return $success = $this->authService->forgetPassword($request->email);
+         $success = $this->authService->forgetPassword($request->email);
 
         if (! $success) {
             return back()->with('error', 'Email not found.');
@@ -63,7 +69,7 @@ class AuthController extends Controller
         $data = $this->authService->getResetPasswordView($token);
 
         if (! $data) {
-            return redirect()->route('password.request')->with('error', 'Invalid password reset token.');
+            return redirect()->route('loginRegister')->with('error', 'Invalid password reset token.');
         }
 
         return view('auth.passwords.reset', $data);
@@ -74,27 +80,54 @@ class AuthController extends Controller
      */
     public function resetpasswordsubmit(ResetPasswordSubmitRequest $request)
     {
+       ;
         $result = $this->authService->resetPasswordSubmit($request->validated());
 
         if ($result !== true) {
             return back()->withInput()->with('error', $result);
         }
 
-        return redirect('/login')->with('success', 'Your password has been changed!');
+        return redirect('login-register')->with('success', 'Your password has been changed!');
     }
 
-    public function verifyEmail($token)
-    {
-        $result = $this->authService->verifyEmail($token);
-
-        return redirect(route('login'))->with(
-            $result['status'] ? 'success' : 'error',
-            $result['message']
-        );
-    }
-
+    
     public function logout(Request $request)
     {
         return $this->authService->logout($request);
+    }
+
+    public function showLoginRegisterForm()
+    {
+        return view('auth.login_register');
+    }
+
+    public function registerPost(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+         $registerResponse = $this->authService->register($request->only('name', 'email','password'));
+        
+        if (!$registerResponse['status']) {
+            return back()->withInput()->with('error', 'Registration failed.');
+        }
+
+        // Check if there's a trip detail from saved temporary plan
+         $tripDetail = $registerResponse['tripDetail'] ?? null;
+        
+        if ($tripDetail) {
+            return redirect()->route('trips.show', $tripDetail->location_overview_id)
+                ->with('success', 'Your travel plan has been saved to your account!')
+                ->with('tripDetails', $tripDetail);
+        }else{
+            // If no trip detail, just redirect to home with success message
+            return redirect('/')->with('success', 'Registration successful!');
+        }
+        
+        
+      
     }
 }

@@ -93,77 +93,100 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <div id="hotels-container" class="overflow-hidden">
-                                    <div id="hotels-slider" class="flex transition-transform duration-300 ease-in-out"
-                                        style="transform: translateX(0px);">
-                                        @foreach ($hotels as $hotel)
-                                            <!-- Gasthof Pension Alpenblick -->
-                                            <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($hotel->name . ', ' . $hotel->address) }}"
-                                                target="_blank">
-                                                <div class="w-full md:w-1/3 flex-shrink-0 px-3">
-                                                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                                        @if ($hotel->image_url)
-                                                            <img src="{{ $hotel->image_url }}"
-                                                                alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
-                                                            
-                                                        @else
-                                                         <img src="https://img.freepik.com/free-photo/modern-studio-apartment-design-with-bedroom-living-space_1262-12375.jpg?t=st=1745181117~exp=1745184717~hmac=f3dd10034fa8932a20ea6eb54c22a7a31f5123f74c675bfe6fc4d622a6b83c65&w=996"
-                                                            alt="{{ $hotel->name }}" class="w-full h-48 object-cover">
-                                                        @endif
-                                                       
-                                                        <div class="p-4">
-                                                            <div class="mb-2">
-                                                                <p class="font-semibold text-lg">
-                                                                    {{ $hotel->name }}</p>
-                                                                <h3 class="text-gray-600 text-sm">
-                                                                    📍 {{ $hotel->address }}</h3>
-                                                            </div>
-                                                            <div class="flex items-center gap-1 mb-3">
-                                                                <div class="flex text-yellow-400">
-                                                                    @php
-                                                                        $rating = floatval($hotel->rating);
-                                                                        $fullStars = floor($rating);
-                                                                        $hasHalfStar = $rating - $fullStars >= 0.5;
-                                                                        $emptyStars =
-                                                                            5 - $fullStars - ($hasHalfStar ? 1 : 0);
-                                                                    @endphp
-                                                                    @for ($i = 0; $i < $fullStars; $i++)
-                                                                        <span>★</span>
-                                                                    @endfor
-                                                                    @if ($hasHalfStar)
-                                                                        <span>½</span>
+                                    <div id="hotels-container" class="overflow-hidden">
+                                        <div id="hotels-slider" class="flex transition-transform duration-300 ease-in-out">
+                                            @foreach($hotels as $hotel)
+                                            <div class="w-full md:w-1/3 flex-shrink-0 px-3">
+                                                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+                                                    <a href="{{ $hotel->booking_url ?? '#' }}" target="_blank" class="block h-full flex flex-col">
+                                                        <div class="relative">
+                                                            @if (isset($hotel->image_url) && !empty($hotel->image_url))
+                                                                <img src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}" 
+                                                                    class="w-full h-48 object-cover"
+                                                                    onerror="this.onerror=null; this.src='https://img.freepik.com/premium-photo/hotel-room_1048944-29197645.jpg?w=900';">
+                                                            @else
+                                                                <img src="https://img.freepik.com/premium-photo/hotel-room_1048944-29197645.jpg?w=900" 
+                                                                    class="w-full h-48 object-cover" 
+                                                                    alt="{{ $hotel->name }}">
+                                                            @endif
+                                                            @if(isset($hotel->rating) && $hotel->rating > 0)
+                                                                <div class="absolute top-2 right-2 bg-yellow-400 text-black px-2 py-1 rounded-full text-sm font-semibold">
+                                                                    {{ number_format((float)$hotel->rating, 1) }} ★
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        
+                                                        <div class="p-4 flex flex-col flex-1">
+                                                            <div>
+                                                                <h3 class="font-semibold text-lg mb-2 line-clamp-1">{{ $hotel->name }}</h3>
+                                                                @if(isset($hotel->description))
+                                                                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $hotel->description }}</p>
+                                                                @endif
+                                                                
+                                                                <div class="flex items-center gap-1 mb-3">
+                                                                    @if(isset($hotel->rating) && $hotel->rating > 0)
+                                                                        <div class="flex text-yellow-400">
+                                                                            @php
+                                                                                $rating = floatval($hotel->rating);
+                                                                                $fullStars = floor($rating);
+                                                                                $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                                $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                            @endphp
+                                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                                <span>★</span>
+                                                                            @endfor
+                                                                            @if ($hasHalfStar)
+                                                                                <span>½</span>
+                                                                            @endif
+                                                                            @for ($i = 0; $i < $emptyStars; $i++)
+                                                                                <span class="text-gray-300">★</span>
+                                                                            @endfor
+                                                                        </div>
+                                                                        <span class="text-gray-600 text-sm">{{ number_format((float)$hotel->rating, 1) }}</span>
                                                                     @endif
-                                                                    @for ($i = 0; $i < $emptyStars; $i++)
-                                                                        <span class="text-gray-300">★</span>
-                                                                    @endfor
                                                                 </div>
-                                                                <span
-                                                                    class="text-gray-600 text-sm">{{ $hotel->rating }}</span>
                                                             </div>
-                                                            <div class="flex justify-between items-end">
-                                                                <div>
-                                                                    <p class="text-xl font-bold">
-                                                                        {{ $hotel->price_per_night }}/night</p>
-                                                                    {{-- <p class="text-gray-600 text-sm"></p> --}}
+
+                                                            <div class="mt-auto">
+                                                                <div class="flex justify-between items-end">
+                                                                    <div>
+                                                                        <p class="text-xl font-bold text-green-600">
+                                                                            {{ $hotel->currency }} {{ number_format((float)$hotel->price, 2) }}
+                                                                            <span class="text-sm text-gray-500">/night</span>
+                                                                        </p>
+                                                                        @if(isset($hotel->review_count) && $hotel->review_count > 0)
+                                                                            <p class="text-sm text-gray-600">{{ $hotel->review_count }} reviews</p>
+                                                                        @endif
+                                                                    </div>
                                                                 </div>
+
+                                                                @if(!empty($hotel->amenities))
+                                                                    <div class="mt-3 flex flex-wrap gap-2">
+                                                                        @if($hotel->amenities['free_wifi'] ?? false)
+                                                                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Free WiFi</span>
+                                                                        @endif
+                                                                        @if($hotel->amenities['breakfast_included'] ?? false)
+                                                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Breakfast Included</span>
+                                                                        @endif
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
-                                                    </div>
-                                            </a>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                    @endforeach
-
-
                                 </div>
-                            </div>
                         </div>
-                        {{-- <div class="mt-6 text-center">
+                        
+                        <div class="mt-6 text-center">
                                             <p class="text-gray-600">Can't find what you're searching for? Try <a
-                                                    href="https://booking.com"
-                                                    class="text-blue-600 hover:underline">Booking.com</a></p>
-                                        </div> --}}
-                    </div>
-
+                                                    href="https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1942345&city={{ $cityId ?? '20711' }}" target="_blank"
+                                                    class="text-blue-600 hover:underline">Agoda.com</a></p>
+                                        </div> 
+                   
                     <!-- Itinerary Section -->
                      
                     <div class="mt-12">
@@ -202,7 +225,7 @@
                                             d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </div>
-
+                                        
                                 <div id="day{{ $itinerary->day }}" class="p-4" style="display: none;">
                                     @foreach ($itinerary->activities as $activity)
                                         <div class="mb-6 last:mb-0">
@@ -225,26 +248,38 @@
                                                                         {{ $activity->description }}</p>
                                                                     <div
                                                                         class="flex items-center gap-2 text-sm text-gray-500">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                        </svg>
+                                                                        🕛
                                                                         <span>{{ $activity->best_time }}</span>
                                                                     </div>
                                                                     <div
                                                                         class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-4 w-4" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                                        </svg>
+                                                                        
                                                                         <span>📍 {{ $activity->address }}</span>
                                                                     </div>
+                                                                    
+                                                                    <!-- Phone Number -->
+                                                                    @if($activity->phone_number)
+                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                        
+                                                                        <span>📞 {{ $activity->phone_number }}</span>
+                                                                    </div>
+                                                                    @endif
+                                                                    
+                                                                    <!-- Website -->
+                                                                    @if($activity->website)
+                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                        
+                                                                    <a href="{{ $activity->website }}" target="_blank" class="text-blue-600 hover:underline">🌐 Visit Website</a>
+                                                                    </div>
+                                                                    @endif
+                                                                    
+                                                                    <!-- Fee -->
+                                                                    @if($activity->fee)
+                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                       
+                                                                        <span>💰 Additional Fee: {{ $activity->fee }}</span>
+                                                                    </div>
+                                                                    @endif
                                                                 </div>
                                                                 <div
                                                                     class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
@@ -760,86 +795,33 @@
     </script>
 
     <script>
-        let currentPosition = 0;
-        const slider = document.getElementById('hotels-slider');
-        const container = document.getElementById('hotels-container');
-        const hotelCards = document.querySelectorAll('#hotels-slider > div');
-        let cardWidth = 0;
-        let maxPosition = 0;
-
-        function updateSliderDimensions() {
-            // Calculate card width based on screen size
-            if (window.innerWidth >= 768) {
-                cardWidth = 300; // Desktop card width
-            } else {
-                cardWidth = container.offsetWidth; // Mobile card width (full width)
-            }
-
-            // Calculate max scroll position
-            maxPosition = -(hotelCards.length * (cardWidth + 16) - container.offsetWidth);
-
-            // Reset position if it's beyond the new max position
-            if (currentPosition < maxPosition) {
-                currentPosition = maxPosition;
-            }
-
-            // Update slider position
-            slider.style.transform = `translateX(${currentPosition}px)`;
-
-            // Update button states
-            updateButtonStates();
-        }
+        // Hotel slider functionality
+        const totalCards = {{ count($hotels) }};
+        const cardsPerView = window.innerWidth < 768 ? 1 : 3;
+        const totalSlides = Math.ceil(totalCards / cardsPerView);
+        let currentSlide = 0;
 
         function scrollHotels(direction) {
-            if (direction === 'next') {
-                currentPosition = Math.max(maxPosition, currentPosition - (cardWidth + 16));
-            } else {
-                currentPosition = Math.min(0, currentPosition + (cardWidth + 16));
+            const slider = document.getElementById('hotels-slider');
+            const cardWidth = slider.querySelector('.w-full').offsetWidth;
+            
+            if (direction === 'next' && currentSlide < totalSlides - 1) {
+                currentSlide++;
+            } else if (direction === 'prev' && currentSlide > 0) {
+                currentSlide--;
             }
-
-            slider.style.transform = `translateX(${currentPosition}px)`;
-            updateButtonStates();
+            
+            const translateX = -currentSlide * cardWidth * cardsPerView;
+            slider.style.transform = `translateX(${translateX}px)`;
+            
+            // Update button states
+            document.getElementById('scroll-left').disabled = currentSlide === 0;
+            document.getElementById('scroll-right').disabled = currentSlide === totalSlides - 1;
         }
 
-        function updateButtonStates() {
-            const scrollLeftBtn = document.getElementById('scroll-left');
-            const scrollRightBtn = document.getElementById('scroll-right');
-
-            scrollLeftBtn.disabled = currentPosition >= 0;
-            scrollRightBtn.disabled = currentPosition <= maxPosition;
-        }
-
-        // Initialize slider
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSliderDimensions();
-
-            // Add touch event listeners for mobile swipe
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            container.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, false);
-
-            container.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, false);
-
-            function handleSwipe() {
-                const swipeDistance = touchEndX - touchStartX;
-                if (Math.abs(swipeDistance) > 50) { // Minimum swipe distance
-                    if (swipeDistance > 0) {
-                        scrollHotels('prev');
-                    } else {
-                        scrollHotels('next');
-                    }
-                }
-            }
-        });
-
-        // Update slider on window resize
-        window.addEventListener('resize', updateSliderDimensions);
+        // Initialize button states
+        document.getElementById('scroll-left').disabled = true;
+        document.getElementById('scroll-right').disabled = totalSlides <= 1;
     </script>
 </body>
 </html>

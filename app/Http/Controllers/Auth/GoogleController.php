@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Laravel\Socialite\Facades\Socialite;
-use App\Models\User;
-use App\Models\TripDetail;
-use App\Models\LocationOverview;
-use App\Models\Hotel;
-use App\Models\Itinerary;
-use App\Models\Activity;
 use App\Models\Cost;
-use App\Models\TransportationCost;
+use App\Models\User;
+use App\Models\Activity;
+use App\Mail\WelcomeUser;
+use App\Models\Itinerary;
 use App\Models\DiningCost;
-use App\Models\AdditionalInformation;
-use App\Models\SecurityAdvice;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TripDetail;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\SecurityAdvice;
+use App\Models\LocationOverview;
+use App\Models\TransportationCost;
 use Illuminate\Support\Facades\DB;
+use App\Models\HotelRecommendation;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\AdditionalInformation;
+use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
@@ -31,7 +33,7 @@ class GoogleController extends Controller
     private function saveTempTravelPlan($user)
     {
         $tempPlan = session('temp_travel_plan');
-        
+       //dd($tempPlan);
         // Add debug logging
         Log::info('Attempting to save temp travel plan', [
             'has_temp_plan' => !empty($tempPlan),
@@ -88,11 +90,26 @@ class GoogleController extends Controller
 
             Log::info('Created security advice', ['security_advice_id' => $securityAdvice->id]);
 
-            // Create hotels
-            foreach ($tempPlan['plan']['hotels'] as $hotelData) {
-                $hotelData['location_overview_id'] = $locationOverview->id;
-                $hotel = Hotel::create($hotelData);
-                Log::info('Created hotel', ['hotel_id' => $hotel->id, 'name' => $hotel->name]);
+            
+
+
+
+            foreach ($tempPlan['plan']['agoda_hotels'] as $hotelData) {
+                HotelRecommendation::create([
+                    'location_overview_id' => $locationOverview->id,
+                    'name' => $hotelData['name'],
+                    'description' => $hotelData['description'],
+                    'address' => $hotelData['address'],
+                    'rating' => $hotelData['rating'],
+                    'price' => $hotelData['price'],
+                    'currency' => $hotelData['currency'],
+                    'image_url' => $hotelData['image_url'],
+                    'amenities' => json_encode($hotelData['amenities']),
+                    'location' => json_encode($hotelData['location']),
+                    'review_score' => $hotelData['review_score'],
+                    'review_count' => $hotelData['review_count'],
+                    'booking_url' => $hotelData['booking_url'],
+                ]);
             }
 
             // Create itineraries and activities
@@ -111,6 +128,8 @@ class GoogleController extends Controller
                     Log::info('Created activity', ['activity_id' => $activity->id, 'name' => $activity->name]);
                 }
             }
+
+            
 
             // Create costs
             foreach ($tempPlan['plan']['costs'] as $costData) {
@@ -213,6 +232,10 @@ class GoogleController extends Controller
                 ]
             );
 
+            if ($user->wasRecentlyCreated) {
+                Mail::to($user['email'])->queue(new WelcomeUser($user));
+            }
+
             // Log session state after user creation
             Log::info('Session state after user creation', [
                 'has_temp_plan' => session()->has('temp_travel_plan'),
@@ -239,7 +262,7 @@ class GoogleController extends Controller
                     ->with('tripDetails', $tripDetail);
             }
 
-            return redirect()->intended('/');
+        return redirect()->intended('/');
         } catch (\Exception $e) {
             Log::error('Google login error', [
                 'error' => $e->getMessage(),

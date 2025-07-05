@@ -10,10 +10,11 @@
         
         <div class="max-w-screen-xl mx-auto px-4">
         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-         <p>This is a temporary travel plan. To save your plan permanently, please
-                                    <a href="{{ route('loginRegister') }}" class="text-yellow-700 underline">register</a> or
-                                    <a href="{{ route('loginRegister') }}" class="text-yellow-700 underline">login</a>.
-                                </p>
+        <p class="font-bold">Temporary Travel Plan</p>
+        <p>This is a temporary travel plan. To save your plan permanently, please
+            <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">register</a> or
+            <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">login</a>.
+        </p>
     </div>
             <!-- Hero Section -->
             <section class="mb-8 lg:mb-16 pb-6 pt-6" id="hero">
@@ -97,11 +98,11 @@
 
                                 <div class="relative">
                                     <div id="hotels-container" class="overflow-hidden">
-                                        <div id="hotels-slider" class="flex transition-transform duration-300 ease-in-out">
-                                            @foreach($hotels as $hotel)
+                                        <div id="hotels-slider" class="flex transition-transform duration-300 ease-in-out" style="transform: translateX(0px);">
+                                            @foreach($agodaHotels as $hotel)
                                             <div class="w-full md:w-1/3 flex-shrink-0 px-3">
-                                                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
-                                                    <a href="{{ $hotel->booking_url ?? '#' }}" target="_blank" class="block h-full flex flex-col">
+                                                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                                    <a href="{{ $hotel->booking_url ?? '#' }}" target="_blank" class="block">
                                                         <div class="relative">
                                                             @if (isset($hotel->image_url) && !empty($hotel->image_url))
                                                                 <img src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}" 
@@ -119,61 +120,57 @@
                                                             @endif
                                                         </div>
                                                         
-                                                        <div class="p-4 flex flex-col flex-1">
-                                                            <div>
-                                                                <h3 class="font-semibold text-lg mb-2 line-clamp-1">{{ $hotel->name }}</h3>
-                                                                @if(isset($hotel->description))
-                                                                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $hotel->description }}</p>
+                                                        <div class="p-4">
+                                                            <h3 class="font-semibold text-lg mb-2 line-clamp-1">{{ $hotel->name }}</h3>
+                                                            @if(isset($hotel->description))
+                                                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $hotel->description }}</p>
+                                                            @endif
+                                                            
+                                                            <div class="flex items-center gap-1 mb-3">
+                                                                @if(isset($hotel->rating) && $hotel->rating > 0)
+                                                                    <div class="flex text-yellow-400">
+                                                                        @php
+                                                                            $rating = floatval($hotel->rating);
+                                                                            $fullStars = floor($rating);
+                                                                            $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                            $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                        @endphp
+                                                                        @for ($i = 0; $i < $fullStars; $i++)
+                                                                            <span>★</span>
+                                                                        @endfor
+                                                                        @if ($hasHalfStar)
+                                                                            <span>½</span>
+                                                                        @endif
+                                                                        @for ($i = 0; $i < $emptyStars; $i++)
+                                                                            <span class="text-gray-300">★</span>
+                                                                        @endfor
+                                                                    </div>
+                                                                    <span class="text-gray-600 text-sm">{{ number_format((float)$hotel->rating, 1) }}</span>
                                                                 @endif
-                                                                
-                                                                <div class="flex items-center gap-1 mb-3">
-                                                                    @if(isset($hotel->rating) && $hotel->rating > 0)
-                                                                        <div class="flex text-yellow-400">
-                                                                            @php
-                                                                                $rating = floatval($hotel->rating);
-                                                                                $fullStars = floor($rating);
-                                                                                $hasHalfStar = $rating - $fullStars >= 0.5;
-                                                                                $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
-                                                                            @endphp
-                                                                            @for ($i = 0; $i < $fullStars; $i++)
-                                                                                <span>★</span>
-                                                                            @endfor
-                                                                            @if ($hasHalfStar)
-                                                                                <span>½</span>
-                                                                            @endif
-                                                                            @for ($i = 0; $i < $emptyStars; $i++)
-                                                                                <span class="text-gray-300">★</span>
-                                                                            @endfor
-                                                                        </div>
-                                                                        <span class="text-gray-600 text-sm">{{ number_format((float)$hotel->rating, 1) }}</span>
+                                                            </div>
+
+                                                            <div class="flex justify-between items-end">
+                                                                <div>
+                                                                    <p class="text-xl font-bold text-green-600">
+                                                                        {{ $hotel->currency }} {{ number_format((float)$hotel->price, 2) }}
+                                                                        <span class="text-sm text-gray-500">/night</span>
+                                                                    </p>
+                                                                    @if(isset($hotel->review_count) && $hotel->review_count > 0)
+                                                                        <p class="text-sm text-gray-600">{{ $hotel->review_count }} reviews</p>
                                                                     @endif
                                                                 </div>
                                                             </div>
 
-                                                            <div class="mt-auto">
-                                                                <div class="flex justify-between items-end">
-                                                                    <div>
-                                                                        <p class="text-xl font-bold text-green-600">
-                                                                            {{ $hotel->currency }} {{ number_format((float)$hotel->price, 2) }}
-                                                                            <span class="text-sm text-gray-500">/night</span>
-                                                                        </p>
-                                                                        @if(isset($hotel->review_count) && $hotel->review_count > 0)
-                                                                            <p class="text-sm text-gray-600">{{ $hotel->review_count }} reviews</p>
-                                                                        @endif
-                                                                    </div>
+                                                            @if(!empty($hotel->amenities))
+                                                                <div class="mt-3 flex flex-wrap gap-2">
+                                                                    @if($hotel->amenities['free_wifi'] ?? false)
+                                                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Free WiFi</span>
+                                                                    @endif
+                                                                    @if($hotel->amenities['breakfast_included'] ?? false)
+                                                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Breakfast Included</span>
+                                                                    @endif
                                                                 </div>
-
-                                                                @if(!empty($hotel->amenities))
-                                                                    <div class="mt-3 flex flex-wrap gap-2">
-                                                                        @if($hotel->amenities->free_wifi ?? false)
-                                                                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Free WiFi</span>
-                                                                        @endif
-                                                                        @if($hotel->amenities->breakfast_included ?? false)
-                                                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Breakfast Included</span>
-                                                                        @endif
-                                                                    </div>
-                                                                @endif
-                                                            </div>
+                                                            @endif
                                                         </div>
                                                     </a>
                                                 </div>
@@ -183,29 +180,23 @@
                                     </div>
                                 </div>
                             </div>
-
-                                        <div class="mt-6 text-center">
-                                            <p class="text-gray-600">Can't find what you're searching for? Try <a
-                                                    href="https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1942345&city={{ $cityId ?? '20711' }}" target="_blank"
-                                                    class="text-blue-600 hover:underline">Agoda.com</a></p>
-                                        </div>
                       
                     </div>
 
                     <!-- Itinerary Section -->
                     <div class="mt-12">
-                        <div class="flex justify-between items-center mb-6">
+                        {{-- <div class="flex justify-between items-center mb-6">
                                             <h2 class="text-2xl font-bold">Itinerary</h2>
-                                            <!-- <button
+                                            <button
                                                 class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                                                 Best Tour
-                                            </button> -->
-                                        </div>
+                                            </button>
+                                        </div> --}}
                                         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-                                
+                                <p class="font-bold">Temporary Travel Plan</p>
                                 <p>This is a temporary travel plan. To save your plan permanently, please
-                                    <a href="{{ route('loginRegister') }}" class="text-yellow-700 underline">register</a> or
-                                    <a href="{{ route('loginRegister') }}" class="text-yellow-700 underline">login</a>.
+                                    <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">register</a> or
+                                    <a href="{{ route('google.redirect') }}" class="text-yellow-700 underline">login</a>.
                                 </p>
                             </div>
 
@@ -253,62 +244,48 @@
                                                                 <div class="flex-1">
                                                                     <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($activity->name . ', ' . $activity->address) }}"
                                                                         target="_blank" class="block">
-                                                                       <div class="bg-gray-50 rounded-lg p-4">
-                                                            <div class="flex flex-col md:flex-row gap-4">
-                                                                <div class="flex-1">
-                                                                    <h3 class="font-semibold text-gray-900 mb-2">
-                                                                        {{ $activity->name }}</h3>
-                                                                    <p class="text-gray-600 text-sm mb-3">
-                                                                        {{ $activity->description }}</p>
-                                                                    <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500">
-                                                                        🕛
-                                                                        <span>{{ $activity->best_time }}</span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        
-                                                                        <span>📍 {{ $activity->address }}</span>
-                                                                    </div>
-                                                                    
-                                                                    <!-- Phone Number -->
-                                                                    @if($activity->phone_number)
-                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        
-                                                                        <span>📞 {{ $activity->phone_number }}</span>
-                                                                    </div>
-                                                                    @endif
-                                                                    
-                                                                    <!-- Website -->
-                                                                    @if($activity->website)
-                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                        
-                                                                    <a href="{{ $activity->website }}" target="_blank" class="text-blue-600 hover:underline">🌐 Visit Website</a>
-                                                                    </div>
-                                                                    @endif
-                                                                    
-                                                                    <!-- Fee -->
-                                                                    @if($activity->fee)
-                                                                    <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                       
-                                                                        <span>💰 Additional Fee: {{ $activity->fee }}</span>
-                                                                    </div>
-                                                                    @endif
-                                                                </div>
-                                                                <div
-                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
-                                                                    @if ($activity->image_url)
-                                                                        <img src="{{ $activity->image_url }}"
-                                                                            alt="{{ $activity->name }}"
+                                                                        <div class="bg-gray-50 rounded-lg p-4">
+                                                                            <div class="flex flex-col md:flex-row gap-4">
+                                                                                <div class="flex-1">
+                                                                                    <h3 class="font-semibold text-gray-900 mb-2">
+                                                                                        {{ $activity->name }}</h3>
+                                                                                    <p class="text-gray-600 text-sm mb-3">
+                                                                                        {{ $activity->description }}</p>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                        </svg>
+                                                                                        <span>{{ $activity->best_time }}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                            class="h-4 w-4" fill="none"
+                                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                                            <path stroke-linecap="round"
+                                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                                                        </svg>
+                                                                                        <span>📍 {{ $activity->address }}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="w-full md:w-32 h-24 rounded-lg overflow-hidden">
+                                                                                    @if (isset($activity->image_url) && $activity->image_url)
+                                                                <img src="{{ $activity->image_url }}"   alt="{{ $activity->name }}"
                                                                             class="w-full h-full object-cover">
-                                                                    @else
-                                                                        <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
-                                                                        alt="{{ $activity->name }}"
-                                                                            class="w-full h-full object-cover">
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            @else
+                                                                <img src="https://img.freepik.com/premium-photo/high-angle-view-smart-phone-table_1048944-29197645.jpg?w=900"
+                                                                    class="img-fluid rounded-start" style="height: 100%;  width=100%;  object-fit: cover;" alt="{{ $activity->name }}">
+                                                            @endif
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -388,36 +365,6 @@
                                                                                         d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                                                                 </svg>
                                                                                 <span>📍 {{ $activity->address }}</span>
-                                                                                
-                                                                                <!-- Phone Number -->
-                                                                                @if($activity->phone_number)
-                                                                                <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                                                                    </svg>
-                                                                                    <span>📞 {{ $activity->phone_number }}</span>
-                                                                                </div>
-                                                                                @endif
-                                                                                
-                                                                                <!-- Website -->
-                                                                                @if($activity->website)
-                                                                                <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9m0 9c-5 0-9-4-9-9s4-9 9-9" />
-                                                                                    </svg>
-                                                                                    <a href="{{ $activity->website }}" target="_blank" class="text-blue-600 hover:underline">🌐 Visit Website</a>
-                                                                                </div>
-                                                                                @endif
-                                                                                
-                                                                                <!-- Fee -->
-                                                                                @if($activity->fee)
-                                                                                <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                                                                    </svg>
-                                                                                    <span>💰 Additional Fee: {{ $activity->fee }}</span>
-                                                                                </div>
-                                                                                @endif
                                                                             </div>
                                                                         </div>
                                                                         <div
@@ -963,8 +910,7 @@
         const slider = document.getElementById('hotels-slider');
         const container = document.getElementById('hotels-container');
         const cardWidth = 33.33; // Width of each card in percentage
-        
-        const totalCards = {{ isset($hotels) ? count($hotels) : 0 }};
+        const totalCards = {{ count($agodaHotels) }};
         const maxPosition = -(totalCards - 3) * cardWidth; // Show 3 cards at a time
 
         function updateScrollButtons() {

@@ -4,27 +4,6 @@
 
 @section('content')
 
-<style>
-       .suggestions-container {
-                                    position: absolute;
-                                    width: 100%;
-                                    max-height: 200px;
-                                    overflow-y: auto;
-                                    background: white;
-                                    border: 1px solid #ddd;
-                                    border-radius: 4px;
-                                    z-index: 1000;
-                                }
-                                .suggestion-item {
-                                    padding: 8px 12px;
-                                    cursor: pointer;
-                                }
-                                .suggestion-item:hover {
-                                    background-color: #f8f9fa;
-                                }                         
-                            </style>
-
-
     <!-- Page Title Section -->
     <section class="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-white py-16 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-full h-full">
@@ -87,54 +66,99 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2 group-hover:text-primary transition-colors">What is destination of choice?*</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <!-- <svg class="h-5 w-5 text-gray-400 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg class="h-5 w-5 text-gray-400 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            </svg> -->
+                                            </svg>
                                         </div>
                                        
-                                        <div class="form-group position-relative" style="position: relative;">
-   
-    <input type="text"
-           class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
-           id="location"
-           name="location"
-           placeholder="Type to search locations..."
-           autocomplete="off">
-    <div id="suggestions" class="suggestions-container d-none" role="listbox"></div>
-</div>
+                            <div class="form-group position-relative">
+                                <label for="location">Enter Location</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="location" 
+                                       name="location" 
+                                       placeholder="Type to search locations..."
+                                       autocomplete="off">
+                                <div id="suggestions" class="suggestions-container d-none"></div>
+                            </div>
 
-<style>
-    .suggestions-container {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-top: none;
-        max-height: 200px;
-        overflow-y: auto;
-        display: none;
-    }
+                            <style>
+                                .suggestions-container {
+                                    position: absolute;
+                                    width: 100%;
+                                    max-height: 200px;
+                                    overflow-y: auto;
+                                    background: white;
+                                    border: 1px solid #ddd;
+                                    border-radius: 4px;
+                                    z-index: 1000;
+                                }
+                                .suggestion-item {
+                                    padding: 8px 12px;
+                                    cursor: pointer;
+                                }
+                                .suggestion-item:hover {
+                                    background-color: #f8f9fa;
+                                }
+                            </style>
 
-    .suggestion-item {
-        padding: 10px;
-        cursor: pointer;
-    }
+                            <script>
+                                $(document).ready(function() {
+                                    let searchTimeout;
+                                    const suggestionsContainer = $('#suggestions');
+                                    const locationInput = $('#location');
 
-    .suggestion-item:hover {
-        background-color: #f0f0f0;
-    }
+                                    locationInput.on('input', function() {
+                                        const searchTerm = $(this).val();
+                                        
+                                        // Clear previous timeout
+                                        clearTimeout(searchTimeout);
+                                        
+                                        if (searchTerm.length < 2) {
+                                            suggestionsContainer.addClass('d-none');
+                                            return;
+                                        }
 
-    .suggestions-container.show {
-        display: block;
-    }
-</style>
+                                        // Set new timeout
+                                        searchTimeout = setTimeout(() => {
+                                            $.get('/api/location-suggestions', { term: searchTerm })
+                                                .done(function(response) {
+                                                    if (response && response.length > 0) {
+                                                        let suggestionsHtml = '';
+                                                        response.forEach(function(suggestion) {
+                                                            suggestionsHtml += `<div class="suggestion-item">${suggestion.DisplayText}</div>`;
+                                                        });
+                                                        suggestionsContainer.html(suggestionsHtml).removeClass('d-none');
+                                                    } else {
+                                                        suggestionsContainer.addClass('d-none');
+                                                    }
+                                                })
+                                                .fail(function(error) {
+                                                    console.error('Error fetching suggestions:', error);
+                                                    suggestionsContainer.addClass('d-none');
+                                                });
+                                        }, 300);
+                                    });
 
-                           
-                          
+                                    // Handle suggestion click
+                                    suggestionsContainer.on('click', '.suggestion-item', function() {
+                                        locationInput.val($(this).text());
+                                        suggestionsContainer.addClass('d-none');
+                                    });
+
+                                    // Hide suggestions when clicking outside
+                                    $(document).on('click', function(e) {
+                                        if (!$(e.target).closest('.form-group').length) {
+                                            suggestionsContainer.addClass('d-none');
+                                        }
+                                    });
+                                });
+                            </script>
+                       
+                                        <!-- <input type="text" required id="location" name="location"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
+                                            placeholder="Enter City, Airport, or Address"> -->
                                     </div>
                                 </div>
 
@@ -149,7 +173,6 @@
                                         </div>
                                         
                                         <input type="date" name="travel" required placeholder="dd/mm/yyyy"
-                                            min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                             class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base" />
                                     </div>
                                 </div>
@@ -432,7 +455,11 @@
    
  <script>
     
-  
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        });
 
         // Form functionality
         let selectedBudget = null;
@@ -594,72 +621,77 @@
         });
     </script>
 
+    <!-- <script>
+        // Initialize Google Autocomplete
+        function initAutocomplete() {
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input);
 
+            // When a place is selected, update the hidden fields with location details
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                document.getElementById('place_id').value = place.place_id;
+                document.getElementById('formatted_address').value = place.formatted_address;
+                document.getElementById('latitude').value = place.geometry.location.lat();
+                document.getElementById('longitude').value = place.geometry.location.lng();
+            });
+        }
+    </script> -->
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        let searchTimeout;
-        const $suggestionsContainer = $('#suggestions');
-        const $locationInput = $('#location');
+    <script>
+        $(document).ready(function() {
+            let searchTimeout;
+            const suggestionsContainer = $('#suggestions');
+            const locationInput = $('#location');
 
-        $locationInput.on('input', function () {
-            const searchTerm = $(this).val().trim();
+            locationInput.on('input', function() {
+                const searchTerm = $(this).val();
+                
+                // Clear previous timeout
+                clearTimeout(searchTimeout);
+                
+                if (searchTerm.length < 2) {
+                    suggestionsContainer.addClass('d-none');
+                    return;
+                }
 
-            clearTimeout(searchTimeout);
+                // Set new timeout
+                searchTimeout = setTimeout(() => {
+                    $.get('/api/location-suggestions', { term: searchTerm })
+                        .done(function(response) {
+                            if (response && response.length > 0) {
+                                let suggestionsHtml = '';
+                                response.forEach(function(suggestion) {
+                                    suggestionsHtml += `<div class="suggestion-item">${suggestion.DisplayText}</div>`;
+                                });
+                                suggestionsContainer.html(suggestionsHtml).removeClass('d-none');
+                            } else {
+                                suggestionsContainer.addClass('d-none');
+                            }
+                        })
+                        .fail(function(error) {
+                            console.error('Error fetching suggestions:', error);
+                            suggestionsContainer.addClass('d-none');
+                        });
+                }, 300);
+            });
 
-            if (searchTerm.length < 2) {
-                $suggestionsContainer.removeClass('show').addClass('d-none');
-                return;
-            }
+            // Handle suggestion click
+            suggestionsContainer.on('click', '.suggestion-item', function() {
+                locationInput.val($(this).text());
+                suggestionsContainer.addClass('d-none');
+            });
 
-            $suggestionsContainer
-            .html(`
-    <div class="suggestion-item flex items-center space-x-2 animate-pulse text-gray-600" role="option">
-        <svg class="w-5 h-5 text-primary animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-        </svg>
-        <span>Loading suggestions...</span>
-    </div>
-`)
-                .removeClass('d-none').addClass('show');
-
-            searchTimeout = setTimeout(() => {
-                $.get('/api/location-suggestions', { term: searchTerm })
-                    .done(function (response) {
-                        if (response && response.length > 0) {
-                            let suggestionsHtml = '';
-                            response.forEach(function (suggestion) {
-                                suggestionsHtml += `<div class="suggestion-item" role="option">${suggestion.DisplayText}</div>`;
-                            });
-                            $suggestionsContainer.html(suggestionsHtml).removeClass('d-none').addClass('show');
-                        } else {
-                            $suggestionsContainer.html('<div class="suggestion-item" role="option">No results found</div>').addClass('show');
-                        }
-                    })
-                    .fail(function () {
-                        $suggestionsContainer.html('<div class="suggestion-item" role="option">Error loading suggestions</div>').addClass('show');
-                    });
-            }, 300);
+            // Hide suggestions when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.form-group').length) {
+                    suggestionsContainer.addClass('d-none');
+                }
+            });
         });
-
-        // Handle click on suggestion
-        $suggestionsContainer.on('click', '.suggestion-item', function () {
-            $locationInput.val($(this).text());
-            $suggestionsContainer.removeClass('show').addClass('d-none');
-        });
-
-        // Hide suggestions on outside click
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('.form-group').length) {
-                $suggestionsContainer.removeClass('show').addClass('d-none');
-            }
-        });
-    });
-</script>
-    
+    </script>
     <!-- Footer -->
    @endsection
 

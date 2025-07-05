@@ -15,6 +15,8 @@ class TripDetail extends Model
         'activities',
         'location_overview_id',
         'user_id',
+        'checkInDate',
+        'checkOutDate',
     ];
 
     public function locationOverview()
