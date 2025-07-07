@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Exception;
 use App\Services\HotelRecommendationService;
 use App\Models\HotelRecommendation;
+use App\Models\UserRequest;
 
 class TravelPlanException extends Exception
 {
@@ -139,6 +140,21 @@ class TravelController extends Controller
   public function generateTravelPlan(Request $request)
 {
     set_time_limit(300);
+
+    UserRequest::create([
+        'location' => $request->location,
+        'travel_date' => \Carbon\Carbon::parse($request->travel),
+        'duration' => $request->duration,
+        'budget' => $request->budget,
+        'traveler_type' => $request->traveler,
+        'activities' => $request->activities,
+        'user_country' => $request->country,   
+        'user_city' => $request->city,
+        'user_ip' => $request->ip,
+        'user_longitude' => $request->longitude,
+        'user_latitude' => $request->latitude,
+    ]);
+    dd($request->all());
 
     try {
         // Validate and extract required fields
