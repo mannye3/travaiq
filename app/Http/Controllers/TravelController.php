@@ -154,7 +154,6 @@ class TravelController extends Controller
         'user_longitude' => $request->longitude,
         'user_latitude' => $request->latitude,
     ]);
-    dd($request->all());
 
     try {
         // Validate and extract required fields
