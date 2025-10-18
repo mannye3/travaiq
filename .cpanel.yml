@@ -1,0 +1,22 @@
+deployment:
+  tasks:
+    - export APP_ROOT=/home/travaiqc/travaiq
+    - export DEPLOY_PUBLIC=/home/travaiqc/public_html
+
+    # copy repository files to APP_ROOT (cPanel will clone into Repo Path)
+    - /bin/cp -r $PWD/* $APP_ROOT
+
+    # go to app folder and install dependencies
+    - cd $APP_ROOT
+    - if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi
+
+    # ensure storage link exists
+    - php artisan storage:link || true
+
+    # publish only the public folder contents to the actual web root
+    - /bin/rsync -a --delete $APP_ROOT/public/ $DEPLOY_PUBLIC/
+
+    # laravel optimizations
+    - php artisan config:cache || true
+    - php artisan route:cache || true
+    - php artisan view:cache || true
