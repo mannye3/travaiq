@@ -375,7 +375,7 @@
             </div>
             
             <!-- Review Stats -->
-            <!-- <div class="mt-16 bg-white rounded-xl shadow-lg p-8 flex flex-wrap justify-between items-center">
+             <div class="mt-16 bg-white rounded-xl shadow-lg p-8 flex flex-wrap justify-between items-center">
                 <div class="w-full md:w-auto text-center md:text-left mb-6 md:mb-0">
                     <h3 class="text-2xl font-bold mb-2">Join thousands of happy travelers</h3>
                     <p class="text-gray-600">Start planning your dream vacation today</p>
@@ -395,7 +395,7 @@
                         <div class="text-sm text-gray-600">Average rating</div>
                     </div>
                 </div>
-            </div> -->
+            </div> 
         </div>
     </section>
 
