@@ -11,6 +11,7 @@ class VisitorLog extends Model
 
     protected $fillable = [
         'ip_address',
+        'location',
         'user_agent',
         'referer',
         'path',

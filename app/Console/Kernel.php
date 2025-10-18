@@ -13,6 +13,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        
+        // Clear expired travel plan cache every hour
+        $schedule->command('cache:clear-expired-travel-plans')
+                ->hourly()
+                ->withoutOverlapping()
+                ->runInBackground();
     }
 
     /**
@@ -27,5 +33,6 @@ class Kernel extends ConsoleKernel
 
     protected $commands = [
         Commands\TestAgodaApi::class,
+        Commands\ClearExpiredTravelPlanCache::class,
     ];
 }

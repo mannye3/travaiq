@@ -26,7 +26,7 @@ class ForgotPasswordMail extends Mailable
     {
         return $this->to($this->email_data['email'])
             ->subject('Reset Password')
-            ->from('no-reply@fmdqgroup.com', 'Travaiq')
+            ->from('hello@travaiq.com', 'Travaiq')
             ->view('emails.forgetpassword')
             ->with('email_data', $this->email_data);
     }

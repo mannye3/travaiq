@@ -413,23 +413,17 @@
                         }
 
                         function toggleDay(dayId) {
-    const content = document.getElementById(dayId);
-    const arrow = document.getElementById('arrow-' + dayId);
-    
-    if (!content || !arrow) {
-        console.error('Element not found:', dayId);
-        return;
-    }
+                            const content = document.getElementById(dayId);
+                            const arrow = document.getElementById('arrow-' + dayId);
 
-    // Toggle content visibility
-    if (content.style.display === 'none' || content.style.display === '') {
-        content.style.display = 'block';
-        arrow.style.transform = 'rotate(180deg)';
-    } else {
-        content.style.display = 'none';
-        arrow.style.transform = 'rotate(0deg)';
-    }
-}
+                            if (content.style.display === 'none' || !content.style.display) {
+                                content.style.display = 'block';
+                                arrow.style.transform = 'rotate(180deg)';
+                            } else {
+                                content.style.display = 'none';
+                                arrow.style.transform = 'rotate(0deg)';
+                            }
+                        }
 
                         // Show the first day by default when page loads
                         document.addEventListener('DOMContentLoaded', function() {

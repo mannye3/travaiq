@@ -57,6 +57,13 @@ Route::get('/download-itinerary/{tripId}', [TravelController::class, 'downloadTr
 Route::get('/trips/temp', [TravelController::class, 'showTemp'])->name('trips.show.temp');
 Route::get('/trips/reference/{referenceCode}', [TravelController::class, 'showByReference'])->name('trips.show.reference');
 Route::get('/update-missing-images', [TravelController::class, 'updateMissingImages'])->name('update.missing.images');
+Route::get('/clear-expired-cache', [TravelController::class, 'clearExpiredCache'])->name('clear.expired.cache');
+Route::get('/refresh-cache/{referenceCode}', [TravelController::class, 'refreshCache'])->name('refresh.cache');
+Route::get('/check-cache-status', [TravelController::class, 'checkCacheStatus'])->name('check.cache.status');
+Route::post('/set-cache-expiration/{referenceCode}', [TravelController::class, 'setCacheExpiration'])->name('set.cache.expiration');
+Route::get('/admin/cache-management', [TravelController::class, 'showCacheManagement'])->name('admin.cache.management');
+Route::get('/user-cache-info/{userId}', [TravelController::class, 'getUserCacheInfo'])->name('user.cache.info');
+Route::get('/refresh-auth-cache/{userId}/{location}/{duration}/{traveler}/{budget}', [TravelController::class, 'refreshAuthCache'])->name('refresh.auth.cache');
 
 // Parameterized routes last
 Route::get('/trips/{tripId}', [TravelController::class, 'show'])->name('trips.show');

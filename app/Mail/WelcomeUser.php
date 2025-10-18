@@ -19,7 +19,7 @@ class WelcomeUser extends Mailable implements ShouldQueue
 
     public function build()
     {
-        return $this->from('no-reply@fmdqgroup.com', 'Travaiq')
+        return $this->from('hello@travaiq.com', 'Travaiq')
             ->subject('Welcome Onboard')
             ->view('emails.welcome_email')
             ->with('email_data', $this->email_data);

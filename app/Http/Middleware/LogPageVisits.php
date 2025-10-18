@@ -141,45 +141,72 @@ class LogPageVisits
         return false;
     }
 
-    protected function createLogEntry(Request $request)
-    {
-        try {
-            // Get client ID
-            $clientId = $this->getOrCreateClientId($request);
-            
-            // Check if this is a new user or returning user
-            $isNewUser = $this->isNewUser($clientId);
-            
-            // Create session data
-            $sessionKey = "ga_session_{$clientId}";
-            $sessionData = [
-                'session_id' => Str::uuid(),
-                'start_time' => now(),
-                'last_activity' => now(),
-                'page_views' => 1,
-                'is_new_user' => $isNewUser
-            ];
-            
-            $request->session()->put($sessionKey, $sessionData);
-            
-            // Log to database
-            VisitorLog::create([
-                'ip_address' => $this->getClientIp($request),
-                'user_agent' => $request->userAgent() ?? 'Unknown',
-                'referer' => $request->header('referer', 'Direct'),
-                'path' => $request->path(),
-                'visited_at' => now(),
-                'user_id' => optional(auth()->user())->id,
-                'client_id' => $clientId,
-                'session_id' => $sessionData['session_id'],
-                'is_new_user' => $isNewUser,
-                'request_data' => $this->getSanitizedRequestData($request)
-            ]);
+ protected function createLogEntry(Request $request)
+{
+    try {
+        // Get client ID
+        $clientId = $this->getOrCreateClientId($request);
 
-        } catch (\Exception $e) {
-            \Log::error('Visitor logging failed: '.$e->getMessage());
+        // Check if this is a new user or returning user
+        $isNewUser = $this->isNewUser($clientId);
+
+        // Create session data
+        $sessionKey = "ga_session_{$clientId}";
+        $sessionData = [
+            'session_id' => Str::uuid(),
+            'start_time' => now(),
+            'last_activity' => now(),
+            'page_views' => 1,
+            'is_new_user' => $isNewUser
+        ];
+
+        $request->session()->put($sessionKey, $sessionData);
+
+        // Get IP Address
+        $ipAddress = $this->getClientIp($request);
+
+        // Initialize location as null
+        $location = null;
+
+        // Skip if IP is private/local
+        if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            try {
+                // Fetch location from ip-api.com
+                $url = "http://ip-api.com/php/" . $ipAddress;
+                $response = @file_get_contents($url);
+
+                if ($response !== false) {
+                    $data = @unserialize($response);
+
+                    if (is_array($data) && isset($data['status']) && $data['status'] === 'success') {
+                        $location = $data['city'] . ", " . $data['regionName'] . ", " . $data['country'];
+                    }
+                }
+            } catch (\Exception $e) {
+                \Log::error("IP location fetch failed: " . $e->getMessage());
+            }
         }
+
+        // Log to database
+        VisitorLog::create([
+            'ip_address' => $ipAddress,
+            'location'   => $location,
+            'user_agent' => $request->userAgent() ?? 'Unknown',
+            'referer'    => $request->header('referer', 'Direct'),
+            'path'       => $request->path(),
+            'visited_at' => now(),
+            'user_id'    => optional(auth()->user())->id,
+            'client_id'  => $clientId,
+            'session_id' => $sessionData['session_id'],
+            'is_new_user'=> $isNewUser,
+            'request_data' => $this->getSanitizedRequestData($request)
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Visitor logging failed: '.$e->getMessage());
     }
+}
+
 
     protected function isNewUser(string $clientId): bool
     {
