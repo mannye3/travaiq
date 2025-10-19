@@ -1,22 +1,38 @@
 deployment:
   tasks:
+    # Set deployment path
     - export APP_ROOT=/home/travaiqc/travaiq
     - export DEPLOY_PUBLIC=/home/travaiqc/public_html
 
-    # copy repository files to APP_ROOT (cPanel will clone into Repo Path)
-    - /bin/cp -r $PWD/* $APP_ROOT
+    # Log start time
+    - echo "==== Starting deployment at $(date) ====" >> ${DEPLOY_PUBLIC}/storage/logs/deploy.log
 
-    # go to app folder and install dependencies
-    - cd $APP_ROOT
-    - if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi
+    # Navigate to project directory
+    - cd ${DEPLOY_PUBLIC}
 
-    # ensure storage link exists
-    - php artisan storage:link || true
+    # Pull the latest code from GitHub
+    - echo "Pulling latest code..." >> ${DEPLOYPATH}/storage/logs/deploy.log
+    - git pull origin main >> ${DEPLOYPATH}/storage/logs/deploy.log 2>&1
 
-    # publish only the public folder contents to the actual web root
-    - /bin/rsync -a --delete $APP_ROOT/public/ $DEPLOY_PUBLIC/
+    # Install composer dependencies (production optimized)
+    - echo "Installing dependencies..." >> ${DEPLOYPATH}/storage/logs/deploy.log
+    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader >> ${DEPLOYPATH}/storage/logs/deploy.log 2>&1
 
-    # laravel optimizations
-    - php artisan config:cache || true
-    - php artisan route:cache || true
-    - php artisan view:cache || true
+    # Run database migrations
+    - echo "Running migrations..." >> ${DEPLOYPATH}/storage/logs/deploy.log
+    - php artisan migrate --force >> ${DEPLOYPATH}/storage/logs/deploy.log 2>&1
+
+    # Clear and cache configurations
+    - echo "Caching configurations..." >> ${DEPLOY_PUBLIC}/storage/logs/deploy.log
+    - php artisan config:clear >> ${DEPLOY_PUBLIC}/storage/logs/deploy.log 2>&1
+    - php artisan config:cache >> ${DEPLOY_PUBLIC}/storage/logs/deploy.log 2>&1
+    - php artisan route:cache >> ${DEPLOYPATH}/storage/logs/deploy.log 2>&1
+    - php artisan view:cache >> ${DEPLOYPATH}/storage/logs/deploy.log 2>&1
+
+    # Set proper permissions for storage and bootstrap/cache
+    - echo "Setting folder permissions..." >> ${DEPLOYPATH}/storage/logs/deploy.log
+    - chmod -R 775 ${DEPLOYPATH}/storage ${DEPLOYPATH}/bootstrap/cache
+    - chown -R yourcpanelusername:yourcpanelusername ${DEPLOYPATH}/storage ${DEPLOYPATH}/bootstrap/cache
+
+    # Log completion
+    - echo "==== Deployment completed successfully at $(date) ====" >> ${DEPLOYPATH}/storage/logs/deploy.log
