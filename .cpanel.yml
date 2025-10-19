@@ -34,5 +34,5 @@ deployment:
     - chmod -R 775 ${DEPLOYPATH}/storage ${DEPLOYPATH}/bootstrap/cache
     - chown -R yourcpanelusername:yourcpanelusername ${DEPLOYPATH}/storage ${DEPLOYPATH}/bootstrap/cache
 
-    # Log completion nnnnnnnnnnnnnnnnnnnnnnnnnn
+    # Log completion test
     - echo "==== Deployment completed successfully at $(date) ====" >> ${DEPLOYPATH}/storage/logs/deploy.log
