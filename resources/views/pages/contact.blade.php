@@ -32,8 +32,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-medium text-gray-900">Email</h3>
-                            <a href="mailto:support@travaiq.com" class="text-primary hover:text-primary-dark transition duration-300">info@travaiq.com</a>
+                            <h3 class="font-medium text-gray-900">Email1</h3>
+                            <a href="mailto:support@travaiq.com" class="text-primary hover:text-primary-dark transition duration-300">support@travaiq.com</a>
                         </div>
                     </div>
 
