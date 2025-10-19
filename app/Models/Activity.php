@@ -14,6 +14,9 @@ class Activity extends Model
         'cost',
         'duration',
         'best_time',
+        'phone_number',
+        'website',
+        'fee',
         'itinerary_id',
         'image_url'
     ];

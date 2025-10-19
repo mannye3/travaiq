@@ -1,12 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\ContactController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\GoogleOneTapController;
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -22,22 +24,28 @@ Route::get('/create-plan', function () {
     return view('pages.createPlan');
 })->name('createPlan');
 
-// Admin Section
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('google.redirect');
+
 
 // Authentication Routes
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
-Route::post('/google-onetap-login', [App\Http\Controllers\Auth\GoogleOneTapController::class, 'login']);
+
+
+
+
+// Authentication routes
+Route::post('/google-onetap-login', [GoogleOneTapController::class, 'login']);
 Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
 
-Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login-post', [AuthController::class, 'loginPost'])->name('loginPost');
 Route::post('/forget-password', [AuthController::class, 'userForgetpassword'])->name('userForgetpassword');
 Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forgetPassword');
-Route::get('/reset-password/{token}', [AuthController::class, 'resetpassword']);
+Route::get('/password/reset/{token}', [AuthController::class, 'resetpassword']);
 Route::post('/reset-password-submit', [AuthController::class, 'resetpasswordsubmit'])->name('resetpasswordsubmit');
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+Route::get('/login-register', [AuthController::class, 'showLoginRegisterForm'])->name('loginRegister');
+Route::post('/register-post', [AuthController::class, 'registerPost'])->name('registerPost');
 
 // Travel Routes
 Route::get('/travel/form', [TravelController::class, 'showForm'])->name('travel.form');
@@ -65,3 +73,17 @@ Route::get('/faqs', [PublicController::class, 'faqs'])->name('faqs');
 Route::get('/sitemap', [PublicController::class, 'sitemap'])->name('sitemap');
 Route::get('/about', [PublicController::class, 'about'])->name('about');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/test/hotels', [TravelController::class, 'testHotelIntegration'])->name('test.hotels');
+
+// LOGIN REQUIRED ROUTES
+Route::get('/my-trips', [TravelController::class, 'myTrips'])->name('my.trips')->middleware('auth');
+
+
+// Add this route for testing hotel integration
+Route::get('/test-hotel-integration', [TravelController::class, 'testHotelIntegration'])
+    ->middleware(['auth'])
+    ->name('test.hotel.integration');
+
+Route::get('/location-search', [SearchController::class, 'showSearchForm'])->name('location.search');
+Route::get('/api/location-suggestions', [SearchController::class, 'search'])->name('location.suggestions');

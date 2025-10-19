@@ -4,39 +4,16 @@
 
 @section('content')
 
-    <style>
-        .suggestions-container {
-            position: absolute;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            z-index: 1000;
-        }
-
-        .suggestion-item {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
-        .suggestion-item:hover {
-            background-color: #f8f9fa;
-        }
-    </style>
-
-
     <!-- Page Title Section -->
     <section class="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-white py-16 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-full h-full">
             <svg class="absolute right-0 top-0 h-full opacity-10" viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="xMinYMin meet">
-                <path d="M488.6,259.8c0,98.5-80.1,178.3-178.9,178.3s-178.9-79.8-178.9-178.3c0-98.5,80.1-178.3,178.9-178.3S488.6,161.3,488.6,259.8z" fill="white" />
-                <circle cx="168" cy="213.8" r="14.8" fill="white" />
-                <circle cx="126.3" cy="311.7" r="24.2" fill="white" />
-                <circle cx="244.8" cy="348.7" r="10.2" fill="white" />
-                <circle cx="291.5" cy="267.1" r="14.2" fill="white" />
-                <circle cx="380.4" cy="173.6" r="22.6" fill="white" />
+                <path d="M488.6,259.8c0,98.5-80.1,178.3-178.9,178.3s-178.9-79.8-178.9-178.3c0-98.5,80.1-178.3,178.9-178.3S488.6,161.3,488.6,259.8z" fill="white"/>
+                <circle cx="168" cy="213.8" r="14.8" fill="white"/>
+                <circle cx="126.3" cy="311.7" r="24.2" fill="white"/>
+                <circle cx="244.8" cy="348.7" r="10.2" fill="white"/>
+                <circle cx="291.5" cy="267.1" r="14.2" fill="white"/>
+                <circle cx="380.4" cy="173.6" r="22.6" fill="white"/>
             </svg>
         </div>
         <div class="container mx-auto px-4 text-center relative">
@@ -73,33 +50,15 @@
                         <!-- Decorative elements -->
                         <div class="absolute -top-6 -right-6 w-12 h-12 bg-yellow-400 rounded-full opacity-50"></div>
                         <div class="absolute -bottom-6 -left-6 w-12 h-12 bg-primary rounded-full opacity-50"></div>
-                          @if(request('travel_date'))
-                        <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4 mb-6">
-                                    <div class="flex items-center">
-                                        
-                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        
-                                        <span class="text-green-700 font-medium">
-                                            Step 2 of 2: Planning your trip to <span class="font-bold">{{ request('location', 'your destination') }}</span>
-                                          
-                                                on {{ \Carbon\Carbon::parse(request('travel_date'))->format('M d, Y') }}
-                                            
-                                        </span>
-                                        
-                                    </div>
-                                   
-                                </div>
-                                 @endif
-                            <div class="text-center mb-10">
+                        
+                        <div class="text-center mb-10">
                             <h2 class="text-2xl font-bold text-gray-800 mb-3">Tell us your travel preferences</h2>
                             <p class="text-gray-600 max-w-3xl mx-auto">Just provide some basic information, and our AI trip planner will generate a customized itinerary based on your preferences, including activities, restaurants, and hidden gems.</p>
                         </div>
-
-                        <form action="{{ route('travel.generate') }}" id="travelForm" method="POST" class="space-y-8"
-                            onsubmit="return validateForm()">
-                            @csrf
+                    
+                     <form action="{{ route('travel.generate') }}" id="travelForm" method="POST"  class="space-y-8" 
+                    onsubmit="return validateForm()">
+                    @csrf
                             <!-- Two column layout for first row -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                                 <!-- Destination -->
@@ -107,51 +66,99 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2 group-hover:text-primary transition-colors">What is destination of choice?*</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg class="h-5 w-5 text-gray-400 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                        </div>
+                                       
+                            <div class="form-group position-relative">
+                                <label for="location">Enter Location</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="location" 
+                                       name="location" 
+                                       placeholder="Type to search locations..."
+                                       autocomplete="off">
+                                <div id="suggestions" class="suggestions-container d-none"></div>
+                            </div>
+
+                            <style>
+                                .suggestions-container {
+                                    position: absolute;
+                                    width: 100%;
+                                    max-height: 200px;
+                                    overflow-y: auto;
+                                    background: white;
+                                    border: 1px solid #ddd;
+                                    border-radius: 4px;
+                                    z-index: 1000;
+                                }
+                                .suggestion-item {
+                                    padding: 8px 12px;
+                                    cursor: pointer;
+                                }
+                                .suggestion-item:hover {
+                                    background-color: #f8f9fa;
+                                }
+                            </style>
+
+                            <script>
+                                $(document).ready(function() {
+                                    let searchTimeout;
+                                    const suggestionsContainer = $('#suggestions');
+                                    const locationInput = $('#location');
+
+                                    locationInput.on('input', function() {
+                                        const searchTerm = $(this).val();
                                         
-                                        </div>
+                                        // Clear previous timeout
+                                        clearTimeout(searchTimeout);
+                                        
+                                        if (searchTerm.length < 2) {
+                                            suggestionsContainer.addClass('d-none');
+                                            return;
+                                        }
 
-                                        <div class="form-group position-relative" style="position: relative;">
+                                        // Set new timeout
+                                        searchTimeout = setTimeout(() => {
+                                            $.get('/api/location-suggestions', { term: searchTerm })
+                                                .done(function(response) {
+                                                    if (response && response.length > 0) {
+                                                        let suggestionsHtml = '';
+                                                        response.forEach(function(suggestion) {
+                                                            suggestionsHtml += `<div class="suggestion-item">${suggestion.DisplayText}</div>`;
+                                                        });
+                                                        suggestionsContainer.html(suggestionsHtml).removeClass('d-none');
+                                                    } else {
+                                                        suggestionsContainer.addClass('d-none');
+                                                    }
+                                                })
+                                                .fail(function(error) {
+                                                    console.error('Error fetching suggestions:', error);
+                                                    suggestionsContainer.addClass('d-none');
+                                                });
+                                        }, 300);
+                                    });
 
-                                            <input type="text"
-                                                class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
-                                                id="location"
-                                                name="location"
-                                                value="{{ request('location', '') }}"
-                                                placeholder="Type to search locations..."
-                                                autocomplete="off">
-                                            <div id="suggestions" class="suggestions-container d-none" role="listbox"></div>
-                                        </div>
+                                    // Handle suggestion click
+                                    suggestionsContainer.on('click', '.suggestion-item', function() {
+                                        locationInput.val($(this).text());
+                                        suggestionsContainer.addClass('d-none');
+                                    });
 
-                                        <style>
-                                            .suggestions-container {
-                                                position: absolute;
-                                                top: 100%;
-                                                left: 0;
-                                                width: 100%;
-                                                z-index: 1000;
-                                                background: #fff;
-                                                border: 1px solid #ccc;
-                                                border-top: none;
-                                                max-height: 200px;
-                                                overflow-y: auto;
-                                                display: none;
-                                            }
-
-                                            .suggestion-item {
-                                                padding: 10px;
-                                                cursor: pointer;
-                                            }
-
-                                            .suggestion-item:hover {
-                                                background-color: #f0f0f0;
-                                            }
-
-                                            .suggestions-container.show {
-                                                display: block;
-                                            }
-                                        </style>
-
-
+                                    // Hide suggestions when clicking outside
+                                    $(document).on('click', function(e) {
+                                        if (!$(e.target).closest('.form-group').length) {
+                                            suggestionsContainer.addClass('d-none');
+                                        }
+                                    });
+                                });
+                            </script>
+                       
+                                        <!-- <input type="text" required id="location" name="location"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
+                                            placeholder="Enter City, Airport, or Address"> -->
                                     </div>
                                 </div>
 
@@ -161,34 +168,15 @@
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
-
+                                        
                                         <input type="date" name="travel" required placeholder="dd/mm/yyyy"
-                                           value="{{ request('travel_date', '') }}"
-                                            min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                             class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base" />
                                     </div>
                                 </div>
                             </div>
-
-                             @if(request('travel_date'))
-                             <!-- Add this after the destination/date row -->
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
-                                    <span>Form completion</span>
-                                    <span id="progressPercent">{{ request('location') && request('travel_date') ? '30%' : '0%' }}</span>
-                                </div>
-                                <div class="w-full bg-gray-300 rounded-full h-2">
-                                    <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-300" 
-                                        style="width: {{ request('location') && request('travel_date') ? '30%' : '0%' }}"></div>
-                                </div>
-                                <p class="text-xs text-gray-500 mt-2">
-                                    {{ request('location') && request('travel_date') ? 'Great start! Just a few more details needed.' : 'Complete all fields to generate your itinerary' }}
-                                </p>
-                            </div>
-                            @endif
 
                             <!-- Duration -->
                             <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
@@ -378,13 +366,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="locationDataInputs">
-                                <input type="hidden" name="country" id="user_country">
-                                <input type="hidden" name="city" id="user_city">
-                                <input type="hidden" name="ip" id="user_ip">
-                                <input type="hidden" name="longitude" id="user_longitude">
-                                <input type="hidden" name="latitude" id="user_latitude">
-                            </div>
 
                             <!-- Submit -->
                             <div class="flex justify-center mt-8">
@@ -413,8 +394,8 @@
                         </div>
                         <p class="text-2xl font-bold text-primary mb-3">Generating your plan</p>
                         <p class="text-sm text-gray-600">We are processing your travel preferences and generating the
-                            best possible plan for you.</p>
-                        <br>
+                                best possible plan for you.</p>
+                                <br>
                         <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                             <div class="h-full bg-primary rounded-full" id="progressBar" style="width: 0%"></div>
                         </div>
@@ -428,7 +409,7 @@
                                 const progressCounter = document.getElementById('progressCounter');
                                 const progressBar = document.getElementById('progressBar');
                                 const progressStatus = document.getElementById('progressStatus');
-
+                                
                                 const stages = [
                                     { percent: 10, status: 'Analyzing preferences...' },
                                     { percent: 25, status: 'Researching destinations...' },
@@ -440,7 +421,7 @@
                                 ];
 
                                 let currentStage = 0;
-
+                                
                                 const interval = setInterval(() => {
                                     if (currentStage < stages.length) {
                                         const targetPercent = stages[currentStage].percent;
@@ -469,10 +450,17 @@
         </div>
     </main>
 
+    
 
+   
+ <script>
+    
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        });
 
-
-    <script>
         // Form functionality
         let selectedBudget = null;
         let selectedCompanion = null;
@@ -495,14 +483,14 @@
         function setBudget(budget) {
             selectedBudget = budget;
             document.getElementById('budgetInput').value = budget;
-
+            
             // Highlight selected option
             document.querySelectorAll('.budget-option').forEach(option => {
                 option.classList.remove('border-primary', 'bg-purple-50');
                 option.querySelector('svg').classList.remove('text-primary');
                 option.querySelector('svg').classList.add('text-gray-500');
             });
-
+            
             const element = event.currentTarget;
             element.classList.add('border-primary', 'bg-purple-50');
             element.querySelector('svg').classList.remove('text-gray-500');
@@ -512,21 +500,21 @@
         function setCompanion(companion) {
             selectedCompanion = companion;
             document.getElementById('companionInput').value = companion;
-
+            
             // Highlight selected option
             document.querySelectorAll('.companion-option').forEach(option => {
                 option.classList.remove('border-primary', 'bg-purple-50');
                 option.querySelector('svg').classList.remove('text-primary');
                 option.querySelector('svg').classList.add('text-gray-500');
             });
-
+            
             const element = event.currentTarget;
             element.classList.add('border-primary', 'bg-purple-50');
             element.querySelector('svg').classList.remove('text-gray-500');
             element.querySelector('svg').classList.add('text-primary');
         }
 
-        function toggleActivity(activity) {
+         function toggleActivity(activity) {
             const option = document.querySelector(`.activity-option[onclick*="'${activity}'"]`);
             if (!option) return;
 
@@ -545,7 +533,7 @@
             document.getElementById('activitiesInput').value = JSON.stringify(selectedActivities);
         }
 
-
+        
         function updateSelectedCounter() {
             const count = selectedActivities.length;
             const counterElement = document.getElementById('selectedActivitiesCount');
@@ -567,27 +555,27 @@
                 showAlert('Please select your budget');
                 return false;
             }
-
+            
             // Check if companion is selected
             if (!selectedCompanion) {
                 showAlert('Please select who you are traveling with');
                 return false;
             }
-
+            
             // Check if at least one activity is selected
             if (selectedActivities.length === 0) {
                 showAlert('Please select at least one activity');
                 return false;
             }
-
+            
             // Show loading overlay
             document.getElementById('overlay').classList.remove('hidden');
             document.getElementById('spinner').classList.remove('hidden');
             document.getElementById('submitText').textContent = 'Generating...';
-
+            
             return true;
         }
-
+        
         function showAlert(message) {
             const alertBox = document.createElement('div');
             alertBox.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg shadow-lg border-l-4 border-primary z-50 animate__animated animate__fadeInDown';
@@ -602,7 +590,7 @@
                 </div>
             `;
             document.body.appendChild(alertBox);
-
+            
             setTimeout(() => {
                 alertBox.classList.remove('animate__fadeInDown');
                 alertBox.classList.add('animate__fadeOutUp');
@@ -611,13 +599,13 @@
                 }, 500);
             }, 3000);
         }
-
+        
         // Add some nice animations on scroll
         document.addEventListener('DOMContentLoaded', function() {
             const options = {
                 threshold: 0.1
             };
-
+            
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -626,256 +614,87 @@
                     }
                 });
             }, options);
-
+            
             document.querySelectorAll('.feature-card, .budget-option, .companion-option, .activity-option').forEach(card => {
                 observer.observe(card);
             });
         });
     </script>
 
+    <!-- <script>
+        // Initialize Google Autocomplete
+        function initAutocomplete() {
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+
+            // When a place is selected, update the hidden fields with location details
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                document.getElementById('place_id').value = place.place_id;
+                document.getElementById('formatted_address').value = place.formatted_address;
+                document.getElementById('latitude').value = place.geometry.location.lat();
+                document.getElementById('longitude').value = place.geometry.location.lng();
+            });
+        }
+    </script> -->
 
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             let searchTimeout;
-            const $suggestionsContainer = $('#suggestions');
-            const $locationInput = $('#location');
+            const suggestionsContainer = $('#suggestions');
+            const locationInput = $('#location');
 
-            $locationInput.on('input', function() {
-                const searchTerm = $(this).val().trim();
-
+            locationInput.on('input', function() {
+                const searchTerm = $(this).val();
+                
+                // Clear previous timeout
                 clearTimeout(searchTimeout);
-
+                
                 if (searchTerm.length < 2) {
-                    $suggestionsContainer.removeClass('show').addClass('d-none');
+                    suggestionsContainer.addClass('d-none');
                     return;
                 }
 
-                $suggestionsContainer
-                    .html(`
-                        <div class="suggestion-item flex items-center space-x-2 animate-pulse text-gray-600" role="option">
-                            <svg class="w-5 h-5 text-primary animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                            </svg>
-                            <span>Loading suggestions...</span>
-                        </div>
-                    `)
-                    .removeClass('d-none').addClass('show');
-
+                // Set new timeout
                 searchTimeout = setTimeout(() => {
-                    $.get('/api/location-suggestions', {
-                            term: searchTerm
-                        })
+                    $.get('/api/location-suggestions', { term: searchTerm })
                         .done(function(response) {
                             if (response && response.length > 0) {
                                 let suggestionsHtml = '';
                                 response.forEach(function(suggestion) {
-                                    suggestionsHtml += `<div class="suggestion-item" role="option">${suggestion.DisplayText}</div>`;
+                                    suggestionsHtml += `<div class="suggestion-item">${suggestion.DisplayText}</div>`;
                                 });
-                                $suggestionsContainer.html(suggestionsHtml).removeClass('d-none').addClass('show');
+                                suggestionsContainer.html(suggestionsHtml).removeClass('d-none');
                             } else {
-                                $suggestionsContainer.html('<div class="suggestion-item" role="option">No results found</div>').addClass('show');
+                                suggestionsContainer.addClass('d-none');
                             }
                         })
-                        .fail(function() {
-                            $suggestionsContainer.html('<div class="suggestion-item" role="option">Error loading suggestions</div>').addClass('show');
+                        .fail(function(error) {
+                            console.error('Error fetching suggestions:', error);
+                            suggestionsContainer.addClass('d-none');
                         });
                 }, 300);
             });
 
-            // Handle click on suggestion
-            $suggestionsContainer.on('click', '.suggestion-item', function() {
-                $locationInput.val($(this).text());
-                $suggestionsContainer.removeClass('show').addClass('d-none');
+            // Handle suggestion click
+            suggestionsContainer.on('click', '.suggestion-item', function() {
+                locationInput.val($(this).text());
+                suggestionsContainer.addClass('d-none');
             });
 
-            // Hide suggestions on outside click
+            // Hide suggestions when clicking outside
             $(document).on('click', function(e) {
                 if (!$(e.target).closest('.form-group').length) {
-                    $suggestionsContainer.removeClass('show').addClass('d-none');
+                    suggestionsContainer.addClass('d-none');
                 }
             });
         });
     </script>
-
-    <script>
-        class CountryDetector {
-            constructor() {
-                this.country = null;
-                this.countryName = null;
-                this.fullData = null; // Store full data if available
-            }
-
-            async detectCountry() {
-                try {
-                    // Try multiple services for reliability
-                    const services = [
-                        'https://ipapi.co/json/',
-                        'https://api.country.is/',
-                        'http://ip-api.com/json/'
-                    ];
-
-                    for (let service of services) {
-                        try {
-                            const response = await fetch(service);
-                            const data = await response.json();
-
-                            // Log the full data received from the service
-                            console.log(`Data from ${service}:`, data);
-
-                            if (service.includes('ipapi.co')) {
-                                this.country = data.country_code;
-                                this.countryName = data.country_name;
-                                this.fullData = data; // Store full data
-                            } else if (service.includes('country.is')) {
-                                this.country = data.country;
-                                this.countryName = data.country;
-                                this.fullData = data; // Store full data
-                            } else if (service.includes('ip-api.com')) {
-                                this.country = data.countryCode;
-                                this.countryName = data.country;
-                                this.fullData = data; // Store full data
-                            }
-
-                            if (this.country) {
-                                console.log(`Country detected: ${this.countryName} (${this.country})`);
-                                break; // Stop after the first successful service
-                            }
-                        } catch (error) {
-                            console.warn(`Service ${service} failed:`, error);
-                            continue;
-                        }
-                    }
-
-                    if (this.country) {
-                        this.updateUI();
-                        // this.saveToServer();
-                        // this.saveToLocalStorage();
-                    } else {
-                        throw new Error('All services failed to detect country');
-                    }
-
-                } catch (error) {
-                    console.error('Country detection failed:', error);
-                    // Default fallback
-                    this.country = 'US';
-                    this.countryName = 'United States';
-                    this.fullData = { fallback: true, country: this.country, country_name: this.countryName };
-                    console.log(`Using default fallback country: ${this.countryName} (${this.country})`);
-                    this.updateUI();
-                }
-            }
-
-            updateUI() {
-                // Get hidden input elements
-                const countryInput = document.getElementById('user_country');
-                const cityInput = document.getElementById('user_city');
-                const ipInput = document.getElementById('user_ip');
-                const longitudeInput = document.getElementById('user_longitude');
-                const latitudeInput = document.getElementById('user_latitude');
-
-                // Populate country code input
-                if (countryInput && this.countryName) {
-                    countryInput.value = this.countryName;
-                } else if (countryInput) {
-                    //  console.warn("Country code not available to populate 'user_country'.");
-                }
-
-                // Populate other inputs from fullData if available
-                if (this.fullData) {
-                    if (cityInput && this.fullData.city) {
-                        cityInput.value = this.fullData.city;
-                    } else if (cityInput) {
-                        //  console.warn("City data not available in fullData to populate 'user_city'.");
-                    }
-
-                    if (ipInput && (this.fullData.ip || this.fullData.query)) { // Check for 'ip' or 'query' property
-                        ipInput.value = this.fullData.ip || this.fullData.query;
-                    } else if (ipInput) {
-                        //  console.warn("IP data not available in fullData to populate 'user_ip'.");
-                    }
-
-                    if (longitudeInput && (this.fullData.longitude || this.fullData.lon)) { // Check for 'longitude' or 'lon' property
-                        longitudeInput.value = this.fullData.longitude || this.fullData.lon;
-                    } else if (longitudeInput) {
-                        //  console.warn("Longitude data not available in fullData to populate 'user_longitude'.");
-                    }
-
-                    if (latitudeInput && (this.fullData.latitude || this.fullData.lat)) { // Check for 'latitude' or 'lat' property
-                        latitudeInput.value = this.fullData.latitude || this.fullData.lat;
-                    } else if (latitudeInput) {
-                        //  console.warn("Latitude data not available in fullData to populate 'user_latitude'.");
-                    }
-                } else {
-                    console.warn("data not available to populate inputs.");
-                }
-
-            }
-
-            saveToLocalStorage() {
-                localStorage.setItem('user_country', this.country);
-                localStorage.setItem('user_country_name', this.countryName);
-                if (this.fullData) {
-                     localStorage.setItem('user_country_data', JSON.stringify(this.fullData));
-                }
-            }
-
-          
-
-            getCountry() {
-                return this.country || localStorage.getItem('user_country') || 'US';
-            }
-
-             getCountryName() {
-                return this.countryName || localStorage.getItem('user_country_name') || 'United States';
-            }
-
-            getFullData() {
-                 const storedData = localStorage.getItem('user_country_data');
-                 return this.fullData || (storedData ? JSON.parse(storedData) : null);
-            }
-        }
-
-        // Initialize and use
-        const detector = new CountryDetector();
-        detector.detectCountry();
-
-        // Make it globally available
-        window.userCountry = detector;
-    </script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const location = document.getElementById('location').value;
-    const travelDate = document.querySelector('input[name="travel"]').value;
-    
-    // If both destination and date are pre-filled, focus on duration
-    if (location && travelDate) {
-        document.getElementById('daysInput').focus();
-        updateProgress(30);
-    } else if (location) {
-        // Only destination filled, focus on date
-        document.querySelector('input[name="travel"]').focus();
-        updateProgress(15);
-    }
-});
-
-function updateProgress(percentage) {
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressPercent');
-    
-    if (progressBar) progressBar.style.width = percentage + '%';
-    if (progressText) progressText.textContent = percentage + '%';
-}
-</script>
-
     <!-- Footer -->
-@endsection
+   @endsection
 
-
+   
 </body>
 </html>

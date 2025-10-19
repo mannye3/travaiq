@@ -73,26 +73,8 @@
                         <!-- Decorative elements -->
                         <div class="absolute -top-6 -right-6 w-12 h-12 bg-yellow-400 rounded-full opacity-50"></div>
                         <div class="absolute -bottom-6 -left-6 w-12 h-12 bg-primary rounded-full opacity-50"></div>
-                          @if(request('travel_date'))
-                        <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4 mb-6">
-                                    <div class="flex items-center">
-                                        
-                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        
-                                        <span class="text-green-700 font-medium">
-                                            Step 2 of 2: Planning your trip to <span class="font-bold">{{ request('location', 'your destination') }}</span>
-                                          
-                                                on {{ \Carbon\Carbon::parse(request('travel_date'))->format('M d, Y') }}
-                                            
-                                        </span>
-                                        
-                                    </div>
-                                   
-                                </div>
-                                 @endif
-                            <div class="text-center mb-10">
+
+                        <div class="text-center mb-10">
                             <h2 class="text-2xl font-bold text-gray-800 mb-3">Tell us your travel preferences</h2>
                             <p class="text-gray-600 max-w-3xl mx-auto">Just provide some basic information, and our AI trip planner will generate a customized itinerary based on your preferences, including activities, restaurants, and hidden gems.</p>
                         </div>
@@ -107,7 +89,10 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2 group-hover:text-primary transition-colors">What is destination of choice?*</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        
+                                            {{-- <svg class="h-5 w-5 text-gray-400 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg> --}}
                                         </div>
 
                                         <div class="form-group position-relative" style="position: relative;">
@@ -116,7 +101,6 @@
                                                 class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
                                                 id="location"
                                                 name="location"
-                                                value="{{ request('location', '') }}"
                                                 placeholder="Type to search locations..."
                                                 autocomplete="off">
                                             <div id="suggestions" class="suggestions-container d-none" role="listbox"></div>
@@ -166,29 +150,11 @@
                                         </div>
 
                                         <input type="date" name="travel" required placeholder="dd/mm/yyyy"
-                                           value="{{ request('travel_date', '') }}"
                                             min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                             class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base" />
                                     </div>
                                 </div>
                             </div>
-
-                             @if(request('travel_date'))
-                             <!-- Add this after the destination/date row -->
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
-                                    <span>Form completion</span>
-                                    <span id="progressPercent">{{ request('location') && request('travel_date') ? '30%' : '0%' }}</span>
-                                </div>
-                                <div class="w-full bg-gray-300 rounded-full h-2">
-                                    <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-300" 
-                                        style="width: {{ request('location') && request('travel_date') ? '30%' : '0%' }}"></div>
-                                </div>
-                                <p class="text-xs text-gray-500 mt-2">
-                                    {{ request('location') && request('travel_date') ? 'Great start! Just a few more details needed.' : 'Complete all fields to generate your itinerary' }}
-                                </p>
-                            </div>
-                            @endif
 
                             <!-- Duration -->
                             <div class="transition-all duration-300 hover:shadow-md p-3 md:p-4 rounded-lg">
@@ -823,7 +789,24 @@
                 }
             }
 
-          
+            // async saveToServer() {
+            //     try {
+            //         await fetch('/api/user-country', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            //             },
+            //             body: JSON.stringify({
+            //                 country: this.country,
+            //                 country_name: this.countryName,
+            //                 full_data: this.fullData // Include full data if available
+            //             })
+            //         });
+            //     } catch (error) {
+            //         console.error('Failed to save country to server:', error);
+            //     }
+            // }
 
             getCountry() {
                 return this.country || localStorage.getItem('user_country') || 'US';
@@ -846,32 +829,6 @@
         // Make it globally available
         window.userCountry = detector;
     </script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const location = document.getElementById('location').value;
-    const travelDate = document.querySelector('input[name="travel"]').value;
-    
-    // If both destination and date are pre-filled, focus on duration
-    if (location && travelDate) {
-        document.getElementById('daysInput').focus();
-        updateProgress(30);
-    } else if (location) {
-        // Only destination filled, focus on date
-        document.querySelector('input[name="travel"]').focus();
-        updateProgress(15);
-    }
-});
-
-function updateProgress(percentage) {
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressPercent');
-    
-    if (progressBar) progressBar.style.width = percentage + '%';
-    if (progressText) progressText.textContent = percentage + '%';
-}
-</script>
 
     <!-- Footer -->
 @endsection

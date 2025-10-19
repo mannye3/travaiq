@@ -5,283 +5,81 @@
 @section('content')
 
     <!-- Hero Section -->
-<!-- Hero Section -->
-<section class="relative py-16 md:py-24 overflow-hidden bg-gradient-to-br from-white via-indigo-50 to-purple-50">
-    <!-- Decorative elements -->
-    <div class="absolute top-0 inset-x-0 h-40 bg-hero-pattern opacity-30"></div>
-    <div class="absolute -right-12 top-1/4 w-40 h-40 bg-accent/20 rounded-full blur-xl"></div>
-    <div class="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-white/50 to-transparent"></div>
-    
-    <div class="container mx-auto px-4 relative">
-        <div class="flex flex-wrap items-center">
-            <!-- Left Content -->
-            <div class="w-full lg:w-1/2 mb-10 lg:mb-0 lg:pr-8 animate__animated animate__fadeInLeft">
-                <div class="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
-                    AI-Powered Travel Planning
-                </div>
-                <h1 class="text-3xl md:text-5xl font-bold mb-6 text-gray-800 leading-tight">Get Your Perfect <span class="text-primary">Travel Itinerary</span> in 2 Minutes</h1>
-                <p class="text-lg text-gray-600 mb-8">Create personalized travel itineraries in minutes, tailored to your preferences and style. No more hours of research.</p>
-                
-                <div class="flex flex-wrap items-center gap-6 text-sm mb-6">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 flex-shrink-0 bg-white rounded-full shadow-md flex items-center justify-center mr-3">
-                            <span class="text-primary-dark text-lg font-bold">10K+</span>
-                        </div>
-                        <span class="text-gray-600">Trips Planned</span>
+    <section class="relative py-16 md:py-24 overflow-hidden bg-gradient-to-br from-white via-indigo-50 to-purple-50">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 inset-x-0 h-40 bg-hero-pattern opacity-30"></div>
+        <div class="absolute -right-12 top-1/4 w-40 h-40 bg-accent/20 rounded-full blur-xl"></div>
+        <div class="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-white/50 to-transparent"></div>
+        
+        <div class="container mx-auto px-4 relative">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10 animate__animated animate__fadeInLeft">
+                    <div class="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                        AI-Powered Travel Planning
                     </div>
-                    <div class="flex items-center">
-                        <div class="text-yellow-500 mr-2">★★★★★</div>
-                        <span class="text-gray-600">4.9/5 User Rating</span>
-                    </div>
-                </div>
-
-                <div class="text-sm text-gray-500">
-                    ✓ No signup required • ✓ 100% free • ✓ Ready in 2 minutes
-                </div>
-            </div>
-
-            <!-- Right Form -->
-            <div class="w-full lg:w-1/2 relative animate__animated animate__fadeInRight">
-                <div class="bg-white rounded-2xl shadow-2xl p-8 relative border border-gray-100">
-                    <!-- Decorative elements -->
-                    <div class="absolute -top-4 -right-4 w-16 h-16 bg-primary/10 rounded-full"></div>
-                    <div class="absolute -bottom-2 -left-2 w-12 h-12 bg-accent/10 rounded-full"></div>
+                    <h1 class="text-3xl md:text-5xl font-bold mb-6 text-gray-800 leading-tight">Discover Your <span class="text-primary">Perfect Trip</span> with AI Intelligence</h1>
+                    <p class="text-lg text-gray-600 mb-8">Create personalized travel itineraries in minutes, tailored to your preferences and style. No more hours of research.</p>
                     
-                    <!-- Form Header -->
-                    <div class="text-center mb-8">
-                        <div class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full mb-3">
-                            Step 1 of 2
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Start Your Journey</h2>
-                        <p class="text-gray-600">Tell us where and when, we'll handle the rest</p>
-                    </div>
-                    
-                    <!-- Quick Start Form -->
-                    <form action="{{route('createPlan')}}" method="GET" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Where do you want to go?</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                </div>
-                                                <input type="text"
-                                                class="w-full border border-gray-300 rounded-md shadow-sm py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
-                                                id="location"
-                                                name="location"
-                                                required
-                                                placeholder="Type to search locations..."
-                                                autocomplete="off">
-                                               <div id="suggestions" class="suggestions-container d-none" role="listbox"></div>
-                                        </div>
-
-                                        <style>
-                                            .suggestions-container {
-                                                position: absolute;
-                                                top: 100%;
-                                                left: 0;
-                                                width: 100%;
-                                                z-index: 1000;
-                                                background: #fff;
-                                                border: 1px solid #ccc;
-                                                border-top: none;
-                                                max-height: 200px;
-                                                overflow-y: auto;
-                                                display: none;
-                                            }
-
-                                            .suggestion-item {
-                                                padding: 10px;
-                                                cursor: pointer;
-                                            }
-
-                                            .suggestion-item:hover {
-                                                background-color: #f0f0f0;
-                                            }
-
-                                            .suggestions-container.show {
-                                                display: block;
-                                            }
-                                        </style>
-                            </div>
-
-                             <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">When are you traveling?</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <input type="date" name="travel_date" required
-                                       min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                       class="w-full px-4 py-4 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-base">
-                            </div>
-                        </div>
-                        </div>
-                        
-                       
-                        
-                        <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-primary to-primary-light text-white rounded-lg font-medium hover:shadow-lg transition duration-300 transform hover:-translate-y-1 text-lg">
-                            Create My Itinerary →
-                        </button>
-                    </form>
-                    
-                    <!-- Trust indicators -->
-                    <div class="mt-6 flex items-center justify-center space-x-6 text-sm text-gray-500">
-                        <div class="flex items-center">
-                            <svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    <div class="flex flex-wrap items-center gap-4 mb-8">
+                        <a href="{{route('createPlan')}}" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex items-center">
+                            <span>Start Planning Now</span>
+                            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
-                            No signup required
+                        </a>
+                        <a href="#how-it-works" class="inline-flex items-center text-primary hover:text-primary-dark transition duration-300">
+                            <span class="mr-2">See how it works</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-6 text-sm">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 flex-shrink-0 bg-white rounded-full shadow-md flex items-center justify-center mr-3">
+                                <span class="text-primary-dark text-lg font-bold">10K+</span>
+                            </div>
+                            <span class="text-gray-600">Trips Planned</span>
                         </div>
                         <div class="flex items-center">
-                            <svg class="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                            100% free
-                        </div>
-                    </div>
-
-                    <!-- Demo Button -->
-                    <div class="text-center mt-8">
-                        <button id="showDemo" class="inline-flex items-center text-primary hover:text-primary-dark transition duration-300 text-sm">
-                            <span class="mr-2">See Paris Example</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- Floating social proof -->
-                    <div class="absolute -top-6 left-6 bg-white px-3 py-2 rounded-lg shadow-lg border border-gray-100">
-                        <div class="flex items-center text-sm">
-                            <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                            <span class="text-gray-600">23 people planning trips now</span>
+                            <div class="text-yellow-500 mr-2">★★★★★</div>
+                            <span class="text-gray-600">4.9/5 User Rating</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+                <div class="w-full md:w-1/2 relative animate__animated animate__fadeInRight">
+                    <div class="relative">
+                        <!-- Blob background -->
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary-light/20 blob"></div>
 
-<style>
-/* Add floating animation */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-}
-
-.animate-float {
-    animation: float 3s ease-in-out infinite;
-}
-
-/* Form focus effects */
-.form-focus:focus-within {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-</style>
-
-    <!-- Demo Section (Hidden by default) -->
-    <section id="demoSection" class="hidden py-12 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Here's what you'll get in 2 minutes</h3>
-                    <p class="text-gray-600">Sample 3-day Paris itinerary generated by our AI</p>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-xl p-6 mb-6">
-                    <!-- Day 1 Sample -->
-                    <div class="border-l-4 border-primary pl-4 mb-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <h4 class="font-bold text-lg">Day 1 - Classic Paris</h4>
-                            <span class="text-sm text-gray-500">Budget: €85</span>
-                        </div>
+                        <!-- Main image -->
+                        <img src="https://lh3.googleusercontent.com/place-photos/AJnk2cyB5SHdPAJ8_IXelmIYZPy44wlzPgmDgurOWOvyoTLINDp3KJilfy3jdEw6ihef6htYZfxdV0V2mUF6Ufy-fIsfsWe2vqcT80bi7_9MS6J0jIxnOSfBxLHgHjxsP3O84vUki2p2n35Kjt1yqw=s1600-w720" class="rounded-lg shadow-xl relative z-10 transform -rotate-2">
                         
-                        <div class="space-y-3">
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-primary/10 p-1 rounded text-primary text-sm font-medium">9:00</div>
-                                <div>
-                                    <div class="font-medium">Eiffel Tower & Trocadéro</div>
-                                    <div class="text-sm text-gray-600">Start with iconic views and photos</div>
-                                </div>
+                        <!-- Floating elements -->
+                        <div class="absolute top-1/4 -left-8 z-20 bg-white p-3 rounded-lg shadow-lg animate-float">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span class="font-medium">Amsterdam, Netherlands</span>
                             </div>
-                            
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-primary/10 p-1 rounded text-primary text-sm font-medium">12:00</div>
-                                <div>
-                                    <div class="font-medium">Lunch at Du Pain et des Idées</div>
-                                    <div class="text-sm text-gray-600">Hidden gem bakery loved by locals</div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-primary/10 p-1 rounded text-primary text-sm font-medium">14:00</div>
-                                <div>
-                                    <div class="font-medium">Louvre Museum</div>
-                                    <div class="text-sm text-gray-600">Pre-booked tickets, 2-hour focused tour</div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-primary/10 p-1 rounded text-primary text-sm font-medium">19:00</div>
-                                <div>
-                                    <div class="font-medium">Dinner at L'As du Fallafel</div>
-                                    <div class="text-sm text-gray-600">Authentic Marais district experience</div>
-                                </div>
+                        </div>
+                        <div class="absolute bottom-10 -right-6 z-20 bg-white p-3 rounded-lg shadow-lg animate-float-slow">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                </svg>
+                                <span class="font-medium">Personalized for you</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Show more teaser -->
-                    <div class="text-center border-t pt-4">
-                        <div class="text-gray-500 mb-4">+ Day 2: Montmartre & Local Districts • Day 3: Versailles & Seine River</div>
-                        <div class="flex flex-wrap justify-center gap-4">
-                            <div class="bg-green-50 px-3 py-1 rounded text-sm text-green-700">✓ Restaurant reservations</div>
-                            <div class="bg-blue-50 px-3 py-1 rounded text-sm text-blue-700">✓ Skip-the-line tickets</div>
-                            <div class="bg-purple-50 px-3 py-1 rounded text-sm text-purple-700">✓ Hidden local spots</div>
-                            <div class="bg-yellow-50 px-3 py-1 rounded text-sm text-yellow-700">✓ Budget optimization</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <a href="{{route('createPlan')}}" class="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary-light text-white font-medium shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 mr-4">
-                        Get This for My Trip
-                    </a>
-                    <button id="hideDemo" class="text-gray-500 hover:text-gray-700 transition duration-300">Hide Example</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Social Proof Section -->
-    {{-- <section class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-8">
-                    <div class="flex items-center justify-center mb-4">
-                        <div class="text-yellow-500 text-lg">★★★★★</div>
-                        <span class="ml-2 text-sm text-gray-600">From 347 trips planned this week</span>
-                    </div>
-                    <blockquote class="text-center text-lg text-gray-700 italic">
-                        "The AI recommendations were spot-on! Made planning my Paris trip so much easier. I discovered hidden gems I would never have found on my own."
-                    </blockquote>
-                    <div class="text-center mt-4">
-                        <div class="font-medium">Sarah Mitchell</div>
-                        <div class="text-sm text-gray-500">Planned her Paris trip yesterday</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
     <!-- Features Section -->
     <section class="py-20 md:py-28">
@@ -299,6 +97,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">🗺️</div>
                     <h3 class="text-xl font-bold mb-4 relative">AI-Powered Planning</h3>
                     <p class="text-gray-600 mb-6 relative">Our advanced AI analyzes thousands of data points to create personalized itineraries based on your unique preferences and travel style.</p>
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                        <span>Learn more</span>
+                        <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a> -->
                 </div>
                 
                 <!-- Feature 2 -->
@@ -307,6 +111,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">🎯</div>
                     <h3 class="text-xl font-bold mb-4 relative">Smart Recommendations</h3>
                     <p class="text-gray-600 mb-6 relative">Get intelligent suggestions for attractions, restaurants, and activities that match your interests, not just the typical tourist spots.</p>
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                        <span>Learn more</span>
+                        <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a> -->
                 </div>
                 
                 <!-- Feature 3 -->
@@ -315,6 +125,12 @@
                     <div class="w-16 h-16 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center text-2xl mb-6 relative transition-all duration-300 rotate-3 group-hover:rotate-6">⏱️</div>
                     <h3 class="text-xl font-bold mb-4 relative">Time-Saving Solutions</h3>
                     <p class="text-gray-600 mb-6 relative">Plan your perfect trip in minutes, not hours. Our AI handles the research while you enjoy the anticipation of your upcoming adventure.</p>
+                    <!-- <a href="#" class="inline-flex items-center text-primary font-medium relative group-hover:underline">
+                        <span>Learn more</span>
+                        <svg class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a> -->
                 </div>
             </div>
             
@@ -383,7 +199,7 @@
     </section>
 
     <!-- How It Works -->
-    {{-- <section id="how-it-works" class="py-20 md:py-28 bg-gradient-to-b from-white to-indigo-50 relative">
+    <section id="how-it-works" class="py-20 md:py-28 bg-gradient-to-b from-white to-indigo-50 relative">
         <div class="absolute top-0 inset-x-0 h-40 bg-hero-pattern opacity-30 transform rotate-180"></div>
         
         <div class="container mx-auto px-4">
@@ -398,6 +214,7 @@
                 <div class="hidden lg:block absolute top-36 left-0 right-0 h-1 bg-gray-200 z-0"></div>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
+
                     <!-- Step 1 -->
                     <div class="group">
                         <div class="bg-white rounded-xl shadow-md p-8 mb-6 transition-all duration-500 hover:shadow-xl relative h-64 flex flex-col items-center text-center">
@@ -412,6 +229,11 @@
                             <div class="w-6 h-6 bg-primary rounded-full shadow-lg z-20"></div>
                         </div>
                     </div>
+
+
+                  
+                    
+                    
 
                     <!-- Step 2 -->
                     <div class="group">
@@ -428,7 +250,9 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+
+
+                      <!-- Step 3 -->
                     <div class="group">
                         <div class="bg-white rounded-xl shadow-md p-8 mb-6 transition-all duration-500 hover:shadow-xl relative h-64 flex flex-col items-center text-center">
                             <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-xl font-bold mb-6 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">03</div>
@@ -467,7 +291,7 @@
                 </a>
             </div>
         </div>
-    </section> --}}
+    </section>
 
     <!-- Testimonials -->
     <section class="py-20 md:py-28 bg-gradient-to-b from-indigo-50 to-purple-50 relative overflow-hidden">
@@ -549,6 +373,29 @@
                     <div class="text-yellow-500">★★★★★</div>
                 </div>
             </div>
+            
+            <!-- Review Stats -->
+            <!-- <div class="mt-16 bg-white rounded-xl shadow-lg p-8 flex flex-wrap justify-between items-center">
+                <div class="w-full md:w-auto text-center md:text-left mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold mb-2">Join thousands of happy travelers</h3>
+                    <p class="text-gray-600">Start planning your dream vacation today</p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary mb-1">98%</div>
+                        <div class="text-sm text-gray-600">Satisfaction rate</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary mb-1">15K+</div>
+                        <div class="text-sm text-gray-600">Happy travelers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary mb-1">4.9</div>
+                        <div class="text-sm text-gray-600">Average rating</div>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </section>
 
@@ -651,17 +498,18 @@
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <!-- Call to Action -->
-    {{-- <section class="py-20 bg-gradient-to-r from-primary to-primary-dark text-white relative overflow-hidden">
+    <section class="py-20 bg-gradient-to-r from-primary to-primary-dark text-white relative overflow-hidden">
         <!-- Decorative elements -->
         <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23FFFFFF\" fill-opacity=\"0.05\" fill-rule=\"evenodd\"%3E%3Cpath d=\"M0 40L40 0H20L0 20M40 40V20L20 40\"/%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
         <div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 -skew-x-12 transform -translate-x-20"></div>
         
         <div class="container mx-auto px-4 text-center relative">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-shadow">347 Travelers Planned Their Trips This Week</h2>
-            <p class="text-xl mb-10 max-w-2xl mx-auto">Join them and get your personalized itinerary in the next 2 minutes. Completely free.</p>
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-shadow">Ready to Plan Your Next Adventure?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto">Let AI do the hard work. You enjoy the journey. Join thousands of happy travelers who've discovered their perfect trips with Travaiq.</p>
             
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="{{route('createPlan')}}" class="inline-block px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-gray-100 shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">Start for Free</a>
+                {{-- <a href="#" class="inline-block px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition duration-300 transform hover:-translate-y-1">Watch Demo</a> --}}
             </div>
             
             <div class="mt-12 flex flex-wrap justify-center items-center gap-8">
@@ -675,50 +523,34 @@
                 <div class="text-lg">Join our community of travelers today!</div>
             </div>
         </div>
-    </section> --}}
+    </section>
 
 @endsection
 
-<script>
-// Demo functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const showDemoBtn = document.getElementById('showDemo');
-    const hideDemoBtn = document.getElementById('hideDemo');
-    const demoSection = document.getElementById('demoSection');
-    
-    if (showDemoBtn && demoSection) {
-        showDemoBtn.addEventListener('click', function() {
-            demoSection.classList.remove('hidden');
-            demoSection.scrollIntoView({ behavior: 'smooth' });
+    <script>
+        
+       
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', entry.target.dataset.animation || 'animate__fadeIn');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
         });
-    }
-    
-    if (hideDemoBtn && demoSection) {
-        hideDemoBtn.addEventListener('click', function() {
-            demoSection.classList.add('hidden');
-        });
-    }
-
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate__animated', entry.target.dataset.animation || 'animate__fadeIn');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    document.querySelectorAll('.animate-on-scroll').forEach(element => {
-        observer.observe(element);
-    });
-});
-</script>
+    </script>
 
 @guest
 <!-- Load Google One Tap script -->
@@ -759,69 +591,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 </script>
+
+
+    {{-- <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      window.onload = function () {
+        console.log('Google One Tap: onload fired');
+        try {
+          google.accounts.id.initialize({
+            client_id: "{{ config('services.google.client_id') }}",
+            callback: handleCredentialResponse
+          });
+          console.log('Google One Tap: initialize called');
+          google.accounts.id.prompt((notification) => {
+            console.log('Google One Tap: prompt notification', notification);
+            if (notification.isNotDisplayed()) {
+              console.log('One Tap was not displayed:', notification.getNotDisplayedReason());
+            }
+            if (notification.isSkippedMoment()) {
+              console.log('One Tap was skipped:', notification.getSkippedReason());
+            }
+            if (notification.isDismissedMoment()) {
+              console.log('One Tap was dismissed:', notification.getDismissedReason());
+            }
+          });
+          console.log('Google One Tap: prompt called');
+        } catch (e) {
+          console.error('Google One Tap error:', e);
+        }
+      };
+
+      function handleCredentialResponse(response) {
+        console.log('Google One Tap: credential response', response);
+        // Send the response.credential (JWT) to your backend for verification and login
+        fetch('/google-onetap-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({ credential: response.credential })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.reload();
+          } else {
+            alert('Google login failed');
+          }
+        });
+      }
+    </script> --}}
 @endguest
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        let searchTimeout;
-        const $suggestionsContainer = $('#suggestions');
-        const $locationInput = $('#location');
 
-        $locationInput.on('input', function() {
-            const searchTerm = $(this).val().trim();
-
-            clearTimeout(searchTimeout);
-
-            if (searchTerm.length < 2) {
-                $suggestionsContainer.removeClass('show').addClass('d-none');
-                return;
-            }
-
-            $suggestionsContainer
-                .html(`
-                    <div class="suggestion-item flex items-center space-x-2 animate-pulse text-gray-600" role="option">
-                        <svg class="w-5 h-5 text-primary animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                        </svg>
-                        <span>Loading suggestions...</span>
-                    </div>
-                `)
-                .removeClass('d-none').addClass('show');
-
-            searchTimeout = setTimeout(() => {
-                $.get('/api/location-suggestions', {
-                        term: searchTerm
-                    })
-                    .done(function(response) {
-                        if (response && response.length > 0) {
-                            let suggestionsHtml = '';
-                            response.forEach(function(suggestion) {
-                                suggestionsHtml += `<div class="suggestion-item" role="option">${suggestion.DisplayText}</div>`;
-                            });
-                            $suggestionsContainer.html(suggestionsHtml).removeClass('d-none').addClass('show');
-                        } else {
-                            $suggestionsContainer.html('<div class="suggestion-item" role="option">No results found</div>').addClass('show');
-                        }
-                    })
-                    .fail(function() {
-                        $suggestionsContainer.html('<div class="suggestion-item" role="option">Error loading suggestions</div>').addClass('show');
-                    });
-            }, 300);
-        });
-
-        // Handle click on suggestion
-        $suggestionsContainer.on('click', '.suggestion-item', function() {
-            $locationInput.val($(this).text());
-            $suggestionsContainer.removeClass('show').addClass('d-none');
-        });
-
-        // Hide suggestions on outside click
-        $(document).on('click', function(e) {
-            if (!$(e.target).closest('.form-group').length) {
-                $suggestionsContainer.removeClass('show').addClass('d-none');
-            }
-        });
-    });
-</script>

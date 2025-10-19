@@ -16,6 +16,7 @@ class TravelPlanPrompt
      */
     public static function generate(string $location, int $totalDays, string $traveler, string $budget, string $activities): string
     {
+        
         $prompt = <<<PROMPT
         You are a travel planning assistant. Generate a travel plan based on the following specifications and return it ONLY as a valid JSON object. Do not include any other text or explanations.
 
@@ -27,10 +28,9 @@ class TravelPlanPrompt
 
         Please ensure:
         - Generate a complete itinerary for ALL {$totalDays} days of the trip
-        - At least **4 hotels** are suggested with detailed information.
-        - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses.
-        - Include  landmarks and cultural highlights under `location_overview`.
-        - Prices are in the local currency.
+        - Each day in the itinerary includes at least **4 activities** with descriptions, cost, duration, best times, coordinates, addresses, phone numbers, websites, and fees.
+        - Include landmarks and cultural highlights under `location_overview`.
+        - Prices are in the dollar.
         - Include comprehensive security advice specific to the location.
         - Include recommended flight options with airlines and typical price ranges.
 
@@ -58,16 +58,6 @@ Return a JSON object with these exact keys:
             ]
         }
     },
-    "hotels": [
-        {
-            "name": "string",
-            "address": "string",
-            "price_per_night": "string",
-            "rating": "string",
-            "description": "string",
-            "coordinates": "string"
-        }
-    ],
     "itinerary": [
         {
             "day": "integer",
@@ -79,7 +69,10 @@ Return a JSON object with these exact keys:
                     "address": "string",
                     "cost": "string",
                     "duration": "string",
-                    "best_time": "string"
+                    "best_time": "string",
+                    "phone_number": "string",
+                    "website": "string",
+                    "fee": "string"
                 }
             ]
         }
@@ -106,10 +99,8 @@ Return a JSON object with these exact keys:
             {"name": "string", "code": "string", "distance_to_city": "string"}
         ],
         "airlines": [
-            {"name": "string", "typical_price_range": "string", "flight_duration": "string", "notes": "string"}
-        ],
-        "best_booking_time": "string",
-        "travel_tips": ["string"]
+            {"name": "string", "typical_price_range": "string"}
+        ]
     }
 }
 PROMPT;

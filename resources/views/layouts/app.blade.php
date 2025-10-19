@@ -108,7 +108,7 @@
         <nav class="flex flex-wrap items-center justify-between">
                 <a href="{{url('/')}}" class="flex items-center text-primary font-bold text-xl">
                     <span class="mr-2 inline-block"><img height="16" width="16" src="{{ asset('travaiqlogo.png') }}"></span>
-                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">Travaiq</span>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">TravaiQ</span>
                 </a>
                 
                 <!-- Mobile menu button -->
@@ -144,8 +144,9 @@
                             <!-- User Profile Dropdown -->
                             <div class="flex items-center">
                                 <button id="user-menu-button" class="flex items-center focus:outline-none">
+                                    
                                     <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-200"
-                                        src="{{ Auth::user()->picture ?? asset('images/default-avatar.png') }}"
+                                        src="{{ Auth::user()->picture ?? asset('user.png') }}"
                                         alt="User profile">
 
                                     <svg class="ml-1 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +176,7 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('google.redirect') }}"
+                        <a href="{{ route('loginRegister') }}"
                             class="block px-6 py-2 rounded-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-dark hover:to-primary text-white font-medium shadow-md hover:shadow-lg transform transition duration-300 hover:-translate-y-1">
                             Sign In
                         </a>
@@ -189,7 +190,6 @@
 
 
         @yield('content')
-
 
 
 
@@ -375,11 +375,6 @@
 
      
 
-//   window.dataLayer = window.dataLayer || [];
-//   function gtag(){dataLayer.push(arguments);}
-//   gtag('js', new Date());
-
-//   gtag('config', 'G-KBCRTSETD9');
 </script>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBCRTSETD9"></script>
