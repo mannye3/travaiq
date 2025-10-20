@@ -19,7 +19,7 @@
                 <div class="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
                     AI-Powered Travel Planning
                 </div>
-                <h1 class="text-3xl md:text-5xl font-bold mb-6 text-gray-800 leading-tight"> <span class="text-primary">Travel Itinerary</span> in 2 Minutes</h1>
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 text-gray-800 leading-tight">Get Your Perfect <span class="text-primary">Travel Itinerary</span> in 2 Minutes</h1>
                 <p class="text-lg text-gray-600 mb-8">Create personalized travel itineraries in minutes, tailored to your preferences and style. No more hours of research.</p>
                 
                 <div class="flex flex-wrap items-center gap-6 text-sm mb-6">
