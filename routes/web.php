@@ -11,8 +11,10 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\GoogleOneTapController;
 
 Route::get('/clear-cache', function () {
+    Artisan::call('config:clear');
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
     return "Cache cleared successfully!";
 });
 

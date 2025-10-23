@@ -292,8 +292,14 @@ class TravelController extends Controller
             $apiKey = env('GOOGLE_GEN_AI_API_KEY');
 
             if (empty($apiKey)) {
-                throw new TravelPlanException('AI service configuration error', [
-                    'service' => 'Gemini AI'
+                Log::error('Gemini AI API key is missing', [
+                    'environment' => app()->environment(),
+                    'config_loaded' => config('services.google.gen_ai_key'),
+                    'env_loaded' => env('GOOGLE_GEN_AI_API_KEY')
+                ]);
+                throw new TravelPlanException('AI service configuration error: API key is missing', [
+                    'service' => 'Gemini AI',
+                    'environment' => app()->environment()
                 ]);
             }
             
